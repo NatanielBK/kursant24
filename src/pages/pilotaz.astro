@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import { pilotaz as p, site, plans } from '../data/site';
+---
+<Base title={p.title} description={p.description} finale={false}>
+  <section class="pilotaz" aria-labelledby="pilotaz-h">
+    <div class="wrap pilotaz__grid">
+      <div class="pilotaz__copy">
+        <p class="eyebrow" data-reveal="fade" data-intro>{p.label}</p>
+        <h1 id="pilotaz-h" class="h-xl" data-split="lines" data-intro>{p.h1}</h1>
+        <p class="lead">{p.lead}</p>
+        <ul class="pilotaz__obietnice" data-reveal="up" data-intro data-delay="0.3">
+          {p.promises.map((o) => <li>{o}</li>)}
+        </ul>
+        <p class="pilotaz__mail">Wolisz e-mail? <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
+      </div>
+
+      <div class="kartka kartka--form" data-reveal="up" data-intro data-delay="0.15">
+        <form class="form" data-pilotaz novalidate>
+          <p class="form__demo" role="note">{p.demoNote}</p>
+          <div class="pole">
+            <label for="f-szkola">Nazwa szkoły</label>
+            <input id="f-szkola" name="szkola" autocomplete="organization" required />
+          </div>
+          <div class="form__dwa">
+            <div class="pole">
+              <label for="f-miasto">Miasto</label>
+              <input id="f-miasto" name="miasto" autocomplete="address-level2" required />
+            </div>
+            <div class="pole">
+              <label for="f-kursanci">Kursantów w roku</label>
+              <select id="f-kursanci" name="kursanci">
+                {p.sizes.map((s) => <option>{s}</option>)}
+              </select>
+            </div>
+          </div>
+          <div class="pole">
+            <label for="f-osoba">Imię i nazwisko</label>
+            <input id="f-osoba" name="osoba" autocomplete="name" required />
+          </div>
+          <div class="form__dwa">
+            <div class="pole">
+              <label for="f-tel">Telefon</label>
+              <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" required />
+            </div>
+            <div class="pole">
+              <label for="f-mail">E-mail</label>
+              <input id="f-mail" name="email" type="email" autocomplete="email" required />
+            </div>
+          </div>
+          <fieldset class="pole pole--plan">
+            <legend>Plan, który Cię interesuje</legend>
+            <div class="plany">
+              {plans.rows.map((r, i) => (
+                <label class="plan">
+                  <input type="radio" name="plan" value={r.name.toLowerCase()} checked={i === 1} />
+                  <span><strong>{r.name}</strong> {r.price} zł</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <label class="zgoda">
+            <input type="checkbox" name="zgoda" required />
+            <span>{p.consent}</span>
+          </label>
+          <p class="form__blad" data-blad role="alert" hidden>Uzupełnij zaznaczone pola.</p>
+          <Btn type="submit">Wyślij zgłoszenie</Btn>
+        </form>
+
+        <div class="form__gotowe" data-gotowe hidden tabindex="-1">
+          <p class="eyebrow">Wersja demonstracyjna</p>
+          <h2 class="h-l">{p.done.h2}</h2>
+          <dl class="podsumowanie" data-podsumowanie></dl>
+          <p>{p.done.text}</p>
+          <p>{p.done.alt} <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

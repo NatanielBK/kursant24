@@ -1,0 +1,39 @@
+---
+import { nav, cta } from '../data/site';
+import Logo from './Logo.astro';
+import Btn from './Btn.astro';
+const path = Astro.url.pathname;
+const current = (href: string) => !href.includes('#') && path.startsWith(href);
+---
+<header class="frame" data-frame>
+  <a class="frame__logo" href="/" aria-label="kursant24, strona główna"><Logo /></a>
+  <nav class="frame__nav" aria-label="Główna nawigacja">
+    <ul>
+      {nav.map((n) => (
+        <li><a class="draw" href={n.href} aria-current={current(n.href) ? 'page' : undefined}>{n.label}</a></li>
+      ))}
+    </ul>
+    <Btn href={cta.href} size="s" current={current(cta.href)}>{cta.label}</Btn>
+  </nav>
+  <button class="frame__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>
+    <span>Menu</span>
+  </button>
+</header>
+<div class="menu" id="menu" hidden data-menu>
+  <div class="menu__sheet">
+    <div class="menu__top">
+      <a class="frame__logo" href="/" aria-label="kursant24, strona główna"><Logo /></a>
+      <button class="frame__menu" type="button" data-menu-close><span>Zamknij</span></button>
+    </div>
+    <nav aria-label="Menu">
+      <ul class="menu__list">
+        <li><a href="/" aria-current={path === '/' ? 'page' : undefined}><span>Strona główna</span></a></li>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={current(n.href) ? 'page' : undefined}><span>{n.label}</span></a></li>
+        ))}
+        <li><a href={cta.href} aria-current={current(cta.href) ? 'page' : undefined}><span>{cta.label}</span></a></li>
+      </ul>
+    </nav>
+    <p class="menu__note hand" aria-hidden="true">30 dni za darmo, bez karty</p>
+  </div>
+</div>

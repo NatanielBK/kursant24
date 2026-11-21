@@ -1,0 +1,37 @@
+---
+// Prawdziwy zrzut aplikacji w ramce: laptop, telefon albo kartka (PDF).
+import { Image } from 'astro:assets';
+import { shots } from '../data/zrzuty';
+
+interface Props {
+  name: string;
+  alt: string;
+  frame?: 'laptop' | 'phone' | 'paper';
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { name, alt, frame, sizes, eager = false, class: cls } = Astro.props;
+const src = shots[name];
+if (!src) throw new Error(`Brak zrzutu: ${name}`);
+const kind = frame ?? (name.endsWith('-tel') ? 'phone' : name === 'karta' ? 'paper' : 'laptop');
+const widths = kind === 'phone' ? [300, 390] : kind === 'paper' ? [480, 720, 905] : [640, 960, 1280, 1440];
+const defaultSizes = kind === 'phone' ? '(max-width: 767px) 70vw, 320px' : kind === 'paper' ? '(max-width: 767px) 90vw, 480px' : '(max-width: 767px) 92vw, 760px';
+---
+<figure class:list={['shot', `shot--${kind}`, cls]}>
+  <div class="shot__frame">
+    {kind === 'laptop' && <div class="shot__bar" aria-hidden="true"><i></i><i></i><i></i></div>}
+    <div class="shot__screen">
+      <Image
+        src={src}
+        alt={alt}
+        widths={widths.filter((w) => w <= src.width)}
+        sizes={sizes ?? defaultSizes}
+        format="webp"
+        quality={82}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    </div>
+  </div>
+</figure>

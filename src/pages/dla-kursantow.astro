@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import Shot from '../components/Shot.astro';
+import Kod from '../components/Kod.astro';
+import Faq from '../components/Faq.astro';
+import { dlaKursantow as p, finaleKursanci } from '../data/site';
+---
+<Base title={p.title} description={p.description} finale={finaleKursanci}>
+  <section class="podhero podhero--kursant" aria-labelledby="podhero-h">
+    <div class="wrap podhero__grid">
+      <div class="podhero__copy">
+        <p class="eyebrow" data-reveal="fade" data-intro>{p.label}</p>
+        <h1 id="podhero-h" class="h-xl" data-split="lines" data-intro>{p.h1}</h1>
+        <p class="lead">{p.lead}</p>
+        <div class="podhero__kod" data-reveal="up" data-intro data-delay="0.3">
+          <p class="podhero__kod-l">Masz kod od szkoły? Wygląda tak:</p>
+          <Kod code="K7QX-4MRT" small />
+          <a class="podhero__dalej link" href="#schody">Co zrobić z kodem: trzy kroki</a>
+        </div>
+      </div>
+      <div data-kartka-idle class="podhero__tel">
+        <Shot name="start-tel" alt="Ekran startowy kursanta w kursant24: najbliższe zajęcia i postęp godzin." eager />
+        <p class="podhero__dopisek hand" aria-hidden="true">12 z 30 h, zostało 18</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="schody" id="schody" aria-labelledby="schody-h">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="eyebrow" data-reveal="fade">{p.stepsLabel}</p>
+        <h2 id="schody-h" class="h-xl" data-split="lines">Trzy kroki, zero zakładania konta</h2>
+      </header>
+      <ol class="schody__lista">
+        {p.steps.map((s, i) => (
+          <li class="schodek" style={`--i:${i}`}>
+            <div class="schodek__tekst" data-reveal="up">
+              <span class="schodek__n" aria-hidden="true">{s.n}</span>
+              <h3 class="h-m">{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+            {s.shot ? (
+              <div class="schodek__shot" data-reveal="up" data-delay="0.08">
+                <Shot name={s.shot} alt={s.alt} />
+              </div>
+            ) : (
+              <p class="schodek__kartka hand" data-reveal="up" data-delay="0.08">{s.note}</p>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="widzisz" aria-labelledby="widzisz-h">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="eyebrow" data-reveal="fade">{p.seeLabel}</p>
+        <h2 id="widzisz-h" class="h-xl" data-split="lines">Wszystko o Twoim kursie, w jednym miejscu</h2>
+      </header>
+      {p.see.map((s, i) => (
+        <article class:list={['widzisz__row', { 'widzisz__row--odwr': i % 2 === 1 }]}>
+          <div class="widzisz__tekst" data-reveal="up">
+            <p class="widzisz__nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="h-l">{s.title}</h3>
+            <p class="lead">{s.text}</p>
+          </div>
+          <div class="widzisz__shot" data-reveal="up" data-delay="0.08">
+            {s.note && <p class="dopisek-r hand" aria-hidden="true"><span class="dopisek-r__t">{s.note}</span></p>}
+            <Shot name={s.shot} alt={s.alt} />
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <Faq id="pytania" label="Pytania kursantów" h2="Gdy coś nie działa" items={p.faq} />
+</Base>

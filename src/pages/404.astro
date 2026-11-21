@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import { notFound as p } from '../data/site';
+---
+<Base title={p.title} description={p.text} finale={false}>
+  <section class="nie-ma" aria-labelledby="nie-ma-h">
+    <div class="wrap nie-ma__grid">
+      <div data-kartka-idle class="kartka kartka--404" aria-hidden="true">
+        <p class="nie-ma__wpis hand"><s>{p.note}</s></p>
+        <p class="nie-ma__kod">404</p>
+      </div>
+      <div class="nie-ma__copy">
+        <p class="eyebrow" data-reveal="fade" data-intro>Błąd 404</p>
+        <h1 id="nie-ma-h" class="h-xl" data-split="lines" data-intro>{p.h1}</h1>
+        <p class="lead">{p.text}</p>
+        <div class="podhero__cta" data-reveal="up" data-intro data-delay="0.3">
+          <Btn href="/">Strona główna</Btn>
+          <a class="draw" href="/dla-szkol/">Dla szkół jazdy</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

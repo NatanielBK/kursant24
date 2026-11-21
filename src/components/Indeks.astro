@@ -1,0 +1,41 @@
+---
+// Liniowany indeks wyróżników. Wskaźnik: podgląd zrzutu podąża za kursorem (indexPreview).
+// Dotyk: miniatura w wierszu.
+import { Image, getImage } from 'astro:assets';
+import { shots } from '../data/zrzuty';
+type Row = { title: string; note: string; shot: string; href: string };
+interface Props { id: string; label: string; h2: string; rows: Row[] }
+const { id, label, h2, rows } = Astro.props;
+const previews = await Promise.all(
+  rows.map(async (r) => {
+    const src = shots[r.shot];
+    const tall = src.height > src.width;
+    const img = await getImage({ src, width: tall ? 390 : 720, format: 'webp', quality: 80 });
+    return { url: img.src, tall };
+  }),
+);
+---
+<section class="indeks-sec" id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <header class="sec__head sec__head--row">
+      <p class="eyebrow" data-reveal="fade">{label}</p>
+      <h2 id={`${id}-h`} class="h-xl" data-split="lines">{h2}</h2>
+    </header>
+    <ul class="indeks" data-index>
+      {rows.map((r, i) => (
+        <li>
+          <a href={r.href} data-preview={previews[i].url} data-tall={previews[i].tall ? '' : undefined}>
+            <span class="indeks__nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="indeks__tytul"><span>{r.title}</span></span>
+            <span class="indeks__nota">{r.note}</span>
+            <span class="indeks__thumb" aria-hidden="true">
+              <Image src={shots[r.shot]} alt="" width={160} format="webp" quality={70} loading="lazy" />
+            </span>
+            <svg class="indeks__strzalka" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5.5 19.5 12 13 18.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="preview" aria-hidden="true"><img alt="" width="720" height="450" decoding="async" /></div>
+</section>

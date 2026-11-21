@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import Rozdzialy from '../components/Rozdzialy.astro';
+import Cennik from '../components/Cennik.astro';
+import Faq from '../components/Faq.astro';
+import { dlaSzkol as p } from '../data/site';
+const plan = p.day.map((d) => `${d.t} ${d.title.toLowerCase()}`);
+---
+<Base title={p.title} description={p.description}>
+  <section class="podhero" aria-labelledby="podhero-h">
+    <div class="wrap podhero__grid">
+      <div class="podhero__copy">
+        <p class="eyebrow" data-reveal="fade" data-intro>{p.label}</p>
+        <h1 id="podhero-h" class="h-xl" data-split="lines" data-intro>{p.h1}</h1>
+        <p class="lead">{p.lead}</p>
+        <div class="podhero__cta" data-reveal="up" data-intro data-delay="0.3">
+          <Btn href="/pilotaz/">Umów prezentację</Btn>
+          <a class="draw" href="#cennik">Cennik</a>
+        </div>
+      </div>
+      <div data-kartka-idle class="kartka kartka--plan" data-reveal="up" data-intro data-delay="0.15" aria-hidden="true">
+        <p class="kartka__tytul hand">plan dnia</p>
+        <ol>
+          {plan.map((l, i) => <li class="hand" style={`--i:${i}`}>{l}</li>)}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <Rozdzialy id="dzien" label={p.dayLabel} h2="Od pierwszej kawy do telefonu, który nie dzwoni" items={p.day} variant="dzien" />
+
+  <Cennik id="cennik" compare h2="Cennik i porównanie planów" />
+
+  <section class="przepiszemy" aria-labelledby="przepiszemy-h">
+    <div class="wrap przepiszemy__grid">
+      <h2 id="przepiszemy-h" class="h-xl" data-split="lines">{p.migration.h2}</h2>
+      <div>
+        <p class="lead" data-reveal="up">{p.migration.text}</p>
+        <p class="przepiszemy__notka hand" aria-hidden="true">Excel, zeszyt, kartki z biurka</p>
+      </div>
+    </div>
+  </section>
+
+  <Faq id="pytania" label="Pytania właścicieli" h2="Co jeszcze warto wiedzieć" items={p.faq} />
+</Base>

@@ -1,0 +1,37 @@
+---
+import { footer, nav, cta, site, finaleSzkoly, type Finale } from '../data/site';
+import Logo from './Logo.astro';
+import Btn from './Btn.astro';
+interface Props { finale?: Finale | false }
+const { finale = finaleSzkoly } = Astro.props;
+---
+{finale && (
+  <section class="finale" aria-labelledby="finale-h">
+    <div class="finale__inner wrap">
+      <p class="eyebrow eyebrow--deep" data-reveal="fade">{finale.kicker}</p>
+      <h2 id="finale-h" class="finale__h" data-split="lines">{finale.h}</h2>
+      <p class="finale__text" data-reveal="up">{finale.text}</p>
+      <div class="finale__cta" data-reveal="up" data-delay="0.1"><Btn href={finale.cta.href} variant="light">{finale.cta.label}</Btn></div>
+    </div>
+  </section>
+)}
+<footer class:list={['foot', { 'foot--deep': !!finale }]}>
+  <div class="wrap foot__grid">
+    <div class="foot__brand">
+      <a class="frame__logo" href="/" aria-label="kursant24, strona główna"><Logo class="logo--light" /></a>
+      <p>{footer.line}</p>
+    </div>
+    <nav class="foot__nav" aria-label="Stopka">
+      <ul>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href={cta.href}>Pilotaż</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      </ul>
+    </nav>
+    <div class="foot__meta">
+      <p>{footer.status}</p>
+      <p>Mapa szkół: <a href="https://www.openstreetmap.org/copyright" rel="noopener">{footer.osm}</a></p>
+      <p>{footer.copy}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,75 @@
+---
+// Cennik jako księga: tabela z liniami, nie trzy karty. Ceny robocze (PLAN.md, docs).
+import { plans } from '../data/site';
+import Btn from './Btn.astro';
+interface Props { id?: string; compare?: boolean; h2?: string }
+const { id = 'cennik', compare = false, h2 = plans.h2 } = Astro.props;
+const names = plans.rows.map((r) => r.name);
+---
+<section class="cennik" id={id} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <header class="cennik__head">
+      <div>
+        <p class="eyebrow" data-reveal="fade">{plans.label}</p>
+        <h2 id={`${id}-h`} class="h-xl" data-split="lines">{h2}</h2>
+      </div>
+      <p class="cennik__free hand" data-reveal="fade"><span>{plans.free}</span></p>
+    </header>
+    <ol class="ksiega">
+      {plans.rows.map((r, i) => (
+        <li class:list={['ksiega__row', { 'ksiega__row--polecany': i === 1 }]} data-reveal="up">
+          <h3 class="ksiega__nazwa">{r.name}</h3>
+          {i === 1 && <p class="ksiega__dopisek hand" aria-hidden="true">{plans.pick}</p>}
+          <p class="ksiega__kto">{r.who}</p>
+          <p class="ksiega__cena"><strong>{r.price} zł</strong> <span>miesięcznie</span></p>
+          <ul class="ksiega__lista">
+            {r.items.map((it) => <li>{it}</li>)}
+          </ul>
+          {i === 1 ? (
+            <div class="ksiega__cta">
+              <Btn href={`/pilotaz/?plan=${r.name.toLowerCase()}`} size="s"><span class="sr-only">Plan {r.name}: </span>Zacznij od 30 dni za darmo</Btn>
+            </div>
+          ) : (
+            <a class="ksiega__cta draw" href={`/pilotaz/?plan=${r.name.toLowerCase()}`}>
+              <span class="sr-only">Plan {r.name}: </span>Zacznij od 30 dni za darmo
+            </a>
+          )}
+        </li>
+      ))}
+    </ol>
+    <div class="cennik__stopka">
+      <p class="cennik__nota">{plans.note}</p>
+      <div class="cennik__wkrotce">
+        <p class="cennik__wkrotce-l">{plans.soonLabel}</p>
+        <ul>{plans.soon.map((s) => <li>{s} <span class="tag">w planach</span></li>)}</ul>
+      </div>
+    </div>
+    {compare && (
+      <div class="porownanie" data-reveal="up">
+        <table>
+          <caption>Porównanie planów</caption>
+          <thead>
+            <tr><th scope="col">Funkcja</th>{names.map((n) => <th scope="col">{n}</th>)}</tr>
+          </thead>
+          <tbody>
+            {plans.compare.map((c) => (
+              <tr>
+                <th scope="row">{c.row}</th>
+                {c.v.map((v) => (
+                  <td>
+                    {v === true ? <span class="tak"><span class="sr-only">tak</span></span>
+                      : v === false ? <span class="nie"><span class="sr-only">nie</span></span>
+                      : <span class:list={{ tag: v.startsWith('w') && v.endsWith('planach') }}>{v}</span>}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+    <div class="cennik__cta">
+      <Btn href="/pilotaz/">Umów prezentację</Btn>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,97 @@
+/* DESIGN TOKENS: kursant24, „brudnopis → na czysto”. Nazwy to kontrakt silnika (engine.css). */
+
+/* Inter (Google, OFL), jedyny krój marki. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-400_900-normal-ext.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-400_900-normal.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Olowek = Caveat (Google, OFL): tylko odręczne wpisy w zeszycie. */
+@font-face {
+  font-family: 'Olowek';
+  src: url('/fonts/olowek-500_700-normal-ext.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Olowek';
+  src: url('/fonts/olowek-500_700-normal.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Kolor: role, nie odcienie (paleta marki, marka/BRAND.md). */
+  --c-bg: #ffffff;          /* papier */
+  --c-bg-2: #f7f9fe;        /* tło jasne */
+  --c-fg: #0b1530;          /* tusz */
+  --c-muted: #55648a;       /* szary */
+  --c-line: #dce5f5;        /* kratka, linie */
+  --c-line-strong: #b9c8e6; /* linie tabel na białym */
+  --c-accent: #0b4fd8;      /* niebieski */
+  --c-accent-2: #0a2a6b;    /* granat */
+  --c-accent-soft: #e8f0fe; /* jasny, zakreślenie */
+  --c-deep: #061a45;        /* noc */
+  --c-on-deep: #7fa8ff;     /* niebieski na ciemnym */
+  --c-pencil: #3e4452;      /* grafit */
+  --c-margin: #e5484d;      /* czerwony margines, „teraz”, egzamin */
+  --c-margin-ink: #c4262d; /* czerwony dla drobnego tekstu (AA) */
+  --c-wyklad: #6e56cf;
+  --c-curtain: var(--c-bg);
+
+  /* Rodziny */
+  --f-display: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-hand: 'Olowek', 'Segoe Print', 'Bradley Hand', cursive;
+
+  /* Skala płynna (375 → 1440) */
+  --t-mega: clamp(3.4rem, 0.9rem + 10.6vw, 12.5rem);
+  --t-xl: clamp(2.4rem, 1.2rem + 5vw, 6rem);
+  --t-l: clamp(1.75rem, 1.2rem + 2.3vw, 3.25rem);
+  --t-m: clamp(1.25rem, 1.08rem + 0.7vw, 1.75rem);
+  --t-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --t-s: 0.875rem;
+  --t-xs: 0.75rem;
+  --t-hand: clamp(1.25rem, 1rem + 0.9vw, 1.75rem);
+
+  /* Przestrzeń: moduł kratki. Rytm pionowy = wielokrotności --k. */
+  --k: 28px;
+  --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
+  --gutter: clamp(1.125rem, 0.6rem + 2vw, 3rem);
+  --cols: 12;
+  --max: 1440px;
+
+  /* Kształt: 14 px dla interfejsu i zrzutów, 0 dla papieru. */
+  --radius: 14px;
+
+  /* Warstwy */
+  --z-gl: 0;
+  --z-content: 1;
+  --z-header: 50;
+  --z-cursor: 80;
+  --z-curtain: 90;
+  --z-loader: 100;
+
+  /* Ruch (CSS): ta sama rodzina co ease.out / ease.soft */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-soft: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@media (max-width: 767px) {
+  :root { --k: 24px; }
+}
