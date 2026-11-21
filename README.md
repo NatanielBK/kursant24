@@ -40,7 +40,7 @@ Do zrzutów potrzebny jest Chromium dla Playwrighta: `npx playwright install chr
 
 Ostatni przebieg (3.11.2026): 14/14 testów, audyt 0 FAIL / 0 WARN, 0 poważnych naruszeń axe, brak przepełnień i małych celów dotyku, CLS na telefonie ≤ 0,003. Wybrane zrzuty (komputer 1440 px, telefon 390 px) są w `zrzuty/`. Samoocena w stylu jury: `.jury/127.0.0.1-4400/scorecard.md`.
 
-Znane fałszywe alarmy narzędzi: `keyboard.stuck` na `/pilotaz/` bierze się stąd, że skrypt nazywa pola po ich tekście, więc kolejne pola formularza wyglądają jak jedno „INPUT” (etykiety są powiązane przez for/id, axe nie zgłasza błędów). `skipLinkFirst: false` szuka angielskiego „skip” w treści linku; pierwszym przystankiem fokusu jest „Przejdź do treści” (zrzut k-01).
+Znane fałszywe alarmy narzędzi: `keyboard.stuck` na `/pilotaz/` bierze się stąd, że skrypt nazywa pola po ich tekście, więc kolejne pola formularza wyglądają jak jedno „INPUT” (etykiety są powiązane przez for/id, axe nie zgłasza błędów). `skipLinkFirst: false` szuka angielskiego „skip” w treści linku; pierwszym przystankiem fokusu jest „Przejdź do treści” (zrzut k-01). Zrzut `page.screenshot({ fullPage: true })` (Playwright) nie odtwarza poprawnie sekcji sterowanych przez ScrollTrigger/`data-reveal` (np. „Rozdzialy”, `.schody`, `.widzisz`) i pokazuje tam puste miejsca, których nie ma przy realnym przewijaniu. Żeby sprawdzić taką sekcję, przewiń stronę krokowo (`window.scrollTo` albo `page.mouse.wheel`) i rób zrzuty po drodze, nie jeden zrzut całej strony.
 
 ## Treść
 
