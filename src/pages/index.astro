@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
-import { home, plans, faqHome } from '../data/content';
+import { home, faqHome } from '../data/content';
 import { shots } from '../data/zrzuty';
 
 // Zrzut w hero jest LCP strony głównej: preload.
@@ -70,29 +70,14 @@ const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', qu
   </section>
 
   <section class="section" id="cennik" aria-labelledby="cennik-h">
-    <div class="wrap">
-      <div class="plans-top">
-        <header class="section__head" style="margin-bottom:0">
-          <p class="eyebrow">{plans.eyebrow}</p>
-          <h2 id="cennik-h" class="h-l">{plans.h2}</h2>
-        </header>
-        <p class="plans-free">{plans.free}</p>
+    <div class="wrap" style="max-width:34rem; text-align:center; margin-inline:auto">
+      <p class="eyebrow" style="justify-content:center">{home.cennikCta.eyebrow}</p>
+      <h2 id="cennik-h" class="h-l">{home.cennikCta.h2}</h2>
+      <p class="lead" style="margin:0.6rem auto 1.6rem">{home.cennikCta.text}</p>
+      <div class="btn-row" style="justify-content:center">
+        <Btn href={home.cennikCta.primary.href}>{home.cennikCta.primary.label}</Btn>
+        <a class="link" href={home.cennikCta.secondary.href}>{home.cennikCta.secondary.label}</a>
       </div>
-      <div class="plans-grid">
-        {plans.rows.map((r, i) => (
-          <article class:list={['plan-card', { 'plan-card--pick': i === 1 }]}>
-            {i === 1 && <span class="plan-card__pick-tag">{plans.pick}</span>}
-            <h3 class="h-m">{r.name}</h3>
-            <p class="plan-card__who">{r.who}</p>
-            <p class="plan-card__price"><strong>{r.price} zł</strong><span>/mies.</span></p>
-            <ul>
-              {r.items.map((it) => <li>{it}</li>)}
-            </ul>
-            <Btn href={`/pilotaz/?plan=${r.name.toLowerCase()}`} variant={i === 1 ? 'primary' : 'ghost'}>Umów prezentację</Btn>
-          </article>
-        ))}
-      </div>
-      <p class="plans-note">{plans.note} {plans.soon}</p>
     </div>
   </section>
 

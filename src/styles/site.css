@@ -289,12 +289,15 @@ html.menu-open { overflow: hidden; }
 .form-demo-note { font-size: var(--t-xs); color: var(--c-muted); margin-bottom: 1rem; }
 .field { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
 .field label { font-size: var(--t-xs); font-weight: 600; color: var(--c-muted); }
-.field input, .field select { padding: 0.7em 0.9em; border: 1.5px solid var(--c-line-strong); border-radius: var(--radius-s); background: #fff; }
+.field input, .field select, .field textarea { padding: 0.7em 0.9em; border: 1.5px solid var(--c-line-strong); border-radius: var(--radius-s); background: #fff; font-family: inherit; }
+.field textarea { resize: vertical; min-height: 4.5rem; }
 .field input[aria-invalid='true'], .field select[aria-invalid='true'] { border-color: #c4262d; }
 .field-row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
 .field-row > .field { min-width: 0; }
 .plan-radios { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
 .plan-radio { display: flex; align-items: center; gap: 0.6rem; font-size: var(--t-s); padding: 0.6em 0.8em; border: 1.5px solid var(--c-line-strong); border-radius: var(--radius-s); }
+.cat-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cat-item { display: inline-flex; align-items: center; gap: 0.4rem; font-size: var(--t-s); padding: 0.5em 0.9em; border: 1.5px solid var(--c-line-strong); border-radius: 999px; }
 .consent { display: flex; align-items: flex-start; gap: 0.6rem; font-size: var(--t-xs); color: var(--c-muted); margin-bottom: 1.25rem; }
 .form-error { color: #c4262d; font-size: var(--t-s); font-weight: 600; margin-bottom: 1rem; }
 .done dl { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; margin: 1.25rem 0; font-size: var(--t-s); }

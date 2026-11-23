@@ -13,7 +13,7 @@ export const site = {
 export const nav = [
   { href: '/dla-szkol/', label: 'Dla szkół' },
   { href: '/dla-kursantow/', label: 'Dla kursantów' },
-  { href: '/dla-szkol/#cennik', label: 'Cennik' },
+  { href: '/cennik/', label: 'Cennik' },
 ];
 export const cta = { href: '/pilotaz/', label: 'Umów prezentację' };
 
@@ -58,6 +58,13 @@ export const home = {
         points: ['Postęp godzin: ile zostało z 30', 'Przypomnienie 24 h i 2 h przed jazdą', 'Zero instalowania, działa w przeglądarce'],
       },
     ],
+  },
+  cennikCta: {
+    eyebrow: 'Cennik',
+    h2: 'Cena zależy od wielkości szkoły.',
+    text: 'Jeden instruktor i sieć z oddziałami nie potrzebują tego samego. Zobacz, co wpływa na cenę, albo napisz od razu po wycenę.',
+    primary: { href: '/cennik/', label: 'Zobacz, jak liczymy cenę' },
+    secondary: { href: '/cennik/#wycena', label: 'Poproś o wycenę' },
   },
   cta: {
     eyebrow: 'Prezentacja',
@@ -166,6 +173,61 @@ export const pilotaz = {
     h2: 'Zgłoszenie gotowe.',
     text: 'Tak wyglądałoby Twoje zgłoszenie. To wersja demonstracyjna strony, więc nic nie zostało wysłane i nikt się z Tobą nie skontaktuje.',
   },
+};
+
+export const cennik = {
+  title: 'Cennik',
+  description:
+    'Cena kursant24 zależy od wielkości szkoły jazdy: liczby instruktorów, kursantów w miesiącu i oddziałów. Poproś o wycenę dopasowaną do Twojej szkoły.',
+  eyebrow: 'Cennik',
+  h1: 'Cena dopasowana do Twojej szkoły.',
+  lead: 'Jeden instruktor i sieć z oddziałami nie potrzebują tego samego serwera. Wycenę przygotowujemy pod konkretną szkołę, nie z cennika na sztywno.',
+  factors: {
+    eyebrow: 'Od czego zależy cena',
+    h2: 'Liczymy to, co faktycznie zużywasz',
+    items: [
+      { title: 'Liczba instruktorów', text: 'Im więcej osób pracuje w grafiku, tym więcej kont i większy serwer pod obciążenie.' },
+      { title: 'Kursanci w miesiącu', text: 'Od kilku do kilkuset osób jeżdżących i logujących się w danym miesiącu.' },
+      { title: 'Oddziały i lokalizacje', text: 'Jedna siedziba albo sieć filii z własnymi grafikami i instruktorami.' },
+      { title: 'Kategorie prawa jazdy', text: 'B, A, C+E i inne — różne wymagania wobec grafiku i dokumentacji.' },
+      { title: 'Potrzebne funkcje', text: 'Podstawowy grafik i czat, albo też wpłaty, listy oczekujących i statystyki zdawalności.' },
+      { title: 'Wdrożenie i migracja danych', text: 'Przeniesienie listy kursantów z zeszytu, Excela albo innego systemu.' },
+    ],
+  },
+  profiles: {
+    eyebrow: 'Przykładowe profile',
+    h2: 'Jak to wygląda w praktyce',
+    note: 'Każdy profil to punkt wyjścia do rozmowy, nie gotowa cena. Napisz, co robi Twoja szkoła, a wycenę przygotujemy indywidualnie.',
+    items: [
+      {
+        title: 'Instruktor solo',
+        text: 'Jeden instruktor, własny grafik, kursanci jednej kategorii.',
+        points: ['1 instruktor, 1 lokalizacja', 'Do kilkunastu kursantów w miesiącu', 'Grafik, czat, e-karta zajęć'],
+      },
+      {
+        title: 'Szkoła lokalna',
+        text: 'Kilku instruktorów, jedna siedziba, kilka kategorii prawa jazdy.',
+        points: ['Kilku instruktorów, 1 lokalizacja', 'Kilkadziesiąt kursantów w miesiącu', 'Plus wpłaty i lista oczekujących'],
+      },
+      {
+        title: 'Sieć z oddziałami',
+        text: 'Wiele filii, osobne grafiki instruktorów, wspólny widok właściciela.',
+        points: ['Wiele oddziałów i instruktorów', 'Setki kursantów w miesiącu', 'Plus statystyki zdawalności, migracja danych'],
+      },
+    ],
+  },
+  form: {
+    h2: 'Poproś o wycenę',
+    text: 'Wypełnij formularz. Otworzy się e-mail z gotową treścią — wysyłasz go ze swojej skrzynki, bez logowania się nigdzie.',
+    categories: ['AM', 'A1', 'A2', 'A', 'B', 'B+E', 'C', 'C+E', 'D', 'T'],
+    submit: 'Wyślij zapytanie e-mailem',
+  },
+  faq: [
+    { q: 'Czy jest okres próbny?', a: 'Tak, 30 dni za darmo, bez karty płatniczej, niezależnie od wielkości szkoły.' },
+    { q: 'Czy muszę podpisywać długą umowę?', a: 'Nie. To abonament miesięczny, który można zakończyć w każdej chwili.' },
+    { q: 'Co, jeśli szkoła wyraźnie zmieni wielkość?', a: 'Cenę ustalamy na starcie i wracamy do rozmowy, gdy liczba instruktorów albo kursantów zauważalnie się zmieni.' },
+    { q: 'Pomagacie przenieść dane z Excela albo zeszytu?', a: 'Tak. Listę kursantów przenosimy za Ciebie, Ty sprawdzasz i rozdajesz kody.' },
+  ],
 };
 
 export const notFound = {

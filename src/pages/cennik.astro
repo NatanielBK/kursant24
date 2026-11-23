@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
+import Faq from '../components/Faq.astro';
+import { cennik as p } from '../data/content';
+---
+<Base title={p.title} description={p.description}>
+  <section class="podhero" aria-labelledby="cennik-h">
+    <div class="wrap" style="max-width:40rem">
+      <p class="eyebrow">{p.eyebrow}</p>
+      <h1 id="cennik-h" class="h-xl">{p.h1}</h1>
+      <p class="lead">{p.lead}</p>
+      <div class="btn-row">
+        <a class="link" href="#wycena">Poproś o wycenę</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="czynniki-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">{p.factors.eyebrow}</p>
+        <h2 id="czynniki-h" class="h-l">{p.factors.h2}</h2>
+      </header>
+      <div class="features-grid">
+        {p.factors.items.map((f) => (
+          <article class="feature-card">
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="profile-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">{p.profiles.eyebrow}</p>
+        <h2 id="profile-h" class="h-l">{p.profiles.h2}</h2>
+      </header>
+      <div class="roles-grid">
+        {p.profiles.items.map((r) => (
+          <article class="role-card">
+            <h3>{r.title}</h3>
+            <p class="plan-card__who">Wycena indywidualna</p>
+            <p>{r.text}</p>
+            <ul>
+              {r.points.map((pt) => <li>{pt}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+      <p class="plans-note">{p.profiles.note}</p>
+    </div>
+  </section>
+
+  <section class="section section--bg" id="wycena" aria-labelledby="wycena-h">
+    <div class="wrap" style="max-width:40rem">
+      <header class="section__head">
+        <h2 id="wycena-h" class="h-l">{p.form.h2}</h2>
+        <p class="lead">{p.form.text}</p>
+      </header>
+      <form class="form-card" data-cennik novalidate>
+        <div class="field">
+          <label for="f-szkola">Nazwa szkoły</label>
+          <input id="f-szkola" name="szkola" autocomplete="organization" required />
+        </div>
+        <div class="field">
+          <label for="f-miasto">Miasto</label>
+          <input id="f-miasto" name="miasto" autocomplete="address-level2" required />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-instruktorzy">Liczba instruktorów</label>
+            <input id="f-instruktorzy" name="instruktorzy" type="number" min="1" inputmode="numeric" required />
+          </div>
+          <div class="field">
+            <label for="f-kursanci">Kursantów w miesiącu</label>
+            <input id="f-kursanci" name="kursanci" type="number" min="1" inputmode="numeric" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-oddzialy">Liczba oddziałów/lokalizacji</label>
+          <input id="f-oddzialy" name="oddzialy" type="number" min="1" inputmode="numeric" />
+        </div>
+        <fieldset class="field">
+          <legend>Kategorie prawa jazdy</legend>
+          <div class="cat-grid">
+            {p.form.categories.map((c) => (
+              <label class="cat-item">
+                <input type="checkbox" name="kategorie" value={c} />
+                <span>{c}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-tel">Telefon</label>
+            <input id="f-tel" name="telefon" type="tel" autocomplete="tel" inputmode="tel" />
+          </div>
+          <div class="field">
+            <label for="f-mail">E-mail</label>
+            <input id="f-mail" name="email" type="email" autocomplete="email" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-uwagi">Uwagi</label>
+          <textarea id="f-uwagi" name="uwagi" rows="3"></textarea>
+        </div>
+        <Btn type="submit">{p.form.submit}</Btn>
+      </form>
+    </div>
+  </section>
+
+  <Faq id="pytania" eyebrow="Pytania" h2="Co jeszcze warto wiedzieć" items={p.faq} />
+
+  <script>
+    import '../scripts/cennik-form';
+  </script>
+</Base>
