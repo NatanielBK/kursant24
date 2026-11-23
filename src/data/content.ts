@@ -76,15 +76,17 @@ export const home = {
 };
 
 export const plans = {
-  eyebrow: 'Cennik',
-  h2: 'Cennik na czas pilotażu',
-  note: 'Ceny robocze. Mogą się zmienić przed uruchomieniem, ostateczny cennik ogłosimy przed pierwszym płatnym miesiącem.',
+  eyebrow: 'Profile',
+  h2: 'Trzy profile, wycena indywidualna',
+  note: 'Każdy profil to punkt wyjścia do rozmowy, nie gotowa cena. Cenę ustalamy pod wielkość Twojej szkoły.',
   free: '30 dni za darmo, bez karty płatniczej.',
   pick: 'polecamy na start',
+  priceLabel: 'Cena ustalana indywidualnie',
+  quoteCta: 'Poproś o wycenę',
   rows: [
-    { name: 'Solo', who: '1 instruktor', price: 89, items: ['Grafik jazd i wykładów', 'Kody aktywacji dla kursantów', 'Czat z propozycją terminu', 'E-karta zajęć'] },
-    { name: 'Szkoła', who: 'do 5 instruktorów', price: 179, items: ['Wszystko z planu Solo', 'Grafik, który sam się układa', 'Lista oczekujących na terminy', 'Wpłaty i raty za kurs'] },
-    { name: 'Pro', who: 'bez limitu instruktorów', price: 299, items: ['Wszystko z planu Szkoła', 'Wiele oddziałów'] },
+    { name: 'Solo', who: '1 instruktor', items: ['Grafik jazd i wykładów', 'Kody aktywacji dla kursantów', 'Czat z propozycją terminu', 'E-karta zajęć'] },
+    { name: 'Szkoła', who: 'do 5 instruktorów', items: ['Wszystko z planu Solo', 'Grafik, który sam się układa', 'Lista oczekujących na terminy', 'Wpłaty i raty za kurs'] },
+    { name: 'Pro', who: 'bez limitu instruktorów', items: ['Wszystko z planu Szkoła', 'Wiele oddziałów'] },
   ],
   compare: [
     { row: 'Instruktorzy', v: ['1', 'do 5', 'bez limitu'] },
@@ -109,7 +111,7 @@ export const faqHome = [
 
 export const dlaSzkol = {
   title: 'Dla szkół jazdy',
-  description: 'kursant24 dla właścicieli szkół jazdy: funkcje, cennik roboczy (89 zł, 179 zł, 299 zł miesięcznie) i odpowiedzi na pytania właścicieli.',
+  description: 'kursant24 dla właścicieli szkół jazdy: funkcje, wycena dopasowana do szkoły i odpowiedzi na pytania właścicieli.',
   eyebrow: 'Dla szkół jazdy',
   h1: 'Dzień właściciela szkoły, przepisany na czysto.',
   lead: 'Nie zmieniasz sposobu pracy. Przenosisz go z zeszytu do aplikacji, którą widzą też instruktorzy i kursanci.',
@@ -238,6 +240,6 @@ export const notFound = {
 
 export const footer = {
   line: 'Aplikacja dla szkół jazdy. Koniec z zeszytem.',
-  status: 'Projekt w fazie testów, przed uruchomieniem. Ceny są robocze.',
+  status: 'Projekt w fazie testów, przed uruchomieniem.',
   copy: '© 2026 kursant24',
 };

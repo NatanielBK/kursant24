@@ -55,11 +55,11 @@ import { dlaSzkol as p, plans } from '../data/content';
             {i === 1 && <span class="plan-card__pick-tag">{plans.pick}</span>}
             <h3 class="h-m">{r.name}</h3>
             <p class="plan-card__who">{r.who}</p>
-            <p class="plan-card__price"><strong>{r.price} zł</strong><span>/mies.</span></p>
+            <p class="plan-card__price">{plans.priceLabel}</p>
             <ul>
               {r.items.map((it) => <li>{it}</li>)}
             </ul>
-            <Btn href={`/pilotaz/?plan=${r.name.toLowerCase()}`} variant={i === 1 ? 'primary' : 'ghost'}>Umów prezentację</Btn>
+            <Btn href="/cennik/" variant={i === 1 ? 'primary' : 'ghost'}>{plans.quoteCta}</Btn>
           </article>
         ))}
       </div>

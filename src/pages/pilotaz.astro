@@ -55,7 +55,7 @@ import { pilotaz as p, site, plans } from '../data/content';
               {plans.rows.map((r, i) => (
                 <label class="plan-radio">
                   <input type="radio" name="plan" value={r.name.toLowerCase()} checked={i === 1} />
-                  <span><strong>{r.name}</strong> {r.price} zł</span>
+                  <span><strong>{r.name}</strong> {r.who}</span>
                 </label>
               ))}
             </div>
