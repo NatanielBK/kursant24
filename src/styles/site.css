@@ -130,16 +130,19 @@ html.menu-open { overflow: hidden; }
   .hero__shot { justify-self: end; width: min(260px, 100%); }
 }
 
-/* Telefon w hero/podhero: przycięty (widoczna góra ekranu), żeby nie ciągnąć sekcji w dół */
+/* Telefon w hero/podhero: przycięty (widoczna góra ekranu), wygaszony u dołu maską —
+   ma wyglądać jak telefon "wychodzący" poza kadr, nie jak płaski widget */
 .hero__shot .shot--phone .shot__frame,
 .podhero__shot .shot--phone .shot__frame {
   max-height: clamp(420px, 55vw, 480px);
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 85%, transparent 100%);
 }
 @media (min-width: 900px) {
   .hero__shot .shot--phone .shot__frame,
   .podhero__shot .shot--phone .shot__frame {
-    max-height: 300px;
+    max-height: 460px;
   }
 }
 
@@ -155,13 +158,16 @@ html.menu-open { overflow: hidden; }
 .shot__screen img { width: 100%; }
 
 /* FEATURES GRID */
-.features-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+.features-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
 .feature-card {
   background: var(--c-bg-2); border: 1px solid var(--c-line); border-radius: var(--radius);
   padding: 1.25rem;
 }
 .feature-card h3 { font-size: var(--t-s); margin-bottom: 0.4rem; }
 .feature-card p { font-size: var(--t-xs); color: var(--c-muted); line-height: 1.45; }
+@media (min-width: 600px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media (min-width: 700px) {
   .features-grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
   .feature-card { padding: 1.5rem; }
