@@ -1,46 +1,98 @@
 ---
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
-import Rozdzialy from '../components/Rozdzialy.astro';
-import Cennik from '../components/Cennik.astro';
+import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
-import { dlaSzkol as p } from '../data/site';
-const plan = p.day.map((d) => `${d.t} ${d.title.toLowerCase()}`);
+import { dlaSzkol as p, plans } from '../data/content';
 ---
 <Base title={p.title} description={p.description}>
   <section class="podhero" aria-labelledby="podhero-h">
     <div class="wrap podhero__grid">
       <div class="podhero__copy">
-        <p class="eyebrow" data-reveal="fade" data-intro>{p.label}</p>
-        <h1 id="podhero-h" class="h-xl" data-split="lines" data-intro>{p.h1}</h1>
+        <p class="eyebrow">{p.eyebrow}</p>
+        <h1 id="podhero-h" class="h-xl">{p.h1}</h1>
         <p class="lead">{p.lead}</p>
-        <div class="podhero__cta" data-reveal="up" data-intro data-delay="0.3">
+        <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
-          <a class="draw" href="#cennik">Cennik</a>
+          <a class="link" href="#cennik">Cennik</a>
         </div>
       </div>
-      <div data-kartka-idle class="kartka kartka--plan" data-reveal="up" data-intro data-delay="0.15" aria-hidden="true">
-        <p class="kartka__tytul hand">plan dnia</p>
-        <ol>
-          {plan.map((l, i) => <li class="hand" style={`--i:${i}`}>{l}</li>)}
-        </ol>
+      <div class="podhero__shot">
+        <Shot name={p.shot.name} alt={p.shot.alt} eager />
       </div>
     </div>
   </section>
 
-  <Rozdzialy id="dzien" label={p.dayLabel} h2="Od pierwszej kawy do telefonu, który nie dzwoni" items={p.day} variant="dzien" />
-
-  <Cennik id="cennik" compare h2="Cennik i porównanie planów" />
-
-  <section class="przepiszemy" aria-labelledby="przepiszemy-h">
-    <div class="wrap przepiszemy__grid">
-      <h2 id="przepiszemy-h" class="h-xl" data-split="lines">{p.migration.h2}</h2>
-      <div>
-        <p class="lead" data-reveal="up">{p.migration.text}</p>
-        <p class="przepiszemy__notka hand" aria-hidden="true">Excel, zeszyt, kartki z biurka</p>
+  <section class="section section--bg" aria-labelledby="dzien-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">Twój dzień z kursant24</p>
+        <h2 id="dzien-h" class="h-l">Od pierwszej kawy do telefonu, który nie dzwoni</h2>
+      </header>
+      <div class="day-list">
+        {p.day.map((d) => (
+          <div class="day-item">
+            <span class="day-item__t">{d.t}</span>
+            <div><h3>{d.title}</h3><p>{d.text}</p></div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <Faq id="pytania" label="Pytania właścicieli" h2="Co jeszcze warto wiedzieć" items={p.faq} />
+  <section class="section" id="cennik" aria-labelledby="cennik-h">
+    <div class="wrap">
+      <div class="plans-top">
+        <header class="section__head" style="margin-bottom:0">
+          <p class="eyebrow">{plans.eyebrow}</p>
+          <h2 id="cennik-h" class="h-l">{plans.h2}</h2>
+        </header>
+        <p class="plans-free">{plans.free}</p>
+      </div>
+      <div class="plans-grid">
+        {plans.rows.map((r, i) => (
+          <article class:list={['plan-card', { 'plan-card--pick': i === 1 }]}>
+            {i === 1 && <span class="plan-card__pick-tag">{plans.pick}</span>}
+            <h3 class="h-m">{r.name}</h3>
+            <p class="plan-card__who">{r.who}</p>
+            <p class="plan-card__price"><strong>{r.price} zł</strong><span>/mies.</span></p>
+            <ul>
+              {r.items.map((it) => <li>{it}</li>)}
+            </ul>
+            <Btn href={`/pilotaz/?plan=${r.name.toLowerCase()}`} variant={i === 1 ? 'primary' : 'ghost'}>Umów prezentację</Btn>
+          </article>
+        ))}
+      </div>
+      <div class="compare">
+        <table>
+          <caption class="sr-only">Porównanie planów Solo, Szkoła i Pro</caption>
+          <thead>
+            <tr><th scope="col">Co jest w planie</th>{plans.rows.map((r) => <th scope="col">{r.name}</th>)}</tr>
+          </thead>
+          <tbody>
+            {plans.compare.map((row) => (
+              <tr>
+                <th scope="row">{row.row}</th>
+                {row.v.map((v) => (
+                  <td>
+                    {typeof v === 'boolean' ? (v ? <span class="yes">✓</span> : <span class="no">—</span>) : v}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="plans-note">{plans.note} {plans.soon}</p>
+    </div>
+  </section>
+
+  <section class="section section--bg" aria-labelledby="migr-h">
+    <div class="wrap">
+      <h2 id="migr-h" class="h-l">{p.migration.h2}</h2>
+      <p class="lead" style="margin-top:0.6rem">{p.migration.text}</p>
+    </div>
+  </section>
+
+  <Faq id="pytania" eyebrow="Pytania właścicieli" h2="Co jeszcze warto wiedzieć" items={p.faq} />
 </Base>

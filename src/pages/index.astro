@@ -1,88 +1,112 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
-import Zeszyt from '../components/Zeszyt.astro';
-import Rozdzialy from '../components/Rozdzialy.astro';
-import Indeks from '../components/Indeks.astro';
-import Kod from '../components/Kod.astro';
 import Shot from '../components/Shot.astro';
-import Cennik from '../components/Cennik.astro';
-import MapaOSK from '../components/MapaOSK.astro';
 import Faq from '../components/Faq.astro';
-import { home, faqHome, wpisy } from '../data/site';
-const { hero, manifest, chapters, index, kod, map } = home;
+import { home, plans, faqHome } from '../data/content';
+import { shots } from '../data/zrzuty';
+
+// Zrzut w hero jest LCP strony głównej: preload.
+const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', quality: 82, width: 390 });
 ---
 <Base title={home.title}>
-  <section class="hero" data-hero aria-labelledby="hero-h">
-    <div class="hero__stage">
+  <Fragment slot="head">
+    <link rel="preload" as="image" href={heroShot.src} fetchpriority="high" />
+  </Fragment>
+
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow" data-reveal="fade" data-intro>{hero.label}</p>
-        <h1 id="hero-h" class="hero__h" data-split="lines" data-intro>{hero.h1}</h1>
-        <p class="hero__lead">{hero.lead}</p>
-        <div class="hero__cta" data-reveal="up" data-intro data-delay="0.35">
-          <Btn href={hero.primary.href}>{hero.primary.label}</Btn>
-          <a class="hero__more draw" href={hero.secondary.href}>{hero.secondary.label}</a>
+        <p class="eyebrow">{home.hero.eyebrow}</p>
+        <h1 id="hero-h" class="h-xl">{home.hero.h1}</h1>
+        <p class="lead">{home.hero.lead}</p>
+        <div class="btn-row">
+          <Btn href="/pilotaz/">Umów prezentację</Btn>
+          <a class="link" href="#funkcje">Zobacz funkcje</a>
         </div>
       </div>
-      <div class="hero__kartka">
-        <Zeszyt />
-        <div class="hero__status" aria-hidden="true">
-          <span class="hero__stan hand" data-stan>{hero.stateFrom}</span>
-          <span class="pasek"><i data-pasek></i></span>
-          <span class="hero__stan-do">{hero.stateTo}</span>
-          <span class="hero__licznik"><span data-licznik>0</span>/{wpisy.length} przepisanych</span>
-        </div>
+      <div class="hero__shot">
+        <Shot name={home.hero.shot} alt={home.hero.alt} eager />
       </div>
-      <p class="hero__hint" aria-hidden="true"><span class="hero__hint-line"></span>{hero.scrollHint}</p>
     </div>
   </section>
 
-  <section class="manifest" aria-labelledby="manifest-h">
-    <div class="wrap manifest__grid">
-      <h2 id="manifest-h" class="eyebrow manifest__label">{manifest.label}</h2>
-      <ul class="manifest__lista">
-        {manifest.lines.map((l) => (
-          <li class="manifest__linia" data-skreslenie>
-            <span class="manifest__tekst">{l}</span>
-          </li>
-        ))}
-      </ul>
-      <p class="manifest__odpowiedz" data-split="lines">{manifest.answer}</p>
-    </div>
-  </section>
-
-  <Rozdzialy id="rozdzialy" label={chapters.label} h2={chapters.h2} items={chapters.items as any} />
-
-  <Indeks id="wyrozniki" label={index.label} h2={index.h2} rows={index.rows} />
-
-  <section class="kod-sec" aria-labelledby="kod-h">
+  <section class="section" id="funkcje" aria-labelledby="funkcje-h">
     <div class="wrap">
-      <p class="eyebrow" data-reveal="fade">{kod.label}</p>
-      <Kod code={kod.code} />
-      <div class="kod-sec__grid">
-        <div>
-          <h2 id="kod-h" class="h-l" data-split="lines">{kod.h2}</h2>
-          <ol class="kroki">
-            {kod.steps.map((s) => (
-              <li class="krok" data-reveal="up">
-                <span class="krok__n" aria-hidden="true">{s.n}</span>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
-              </li>
-            ))}
-          </ol>
-          <p class="kod-sec__link"><a class="link" href="/dla-kursantow/">Jak to wygląda u kursanta</a></p>
-        </div>
-        <div class="kod-sec__shot" data-reveal="up">
-          <Shot name={kod.shot} alt={kod.alt} />
-        </div>
+      <header class="section__head">
+        <p class="eyebrow">{home.features.eyebrow}</p>
+        <h2 id="funkcje-h" class="h-l">{home.features.h2}</h2>
+      </header>
+      <div class="features-grid">
+        {home.features.items.map((f) => (
+          <article class="feature-card">
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <Cennik id="cennik" />
+  <section class="section section--bg" aria-labelledby="role-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">{home.roles.eyebrow}</p>
+        <h2 id="role-h" class="h-l">{home.roles.h2}</h2>
+      </header>
+      <div class="roles-grid">
+        {home.roles.items.map((r) => (
+          <article class="role-card">
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+            <ul>
+              {r.points.map((pt) => <li>{pt}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <MapaOSK label={map.label} h2={map.h2} text={map.text} attribution={map.attribution} />
+  <section class="section" id="cennik" aria-labelledby="cennik-h">
+    <div class="wrap">
+      <div class="plans-top">
+        <header class="section__head" style="margin-bottom:0">
+          <p class="eyebrow">{plans.eyebrow}</p>
+          <h2 id="cennik-h" class="h-l">{plans.h2}</h2>
+        </header>
+        <p class="plans-free">{plans.free}</p>
+      </div>
+      <div class="plans-grid">
+        {plans.rows.map((r, i) => (
+          <article class:list={['plan-card', { 'plan-card--pick': i === 1 }]}>
+            {i === 1 && <span class="plan-card__pick-tag">{plans.pick}</span>}
+            <h3 class="h-m">{r.name}</h3>
+            <p class="plan-card__who">{r.who}</p>
+            <p class="plan-card__price"><strong>{r.price} zł</strong><span>/mies.</span></p>
+            <ul>
+              {r.items.map((it) => <li>{it}</li>)}
+            </ul>
+            <Btn href={`/pilotaz/?plan=${r.name.toLowerCase()}`} variant={i === 1 ? 'primary' : 'ghost'}>Umów prezentację</Btn>
+          </article>
+        ))}
+      </div>
+      <p class="plans-note">{plans.note} {plans.soon}</p>
+    </div>
+  </section>
 
-  <Faq id="pytania" label="Pytania" h2="Zanim zapytasz" items={faqHome} />
+  <Faq id="pytania" eyebrow="Pytania" h2="Najczęstsze pytania" items={faqHome} />
+
+  <section class="cta-band" aria-labelledby="ctaband-h">
+    <div class="wrap cta-band__inner">
+      <p class="eyebrow eyebrow--light">{home.cta.eyebrow}</p>
+      <h2 id="ctaband-h" class="h-l">{home.cta.h2}</h2>
+      <p>{home.cta.text}</p>
+      <div class="btn-row">
+        <Btn href={home.cta.primary.href} variant="light">{home.cta.primary.label}</Btn>
+        <a class="link" style="color:#fff" href={home.cta.secondary.href}>{home.cta.secondary.label}</a>
+      </div>
+    </div>
+  </section>
 </Base>

@@ -1,19 +1,16 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-import { site, finaleSzkoly, type Finale } from '../data/site';
+import { site } from '../data/content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/tokens.css';
-import '../styles/engine.css';
 import '../styles/site.css';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
-  finale?: Finale | false;
 }
-const { title, description = site.description, image = '/og.png', finale = finaleSzkoly } = Astro.props;
+const { title, description = site.description, image = '/og.png' } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.role}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 const ogImage = new URL(image, Astro.site ?? site.url).href;
@@ -39,7 +36,7 @@ const jsonLd = [
 ];
 ---
 <!doctype html>
-<html lang="pl" transition:animate="none">
+<html lang="pl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,29 +66,16 @@ const jsonLd = [
     <link rel="preload" href="/fonts/inter-400_900-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter-400_900-normal-ext.woff2" as="font" type="font/woff2" crossorigin />
     <slot name="head" />
-    <script is:inline>
-      document.documentElement.classList.add('js');
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
-    </script>
-    <ClientRouter fallback="swap" />
   </head>
   <body>
     <a class="skip-link" href="#main">Przejdź do treści</a>
-    <div id="curtain" transition:persist="curtain" aria-hidden="true">
-      <div class="curtain__panel">
-        <span class="curtain__margin"></span>
-        <span class="curtain__title" data-curtain-title></span>
-      </div>
-    </div>
     <Header />
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <Footer finale={finale} />
+    <Footer />
     <script>
-      import { start } from '../engine/astro';
-      import { setupMotion } from '../motion/setup';
-      start(setupMotion);
+      import '../scripts/menu';
     </script>
   </body>
 </html>

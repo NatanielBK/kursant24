@@ -1,39 +1,41 @@
 ---
-import { nav, cta } from '../data/site';
+import { nav, cta } from '../data/content';
 import Logo from './Logo.astro';
 import Btn from './Btn.astro';
 const path = Astro.url.pathname;
 const current = (href: string) => !href.includes('#') && path.startsWith(href);
 ---
-<header class="frame" data-frame>
-  <a class="frame__logo" href="/" aria-label="kursant24, strona główna"><Logo /></a>
-  <nav class="frame__nav" aria-label="Główna nawigacja">
-    <ul>
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a href="/" aria-label="kursant24, strona główna"><Logo /></a>
+    <nav class="site-header__nav" aria-label="Główna nawigacja">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={current(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+      <Btn href={cta.href} size="s" current={current(cta.href)}>{cta.label}</Btn>
+    </nav>
+    <button class="site-header__burger" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Menu
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="menu" hidden data-menu>
+  <div class="mobile-menu__top">
+    <a href="/" aria-label="kursant24, strona główna"><Logo /></a>
+    <button class="mobile-menu__close" type="button" data-menu-close>Zamknij</button>
+  </div>
+  <nav aria-label="Menu">
+    <ul class="mobile-menu__list">
+      <li><a href="/" aria-current={path === '/' ? 'page' : undefined}>Strona główna</a></li>
       {nav.map((n) => (
-        <li><a class="draw" href={n.href} aria-current={current(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        <li><a href={n.href} aria-current={current(n.href) ? 'page' : undefined}>{n.label}</a></li>
       ))}
     </ul>
-    <Btn href={cta.href} size="s" current={current(cta.href)}>{cta.label}</Btn>
   </nav>
-  <button class="frame__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-open>
-    <span>Menu</span>
-  </button>
-</header>
-<div class="menu" id="menu" hidden data-menu>
-  <div class="menu__sheet">
-    <div class="menu__top">
-      <a class="frame__logo" href="/" aria-label="kursant24, strona główna"><Logo /></a>
-      <button class="frame__menu" type="button" data-menu-close><span>Zamknij</span></button>
-    </div>
-    <nav aria-label="Menu">
-      <ul class="menu__list">
-        <li><a href="/" aria-current={path === '/' ? 'page' : undefined}><span>Strona główna</span></a></li>
-        {nav.map((n) => (
-          <li><a href={n.href} aria-current={current(n.href) ? 'page' : undefined}><span>{n.label}</span></a></li>
-        ))}
-        <li><a href={cta.href} aria-current={current(cta.href) ? 'page' : undefined}><span>{cta.label}</span></a></li>
-      </ul>
-    </nav>
-    <p class="menu__note hand" aria-hidden="true">30 dni za darmo, bez karty</p>
+  <div class="mobile-menu__cta">
+    <Btn href={cta.href} class="btn--block">{cta.label}</Btn>
   </div>
 </div>

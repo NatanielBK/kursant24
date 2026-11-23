@@ -1,5 +1,4 @@
 ---
-// Przycisk główny: wypełnienie wpływa od strony wskaźnika (buttonFill w motion/setup.ts).
 interface Props {
   href?: string;
   variant?: 'primary' | 'ghost' | 'light';
@@ -9,18 +8,10 @@ interface Props {
   current?: boolean;
 }
 const { href, variant = 'primary', size = 'm', type = 'button', class: cls, current } = Astro.props;
-const classes = ['btn', `btn--${variant}`, `btn--${size}`, cls];
+const classes = ['btn', `btn--${variant}`, size === 's' && 'btn--s', cls];
 ---
 {href ? (
-  <a class:list={classes} href={href} aria-current={current ? 'page' : undefined} data-fill>
-    <span class="btn__fill" aria-hidden="true"></span>
-    <span class="btn__label"><slot /></span>
-    <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </a>
+  <a class:list={classes} href={href} aria-current={current ? 'page' : undefined}><slot /></a>
 ) : (
-  <button class:list={classes} type={type} data-fill>
-    <span class="btn__fill" aria-hidden="true"></span>
-    <span class="btn__label"><slot /></span>
-    <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
+  <button class:list={classes} type={type}><slot /></button>
 )}

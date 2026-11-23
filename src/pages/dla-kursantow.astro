@@ -1,87 +1,80 @@
 ---
 import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
-import Kod from '../components/Kod.astro';
 import Faq from '../components/Faq.astro';
-import { dlaKursantow as p, finaleKursanci } from '../data/site';
+import { dlaKursantow as p } from '../data/content';
 import { shots } from '../data/zrzuty';
 
-// Obraz w hero jest LCP tej strony: preload, żeby przeglądarka zaczęła go pobierać
-// od razu, zamiast czekać na skaner preloadu po reszcie CSS/JS.
-const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quality: 82, width: 390 });
+const heroShot = await getImage({ src: shots[p.shot.name], format: 'webp', quality: 82, width: 390 });
 ---
-<Base title={p.title} description={p.description} finale={finaleKursanci}>
+<Base title={p.title} description={p.description}>
   <Fragment slot="head">
     <link rel="preload" as="image" href={heroShot.src} fetchpriority="high" />
   </Fragment>
-  <section class="podhero podhero--kursant" aria-labelledby="podhero-h">
+
+  <section class="podhero" aria-labelledby="podhero-h">
     <div class="wrap podhero__grid">
       <div class="podhero__copy">
-        <p class="eyebrow" data-reveal="fade" data-intro>{p.label}</p>
-        <h1 id="podhero-h" class="h-xl" data-split="lines" data-intro>{p.h1}</h1>
+        <p class="eyebrow">{p.eyebrow}</p>
+        <h1 id="podhero-h" class="h-xl">{p.h1}</h1>
         <p class="lead">{p.lead}</p>
-        <div class="podhero__kod" data-reveal="up" data-intro data-delay="0.3">
-          <p class="podhero__kod-l">Masz kod od szkoły? Wygląda tak:</p>
-          <Kod code="K7QX-4MRT" small />
-          <a class="podhero__dalej link" href="#schody">Co zrobić z kodem: trzy kroki</a>
+        <div class="btn-row">
+          <Btn href="/pilotaz/">Umów prezentację</Btn>
+          <a class="link" href="#kroki">Jak zacząć</a>
         </div>
       </div>
-      <div data-kartka-idle class="podhero__tel">
-        <Shot name="start-tel" alt="Ekran startowy kursanta w kursant24: najbliższe zajęcia i postęp godzin." eager />
-        <p class="podhero__dopisek hand" aria-hidden="true">12 z 30 h, zostało 18</p>
+      <div class="podhero__shot">
+        <Shot name={p.shot.name} alt={p.shot.alt} eager />
       </div>
     </div>
   </section>
 
-  <section class="schody" id="schody" aria-labelledby="schody-h">
+  <section class="section section--bg" id="kroki" aria-labelledby="kroki-h">
     <div class="wrap">
-      <header class="sec__head">
-        <p class="eyebrow" data-reveal="fade">{p.stepsLabel}</p>
-        <h2 id="schody-h" class="h-xl" data-split="lines">Trzy kroki, zero zakładania konta</h2>
+      <header class="section__head">
+        <p class="eyebrow">Jak zacząć</p>
+        <h2 id="kroki-h" class="h-l">Trzy kroki, zero zakładania konta</h2>
       </header>
-      <ol class="schody__lista">
-        {p.steps.map((s, i) => (
-          <li class="schodek" style={`--i:${i}`}>
-            <div class="schodek__tekst" data-reveal="up">
-              <span class="schodek__n" aria-hidden="true">{s.n}</span>
-              <h3 class="h-m">{s.title}</h3>
-              <p>{s.text}</p>
-            </div>
-            {s.shot ? (
-              <div class="schodek__shot" data-reveal="up" data-delay="0.08">
-                <Shot name={s.shot} alt={s.alt} />
-              </div>
-            ) : (
-              <p class="schodek__kartka hand" data-reveal="up" data-delay="0.08">{s.note}</p>
-            )}
+      <ol class="steps-list">
+        {p.steps.map((s) => (
+          <li class="step-item">
+            <span class="step-item__n" aria-hidden="true">{s.n}</span>
+            <div><h3>{s.title}</h3><p>{s.text}</p></div>
           </li>
         ))}
       </ol>
     </div>
   </section>
 
-  <section class="widzisz" aria-labelledby="widzisz-h">
+  <section class="section" aria-labelledby="widzisz-h">
     <div class="wrap">
-      <header class="sec__head">
-        <p class="eyebrow" data-reveal="fade">{p.seeLabel}</p>
-        <h2 id="widzisz-h" class="h-xl" data-split="lines">Wszystko o Twoim kursie, w jednym miejscu</h2>
+      <header class="section__head">
+        <p class="eyebrow">Co widzisz w aplikacji</p>
+        <h2 id="widzisz-h" class="h-l">Wszystko o Twoim kursie, w jednym miejscu</h2>
       </header>
-      {p.see.map((s, i) => (
-        <article class:list={['widzisz__row', { 'widzisz__row--odwr': i % 2 === 1 }]}>
-          <div class="widzisz__tekst" data-reveal="up">
-            <p class="widzisz__nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
-            <h3 class="h-l">{s.title}</h3>
-            <p class="lead">{s.text}</p>
-          </div>
-          <div class="widzisz__shot" data-reveal="up" data-delay="0.08">
-            {s.note && <p class="dopisek-r hand" aria-hidden="true"><span class="dopisek-r__t">{s.note}</span></p>}
-            <Shot name={s.shot} alt={s.alt} />
-          </div>
-        </article>
-      ))}
+      <div class="see-grid">
+        {p.see.map((s) => (
+          <article class="see-card">
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <Faq id="pytania" label="Pytania kursantów" h2="Gdy coś nie działa" items={p.faq} />
+  <Faq id="pytania" eyebrow="Pytania kursantów" h2="Gdy coś nie działa" items={p.faq} />
+
+  <section class="cta-band" aria-labelledby="ctaband-h">
+    <div class="wrap cta-band__inner">
+      <p class="eyebrow eyebrow--light">Twojej szkoły tu nie ma?</p>
+      <h2 id="ctaband-h" class="h-l">Pokaż ją swojej szkole.</h2>
+      <p>kursant24 włącza szkoła jazdy. Wyślij właścicielowi link do strony dla szkół.</p>
+      <div class="btn-row">
+        <Btn href="/dla-szkol/" variant="light">Strona dla szkół jazdy</Btn>
+      </div>
+    </div>
+  </section>
 </Base>
