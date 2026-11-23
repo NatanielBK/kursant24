@@ -1,59 +1,145 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
-import Zeszyt from '../components/Zeszyt.astro';
-import Rozdzialy from '../components/Rozdzialy.astro';
-import Indeks from '../components/Indeks.astro';
-import Kod from '../components/Kod.astro';
 import Shot from '../components/Shot.astro';
+import Kod from '../components/Kod.astro';
 import Cennik from '../components/Cennik.astro';
 import MapaOSK from '../components/MapaOSK.astro';
 import Faq from '../components/Faq.astro';
-import { home, faqHome, wpisy } from '../data/site';
-const { hero, manifest, chapters, index, kod, map } = home;
+import { shots } from '../data/zrzuty';
+import { home, faqHome } from '../data/site';
+import '../styles/glowna.css';
+
+const { hero, roles, chapters, index, kod, map } = home;
+
+const bento = await Promise.all(
+  index.rows.map(async (r) => {
+    const src = shots[r.shot];
+    const tall = src.height > src.width;
+    const img = await getImage({ src, width: tall ? 420 : 720, format: 'webp', quality: 76 });
+    return { url: img.src, tall };
+  }),
+);
 ---
 <Base title={home.title}>
-  <section class="hero" data-hero aria-labelledby="hero-h">
-    <div class="hero__stage">
-      <div class="hero__copy">
+  <section class="hero2" data-hero2 aria-labelledby="hero-h">
+    <div class="wrap hero2__wrap">
+      <div class="hero2__copy">
         <p class="eyebrow" data-reveal="fade" data-intro>{hero.label}</p>
-        <h1 id="hero-h" class="hero__h" data-split="lines" data-intro>{hero.h1}</h1>
-        <p class="hero__lead">{hero.lead}</p>
-        <div class="hero__cta" data-reveal="up" data-intro data-delay="0.35">
+        <h1 id="hero-h" class="hero2__h" data-split="lines" data-intro>{hero.h1}</h1>
+        <p class="lead hero2__lead" data-reveal="up" data-intro data-delay="0.2">{hero.lead}</p>
+        <div class="hero2__cta" data-reveal="up" data-intro data-delay="0.32">
           <Btn href={hero.primary.href}>{hero.primary.label}</Btn>
-          <a class="hero__more draw" href={hero.secondary.href}>{hero.secondary.label}</a>
+          <a class="hero2__more draw" href={hero.secondary.href}>{hero.secondary.label}</a>
+        </div>
+        <ul class="hero2__trust" data-reveal="up" data-intro data-delay="0.42">
+          {hero.trust.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+      <div class="hero2__stage" data-reveal="scale" data-intro data-delay="0.15">
+        <div class="hero2__glow" aria-hidden="true"></div>
+        <div class="hero2__laptop">
+          <Shot name="pulpit-pc" frame="laptop" alt="Pulpit właściciela szkoły z grafikiem tygodnia, zdawalnością i listą kursantów" eager />
+        </div>
+        <div class="hero2__phone">
+          <Shot name="start-tel" frame="phone" alt="Ekran startowy kursanta z najbliższą jazdą i postępem godzin" eager />
         </div>
       </div>
-      <div class="hero__kartka">
-        <Zeszyt />
-        <div class="hero__status" aria-hidden="true">
-          <span class="hero__stan hand" data-stan>{hero.stateFrom}</span>
-          <span class="pasek"><i data-pasek></i></span>
-          <span class="hero__stan-do">{hero.stateTo}</span>
-          <span class="hero__licznik"><span data-licznik>0</span>/{wpisy.length} przepisanych</span>
-        </div>
-      </div>
-      <p class="hero__hint" aria-hidden="true"><span class="hero__hint-line"></span>{hero.scrollHint}</p>
     </div>
   </section>
 
-  <section class="manifest" aria-labelledby="manifest-h">
-    <div class="wrap manifest__grid">
-      <h2 id="manifest-h" class="eyebrow manifest__label">{manifest.label}</h2>
-      <ul class="manifest__lista">
-        {manifest.lines.map((l) => (
-          <li class="manifest__linia" data-skreslenie>
-            <span class="manifest__tekst">{l}</span>
+  <section class="funkcje" id="jak-to-dziala" aria-labelledby="funkcje-h">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="eyebrow" data-reveal="fade">{chapters.label}</p>
+        <h2 id="funkcje-h" class="h-xl" data-split="lines">{chapters.h2}</h2>
+      </header>
+      <ol class="funkcje__lista">
+        {chapters.items.map((it, i) => (
+          <li class:list={['funkcja', { 'funkcja--odwr': i % 2 === 1 }]}>
+            <div class="funkcja__tekst" data-reveal="up">
+              <p class="funkcja__kicker">{String(i + 1).padStart(2, '0')} — {it.kicker}</p>
+              <h3 class="h-l">{it.title}</h3>
+              <p>{it.text}</p>
+            </div>
+            <div class="funkcja__media" data-reveal="up" data-delay="0.08">
+              <Shot name={it.shot} alt={it.alt} frame={it.frame as any} />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="role-sec" id="role" aria-labelledby="role-h">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="eyebrow" data-reveal="fade">{roles.label}</p>
+        <h2 id="role-h" class="h-xl" data-split="lines">{roles.h2}</h2>
+      </header>
+      <div class="role" data-role>
+        <div class="role__tabs" role="tablist" aria-label="Role w kursant24">
+          {roles.items.map((r, i) => (
+            <button
+              type="button"
+              class="role__tab"
+              role="tab"
+              id={`tab-${r.id}`}
+              aria-controls={`panel-${r.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              data-role-tab
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+        <div class="role__stage">
+          {roles.items.map((r, i) => (
+            <div
+              class="role__panel"
+              role="tabpanel"
+              id={`panel-${r.id}`}
+              aria-labelledby={`tab-${r.id}`}
+              data-role-panel
+              hidden={i !== 0}
+            >
+              <div class="role__tekst" data-reveal="up">
+                <h3 class="h-l">{r.title}</h3>
+                <p>{r.text}</p>
+              </div>
+              <div class="role__media">
+                <Shot name={r.shot} alt={r.alt} frame={r.frame as any} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="roznice" id="wyrozniki" aria-labelledby="roznice-h">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="eyebrow" data-reveal="fade">{index.label}</p>
+        <h2 id="roznice-h" class="h-xl" data-split="lines">{index.h2}</h2>
+      </header>
+      <ul class="bento">
+        {index.rows.map((r, i) => (
+          <li class="bento__card" data-reveal="up" data-delay={String((i % 3) * 0.08)}>
+            <a href={r.href}>
+              <span class="bento__thumb" aria-hidden="true">
+                <img src={bento[i].url} alt="" width="480" height="300" loading="lazy" decoding="async" />
+              </span>
+              <span class="bento__tytul">{r.title}</span>
+              <span class="bento__nota">{r.note}</span>
+            </a>
           </li>
         ))}
       </ul>
-      <p class="manifest__odpowiedz" data-split="lines">{manifest.answer}</p>
     </div>
   </section>
-
-  <Rozdzialy id="rozdzialy" label={chapters.label} h2={chapters.h2} items={chapters.items as any} />
-
-  <Indeks id="wyrozniki" label={index.label} h2={index.h2} rows={index.rows} />
 
   <section class="kod-sec" aria-labelledby="kod-h">
     <div class="wrap">
@@ -71,7 +157,7 @@ const { hero, manifest, chapters, index, kod, map } = home;
               </li>
             ))}
           </ol>
-          <p class="kod-sec__link"><a class="link" href="/dla-kursantow/">Jak to wygląda u kursanta</a></p>
+          <p class="kod-sec__link"><a class="link" href="/dla-kursantow/">Jak to wygląda u kursanta</a></p>
         </div>
         <div class="kod-sec__shot" data-reveal="up">
           <Shot name={kod.shot} alt={kod.alt} />

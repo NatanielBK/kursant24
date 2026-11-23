@@ -1,0 +1,149 @@
+/* Nowa strona główna (glowna-v2): hero produktowy, role, funkcje, bento różnic.
+   Style tylko dla index.astro — pozostałe strony nie importują tego pliku. */
+
+/* ---------- Hero ---------- */
+.hero2 {
+  padding-block: calc(76px + var(--k) * 2.6) calc(var(--k) * 3);
+  position: relative;
+  overflow: clip;
+}
+.hero2__wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: center;
+}
+.hero2__h {
+  font-size: clamp(2.75rem, 1.3rem + 5vw, 4.75rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  margin-block: 0.5em 0.55em;
+}
+.hero2__lead { margin-bottom: calc(var(--k) * 1.1); }
+.hero2__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-bottom: calc(var(--k) * 1.5); }
+.hero2__more { display: inline-block; padding-block: 0.7em; }
+.hero2__trust {
+  list-style: none; margin: 0; padding-top: calc(var(--k) * 0.75);
+  display: grid; gap: 0.6rem; font-size: 0.9375rem; color: var(--c-muted);
+  border-top: 1px solid var(--c-line-strong); max-width: 36ch;
+}
+.hero2__trust li { position: relative; padding-left: 1.2em; }
+.hero2__trust li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 0.6em; height: 2px; background: var(--c-margin); }
+
+.hero2__stage { position: relative; min-height: clamp(360px, 36vw, 560px); }
+.hero2__glow {
+  position: absolute; inset: -20% -10% -20% 10%; z-index: 0;
+  background: radial-gradient(55% 55% at 48% 42%, color-mix(in srgb, var(--c-accent) 24%, transparent), transparent 72%);
+  filter: blur(46px);
+}
+.hero2__laptop {
+  position: relative; z-index: 1; max-width: 620px; margin-inline: auto;
+  filter: drop-shadow(0 42px 60px rgb(6 26 69 / 0.26));
+}
+.hero2__phone {
+  position: absolute; z-index: 2; width: clamp(132px, 15vw, 196px);
+  right: 1%; bottom: -7%; rotate: -5deg;
+  filter: drop-shadow(0 26px 38px rgb(6 26 69 / 0.3));
+}
+.hero2__laptop .shot, .hero2__phone .shot { margin: 0; }
+
+@media (max-width: 1100px) {
+  .hero2__wrap { grid-template-columns: 1fr; }
+  .hero2__stage { margin-top: calc(var(--k) * 2); min-height: clamp(300px, 70vw, 440px); }
+  .hero2__trust { max-width: none; }
+}
+@media (max-width: 767px) {
+  .hero2 { padding-block: calc(64px + var(--k) * 1.3) calc(var(--k) * 2); }
+  .hero2__h { margin-block: 0.4em 0.5em; }
+  .hero2__cta { gap: 0.9rem 1.25rem; margin-bottom: calc(var(--k) * 1.1); }
+  .hero2__cta .btn { min-height: 48px; }
+  .hero2__stage { margin-top: calc(var(--k) * 1.6); min-height: clamp(260px, 82vw, 360px); }
+  .hero2__laptop { max-width: 94%; }
+  .hero2__phone { width: clamp(104px, 32vw, 150px); right: 2%; bottom: -5%; }
+}
+
+/* ---------- Jak to działa (funkcje) ---------- */
+.funkcje { padding-block: calc(var(--k) * 4.5) calc(var(--k) * 4); background: var(--c-bg-2); }
+.funkcje__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: calc(var(--k) * 3.2); }
+.funkcja {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 4vw, 4.5rem); align-items: center;
+}
+.funkcja--odwr .funkcja__tekst { order: 2; }
+.funkcja--odwr .funkcja__media { order: 1; }
+.funkcja__kicker {
+  font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--c-accent); margin-bottom: 0.75rem;
+}
+.funkcja__tekst .h-l { margin-bottom: 0.9rem; }
+.funkcja__tekst p:last-child { max-width: 42ch; color: var(--c-muted); }
+.funkcja__media { justify-self: center; width: 100%; }
+@media (max-width: 1000px) {
+  .funkcja, .funkcja--odwr { grid-template-columns: 1fr; gap: calc(var(--k) * 1.3); }
+  .funkcja--odwr .funkcja__tekst, .funkcja--odwr .funkcja__media { order: initial; }
+}
+@media (max-width: 767px) {
+  .funkcje { padding-block: calc(var(--k) * 2.8) calc(var(--k) * 2.4); }
+  .funkcje__lista { gap: calc(var(--k) * 2.2); }
+}
+
+/* ---------- Trzy role ---------- */
+.role-sec { padding-block: calc(var(--k) * 4) calc(var(--k) * 4.5); }
+.role__tabs {
+  display: inline-flex; gap: 0.3rem; padding: 0.3rem;
+  background: var(--c-bg-2); border-radius: 999px; margin-bottom: calc(var(--k) * 1.6);
+}
+.role__tab {
+  padding: 0.65em 1.4em; border-radius: 999px; font-weight: 700; font-size: 0.9375rem;
+  color: var(--c-muted); transition: background-color 0.3s, color 0.3s;
+}
+.role__tab[aria-selected='true'] { background: var(--c-accent); color: #fff; }
+@media (hover: hover) { .role__tab:not([aria-selected='true']):hover { color: var(--c-fg); } }
+.role__panel {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 4vw, 4.5rem); align-items: center;
+}
+.role__panel[hidden] { display: none; }
+.role__tekst .h-l { margin-bottom: 0.9rem; }
+.role__tekst p { max-width: 42ch; color: var(--c-muted); }
+.role__media { justify-self: center; width: 100%; }
+@media (max-width: 1000px) {
+  .role__panel { grid-template-columns: 1fr; gap: calc(var(--k) * 1.3); }
+  .role__media { order: -1; max-width: 360px; margin-inline: auto; }
+}
+@media (max-width: 767px) {
+  .role-sec { padding-block: calc(var(--k) * 2.6) calc(var(--k) * 3); }
+  .role__tabs { display: flex; width: 100%; margin-bottom: calc(var(--k) * 1.3); }
+  .role__tab { flex: 1; text-align: center; padding-inline: 0.5em; }
+}
+
+/* ---------- Czego nie zrobi zeszyt (bento) ---------- */
+.roznice { padding-block: calc(var(--k) * 4) calc(var(--k) * 4.5); background: var(--c-bg-2); }
+.bento { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.bento__card a {
+  display: flex; flex-direction: column; gap: 0.85rem; height: 100%;
+  padding: calc(var(--k) * 0.9) calc(var(--k) * 0.9) calc(var(--k) * 1);
+  background: var(--c-bg); border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--c-line-strong);
+  transition: box-shadow 0.3s var(--e-soft), translate 0.3s var(--e-soft);
+}
+@media (hover: hover) {
+  .bento__card a:hover { box-shadow: 0 0 0 1px var(--c-line-strong), 0 22px 44px -30px rgb(6 26 69 / 0.38); translate: 0 -3px; }
+}
+.bento__thumb {
+  position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; overflow: clip; flex: none;
+  border-radius: calc(var(--radius) - 6px); box-shadow: inset 0 0 0 1px var(--c-line); background: var(--c-bg-2);
+}
+.bento__thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.bento__tytul { font-size: 1.125rem; font-weight: 750; letter-spacing: -0.02em; }
+.bento__nota { font-size: 0.9375rem; color: var(--c-muted); margin-top: -0.4rem; }
+@media (max-width: 900px) { .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) {
+  .roznice { padding-block: calc(var(--k) * 2.8) calc(var(--k) * 2.4); }
+  .bento { grid-template-columns: 1fr; gap: calc(var(--k) * 0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento__card a, .role__tab { transition: none; }
+}

@@ -20,6 +20,7 @@ export function setupMotion() {
   chapters();
   manifest();
   dopiski();
+  roleTabs();
   kod();
   pilotaz();
   hashScroll();
@@ -269,6 +270,29 @@ function dopiski() {
     });
     document.querySelectorAll<HTMLElement>('.rozdzialy').forEach((el) => {
       ScrollTrigger.create({ trigger: el, start: 'top 30%', once: true, onEnter: () => el.classList.add('is-widoczne') });
+    });
+  });
+}
+
+// Zakładki ról na stronie głównej: jeden panel widoczny na raz, strzałki lewo/prawo między zakładkami.
+function roleTabs() {
+  onPage(() => {
+    document.querySelectorAll<HTMLElement>('[data-role]').forEach((root) => {
+      const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-role-tab]')];
+      const panels = [...root.querySelectorAll<HTMLElement>('[data-role-panel]')];
+      const show = (idx: number) => {
+        tabs.forEach((t, i) => { t.setAttribute('aria-selected', String(i === idx)); t.tabIndex = i === idx ? 0 : -1; });
+        panels.forEach((p, i) => { p.hidden = i !== idx; });
+      };
+      tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => show(i));
+        tab.addEventListener('keydown', (e) => {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          tabs[next].focus(); show(next);
+        });
+      });
     });
   });
 }
