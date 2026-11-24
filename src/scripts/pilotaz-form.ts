@@ -3,9 +3,6 @@ const form = document.querySelector<HTMLFormElement>('[data-pilotaz]');
 const done = document.querySelector<HTMLElement>('[data-gotowe]');
 
 if (form && done) {
-  const plan = new URLSearchParams(location.search).get('plan');
-  if (plan) form.querySelector<HTMLInputElement>(`input[name="plan"][value="${CSS.escape(plan)}"]`)?.click();
-
   const err = form.querySelector<HTMLElement>('[data-blad]')!;
   const fields = [...form.querySelectorAll<HTMLInputElement>('input[required]')];
   const mark = (f: HTMLInputElement) => f.toggleAttribute('aria-invalid', !f.checkValidity());
@@ -24,7 +21,6 @@ if (form && done) {
       ['Kontakt', `${data.get('osoba')}, ${data.get('telefon')}`],
       ['E-mail', String(data.get('email'))],
       ['Kursantów w roku', String(data.get('kursanci'))],
-      ['Plan', (form.querySelector('input[name="plan"]:checked')?.closest('label')?.textContent ?? '').replace(/\s+/g, ' ').trim()],
     ];
     const dl = done.querySelector('[data-podsumowanie]')!;
     dl.replaceChildren(...rows.flatMap(([k, v]) => {

@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
-import { home, faqHome } from '../data/content';
+import { home, faqHome, cennikCta } from '../data/content';
 import { shots } from '../data/zrzuty';
 
 // Zrzut w hero jest LCP strony głównej: preload.
@@ -71,12 +71,12 @@ const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', qu
 
   <section class="section" id="cennik" aria-labelledby="cennik-h">
     <div class="wrap" style="max-width:34rem; text-align:center; margin-inline:auto">
-      <p class="eyebrow" style="justify-content:center">{home.cennikCta.eyebrow}</p>
-      <h2 id="cennik-h" class="h-l">{home.cennikCta.h2}</h2>
-      <p class="lead" style="margin:0.6rem auto 1.6rem">{home.cennikCta.text}</p>
+      <p class="eyebrow" style="justify-content:center">{cennikCta.eyebrow}</p>
+      <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
+      <p class="lead" style="margin:0.6rem auto 1.6rem">{cennikCta.text}</p>
       <div class="btn-row" style="justify-content:center">
-        <Btn href={home.cennikCta.primary.href}>{home.cennikCta.primary.label}</Btn>
-        <a class="link" href={home.cennikCta.secondary.href}>{home.cennikCta.secondary.label}</a>
+        <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
+        <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
       </div>
     </div>
   </section>

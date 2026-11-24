@@ -1,5 +1,5 @@
 ---
-import { footer, nav, cta, site } from '../data/content';
+import { footer, nav, cta, site, credits } from '../data/content';
 import Logo from './Logo.astro';
 ---
 <footer class="site-footer">
@@ -19,5 +19,17 @@ import Logo from './Logo.astro';
       <p>{footer.status}</p>
       <p>{footer.copy}</p>
     </div>
+  </div>
+  <div class="wrap site-footer__credits">
+    <p>
+      {credits.label}: <strong>{credits.org}</strong>
+      {credits.items.map((c) => (
+        <>
+          {' · '}
+          {c.name}, tel. <a href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>,{' '}
+          <a href={`mailto:${c.email}`}>{c.email}</a>
+        </>
+      ))}
+    </p>
   </div>
 </footer>

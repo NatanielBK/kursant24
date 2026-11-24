@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
-import { pilotaz as p, site, plans } from '../data/content';
+import { pilotaz as p, site, credits } from '../data/content';
 ---
 <Base title={p.title} description={p.description}>
   <section class="section" aria-labelledby="pilotaz-h">
@@ -14,6 +14,18 @@ import { pilotaz as p, site, plans } from '../data/content';
           {p.promises.map((o) => <li>{o}</li>)}
         </ul>
         <p>Wolisz e-mail? <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
+        <div class="pilotaz__contacts">
+          <p class="eyebrow">Kontakt bezpośredni — {credits.org}</p>
+          <ul>
+            {credits.items.map((c) => (
+              <li>
+                <strong>{c.name}</strong>: tel.{' '}
+                <a class="link" href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>,{' '}
+                <a class="link" href={`mailto:${c.email}`}>{c.email}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div class="form-card">
@@ -49,17 +61,6 @@ import { pilotaz as p, site, plans } from '../data/content';
               <input id="f-mail" name="email" type="email" autocomplete="email" required />
             </div>
           </div>
-          <fieldset class="field">
-            <legend>Plan, który Cię interesuje</legend>
-            <div class="plan-radios">
-              {plans.rows.map((r, i) => (
-                <label class="plan-radio">
-                  <input type="radio" name="plan" value={r.name.toLowerCase()} checked={i === 1} />
-                  <span><strong>{r.name}</strong> {r.who}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
           <label class="consent">
             <input type="checkbox" name="zgoda" required />
             <span>{p.consent}</span>

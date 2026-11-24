@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
-import { dlaSzkol as p, plans } from '../data/content';
+import { dlaSzkol as p, cennikCta } from '../data/content';
 ---
 <Base title={p.title} description={p.description}>
   <section class="podhero" aria-labelledby="podhero-h">
@@ -41,49 +41,14 @@ import { dlaSzkol as p, plans } from '../data/content';
   </section>
 
   <section class="section" id="cennik" aria-labelledby="cennik-h">
-    <div class="wrap">
-      <div class="plans-top">
-        <header class="section__head" style="margin-bottom:0">
-          <p class="eyebrow">{plans.eyebrow}</p>
-          <h2 id="cennik-h" class="h-l">{plans.h2}</h2>
-        </header>
-        <p class="plans-free">{plans.free}</p>
+    <div class="wrap" style="max-width:34rem; text-align:center; margin-inline:auto">
+      <p class="eyebrow" style="justify-content:center">{cennikCta.eyebrow}</p>
+      <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
+      <p class="lead" style="margin:0.6rem auto 1.6rem">{cennikCta.text}</p>
+      <div class="btn-row" style="justify-content:center">
+        <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
+        <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
       </div>
-      <div class="plans-grid">
-        {plans.rows.map((r, i) => (
-          <article class:list={['plan-card', { 'plan-card--pick': i === 1 }]}>
-            {i === 1 && <span class="plan-card__pick-tag">{plans.pick}</span>}
-            <h3 class="h-m">{r.name}</h3>
-            <p class="plan-card__who">{r.who}</p>
-            <p class="plan-card__price">{plans.priceLabel}</p>
-            <ul>
-              {r.items.map((it) => <li>{it}</li>)}
-            </ul>
-            <Btn href="/cennik/" variant={i === 1 ? 'primary' : 'ghost'}>{plans.quoteCta}</Btn>
-          </article>
-        ))}
-      </div>
-      <div class="compare">
-        <table>
-          <caption class="sr-only">Porównanie planów Solo, Szkoła i Pro</caption>
-          <thead>
-            <tr><th scope="col">Co jest w planie</th>{plans.rows.map((r) => <th scope="col">{r.name}</th>)}</tr>
-          </thead>
-          <tbody>
-            {plans.compare.map((row) => (
-              <tr>
-                <th scope="row">{row.row}</th>
-                {row.v.map((v) => (
-                  <td>
-                    {typeof v === 'boolean' ? (v ? <span class="yes">✓</span> : <span class="no">—</span>) : v}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p class="plans-note">{plans.note} {plans.soon}</p>
     </div>
   </section>
 

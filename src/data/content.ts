@@ -4,8 +4,8 @@
 export const site = {
   name: 'kursant24',
   role: 'aplikacja dla szkół jazdy',
-  url: 'https://kursant24.pl', // placeholder: domena niewdrożona
-  email: 'kontakt@kursant24.pl', // placeholder
+  url: 'https://kursant24.pl',
+  email: 'kontakt@kursant24.pl',
   description:
     'kursant24 to aplikacja dla szkół jazdy: grafik jazd i wykładów, kursanci z kodem zamiast hasła, czat z propozycją terminu, postęp godzin i e-karta zajęć. 30 dni za darmo.',
 };
@@ -59,13 +59,6 @@ export const home = {
       },
     ],
   },
-  cennikCta: {
-    eyebrow: 'Cennik',
-    h2: 'Cena zależy od wielkości szkoły.',
-    text: 'Jeden instruktor i sieć z oddziałami nie potrzebują tego samego. Zobacz, co wpływa na cenę, albo napisz od razu po wycenę.',
-    primary: { href: '/cennik/', label: 'Zobacz, jak liczymy cenę' },
-    secondary: { href: '/cennik/#wycena', label: 'Poproś o wycenę' },
-  },
   cta: {
     eyebrow: 'Prezentacja',
     h2: 'Zamknij zeszyt.',
@@ -75,30 +68,15 @@ export const home = {
   },
 };
 
-export const plans = {
-  eyebrow: 'Profile',
-  h2: 'Trzy profile, wycena indywidualna',
-  note: 'Każdy profil to punkt wyjścia do rozmowy, nie gotowa cena. Cenę ustalamy pod wielkość Twojej szkoły.',
+// Wspólna sekcja "poproś o wycenę" używana na kilku stronach. Żadnych nazwanych
+// pakietów ani porównań — tylko wycena indywidualna.
+export const cennikCta = {
+  eyebrow: 'Cennik',
+  h2: 'Cena zależy od wielkości szkoły.',
+  text: 'Jeden instruktor i sieć z oddziałami nie potrzebują tego samego. Zobacz, co wpływa na cenę, albo napisz od razu po wycenę.',
   free: '30 dni za darmo, bez karty płatniczej.',
-  pick: 'polecamy na start',
-  priceLabel: 'Cena ustalana indywidualnie',
-  quoteCta: 'Poproś o wycenę',
-  rows: [
-    { name: 'Solo', who: '1 instruktor', items: ['Grafik jazd i wykładów', 'Kody aktywacji dla kursantów', 'Czat z propozycją terminu', 'E-karta zajęć'] },
-    { name: 'Szkoła', who: 'do 5 instruktorów', items: ['Wszystko z planu Solo', 'Grafik, który sam się układa', 'Lista oczekujących na terminy', 'Wpłaty i raty za kurs'] },
-    { name: 'Pro', who: 'bez limitu instruktorów', items: ['Wszystko z planu Szkoła', 'Wiele oddziałów'] },
-  ],
-  compare: [
-    { row: 'Instruktorzy', v: ['1', 'do 5', 'bez limitu'] },
-    { row: 'Grafik, czat, kody dla kursantów', v: [true, true, true] },
-    { row: 'E-karta zajęć', v: [true, true, true] },
-    { row: 'Grafik, który sam się układa', v: [false, true, true] },
-    { row: 'Lista oczekujących', v: [false, true, true] },
-    { row: 'Wpłaty i raty', v: [false, true, true] },
-    { row: 'Statystyki zdawalności', v: [false, true, true] },
-    { row: 'Wiele oddziałów', v: [false, false, true] },
-  ] as { row: string; v: (string | boolean)[] }[],
-  soon: 'W planach: integracja z PKK, powiadomienia SMS, płatności online.',
+  primary: { href: '/cennik/', label: 'Zobacz, jak liczymy cenę' },
+  secondary: { href: '/cennik/#wycena', label: 'Poproś o wycenę' },
 };
 
 export const faqHome = [
@@ -242,4 +220,14 @@ export const footer = {
   line: 'Aplikacja dla szkół jazdy. Koniec z zeszytem.',
   status: 'Projekt w fazie testów, przed uruchomieniem.',
   copy: '© 2026 kursant24',
+};
+
+// Twórcy strony i aplikacji. Telefon/e-mail jako linki tel:/mailto:.
+export const credits = {
+  label: 'Twórcy',
+  org: 'NBK Projects',
+  items: [
+    { name: 'Nataniel Bujak', phone: '695 472 572', email: 'nataniel@kursant24.pl' },
+    { name: 'Bartłomiej Ganszczyk', phone: '519 301 939', email: 'bartlomiej@kursant24.pl' },
+  ],
 };
