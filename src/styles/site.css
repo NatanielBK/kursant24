@@ -81,9 +81,9 @@ ul, ol { padding: 0; list-style: none; }
 .btn--s { padding: 0.65em 1.2em; font-size: var(--t-xs); }
 .btn-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
 
-/* LOGO (zmienne CSS czytane przez Logo.astro) */
-.logo { display: inline-flex; align-items: center; --logo-mark: var(--c-accent); --logo-word: var(--c-accent-2); }
-.logo--light { --logo-mark: #fff; --logo-word: #fff; --logo-l: var(--c-accent); }
+/* LOGO (zmienne CSS czytane przez Logo.astro); ikona ma stały gradient, zmienia się tylko napis */
+.logo { display: inline-flex; align-items: center; }
+.logo--light { --logo-word: #fff; --logo-24: #7FA8FF; }
 .logo svg { height: 28px; width: auto; display: block; }
 
 /* HEADER */

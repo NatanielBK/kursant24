@@ -1,15 +1,16 @@
 ---
-// Logo poziome z marka/logo/svg, kolory przez zmienne CSS (wariant jasny i ciemny z jednego pliku).
-import raw from '../assets/logo/kursant24-poziome.svg?raw';
+// Logo poziome H2i (znak ze smugami ruchu, ikona ma stały gradient; kolory napisu
+// przez zmienne CSS, wariant jasny/ciemny tła z jednego pliku — świateł wersji SVG).
+import raw from '../assets/logo/kursant24-h2i-poziome.svg?raw';
 interface Props { class?: string }
 const { class: cls } = Astro.props;
+// Sufiks na ID gradientów, żeby kilka wystąpień logo na stronie (nagłówek, menu mobilne, stopka) się nie gryzło.
+const uid = Math.random().toString(36).slice(2, 8);
 const svg = raw
-  .replace(/<title>.*?<\/title>/, '')
-  .replace(/ role="img" aria-label="kursant24"/, ' aria-hidden="true" focusable="false"')
+  .replace(/smugij/g, `smugij${uid}`)
+  .replace('<svg ', '<svg aria-hidden="true" focusable="false" ')
   .replace(/ width="[\d.]+" height="[\d.]+"/, '')
-  .replace('fill="#0B4FD8"/><path d="M189', 'fill="var(--logo-mark, #0B4FD8)"/><path d="M189')
-  .replace('fill="#FFFFFF"', 'fill="var(--logo-l, #FFFFFF)"')
   .replace('fill="#0A2A6B"', 'fill="var(--logo-word, #0A2A6B)"')
-  .replace(/fill="#0B4FD8" transform/, 'fill="var(--logo-24, #0B4FD8)" transform');
+  .replace('fill="#0B4FD8"', 'fill="var(--logo-24, #0B4FD8)"');
 ---
 <span class:list={['logo', cls]} set:html={svg} />
