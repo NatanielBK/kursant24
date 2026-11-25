@@ -213,4 +213,7 @@ const heroShot = await getImage({ src: shots[hero.shotLaptop], format: 'webp', q
   .showcase-card--light .showcase-card__body p { color: var(--c-muted); font-size: var(--t-s); }
   .showcase-card :global(.shot) { margin-top: auto; }
   .showcase-card :global(.shot--paper .shot__frame) { max-width: 260px; margin-inline: auto; }
+  /* Podstawa laptopa (::after) ma domyślnie margin: 0 -6%, czyli jest szersza niż ekran —
+     w karcie "Kursanci" to wystawało poza krawędź karty. Tu podstawa nie poszerza się poza ramkę. */
+  .showcase-card :global(.shot--laptop::after) { margin: 0; }
 </style>
