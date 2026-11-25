@@ -79,7 +79,7 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
           ))}
         </ol>
         <div class="split__shot">
-          <Shot name="dostep-tel" alt="Kod aktywacyjny i hasło startowe, które kursant dostaje od szkoły." frame="phone" />
+          <Shot name="kod-tel" alt="Ekran logowania kodem aktywacyjnym ze szkoły, bez zakładania konta." frame="phone" />
         </div>
       </div>
     </div>
@@ -120,12 +120,14 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
     .k-chip--1, .k-chip--2, .k-chip--3 { position: absolute; pointer-events: auto; }
     .k-chip--1 { top: -4%; left: -6%; }
     .k-chip--2 { top: 40%; left: -14%; }
-    .k-chip--3 { top: 16%; right: -10%; }
+    .k-chip--3 { top: -6%; right: -14%; }
   }
 
-  /* Krok obok telefonu: wyrównanie do góry, nie do środka — telefon (dostep-tel) jest
-     znacznie wyższy niż lista kroków i wyśrodkowanie zostawiało pustkę nad/pod krokami. */
+  /* Krok obok telefonu: wyrównanie do góry, nie do środka — telefon (kod-tel) jest
+     znacznie wyższy niż lista kroków i wyśrodkowanie zostawiało pustkę nad/pod krokami.
+     Telefon dodatkowo zmniejszony (vs. domyślne 360px), żeby ograniczyć pustą plamę pod krokami. */
   .split--top { align-items: start; }
+  .split--top .split__shot { width: min(230px, 55%); }
 
   /* Galeria ekranów: szczelna siatka telefonów, bez przycinania ani pustych połówek. */
   .phone-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 0.9rem; }
