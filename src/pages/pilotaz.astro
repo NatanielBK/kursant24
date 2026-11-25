@@ -1,34 +1,38 @@
 ---
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
-import { pilotaz as p, site, credits } from '../data/content';
+import { site, credits } from '../data/content';
+import { pilotaz as p } from '../data/pilotaz';
 ---
 <Base title={p.title} description={p.description}>
-  <section class="section" aria-labelledby="pilotaz-h">
+  <section class="hero" aria-labelledby="pilotaz-h">
     <div class="wrap pilotaz__grid">
-      <div>
-        <p class="eyebrow">{p.eyebrow}</p>
-        <h1 id="pilotaz-h" class="h-xl">{p.h1}</h1>
-        <p class="lead">{p.lead}</p>
-        <ul class="pilotaz__promises">
+      <div class="pilotaz__copy">
+        <p class="eyebrow enter">{p.eyebrow}</p>
+        <h1 id="pilotaz-h" class="h-xl enter enter--delay">{p.h1}</h1>
+        <p class="lead enter enter--delay">{p.lead}</p>
+        <ul class="pilotaz__promises enter enter--delay">
           {p.promises.map((o) => <li>{o}</li>)}
         </ul>
-        <p>Wolisz e-mail? <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
-        <div class="pilotaz__contacts">
-          <p class="eyebrow">Kontakt bezpośredni — {credits.org}</p>
-          <ul>
+        <p class="enter enter--delay">Wolisz e-mail? <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
+
+        <div class="credits-card enter enter--delay">
+          <p class="credits-card__org">Kontakt bezpośredni — {credits.org}</p>
+          <ul class="credits-card__list">
             {credits.items.map((c) => (
               <li>
-                <strong>{c.name}</strong>: tel.{' '}
-                <a class="link" href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>,{' '}
-                <a class="link" href={`mailto:${c.email}`}>{c.email}</a>
+                <span class="credits-card__name">{c.name}</span>
+                <span class="credits-card__links">
+                  <a class="link" href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>
+                  <a class="link" href={`mailto:${c.email}`}>{c.email}</a>
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      <div class="form-card">
+      <div class="form-card enter enter--delay">
         <form data-pilotaz novalidate>
           <p class="form-demo-note" role="note">{p.demoNote}</p>
           <div class="field">
@@ -79,7 +83,53 @@ import { pilotaz as p, site, credits } from '../data/content';
       </div>
     </div>
   </section>
+
+  <section class="section" aria-labelledby="po-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">{p.after.eyebrow}</p>
+        <h2 id="po-h" class="h-l">{p.after.h2}</h2>
+      </header>
+      <ol class="steps-list">
+        {p.after.steps.map((s) => (
+          <li class="step-item">
+            <span class="step-item__n" aria-hidden="true">{s.n}</span>
+            <div><h3>{s.title}</h3><p>{s.text}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   <script>
     import '../scripts/pilotaz-form';
   </script>
 </Base>
+
+<style>
+  .credits-card {
+    margin-top: 1.5rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--c-ink-deep-3) 70%, transparent);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--c-line-deep-strong);
+  }
+  .credits-card__org {
+    font-size: var(--t-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-on-deep);
+    margin-bottom: 0.7rem;
+  }
+  .credits-card__list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .credits-card__list li + li { padding-top: 0.7rem; border-top: 1px solid var(--c-line-deep); }
+  .credits-card__name { display: block; font-weight: 700; font-size: var(--t-s); color: #fff; margin-bottom: 0.15rem; }
+  .credits-card__links { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; font-size: var(--t-xs); }
+  .credits-card__links .link { color: var(--c-on-deep-strong); }
+  @media (min-width: 900px) {
+    .hero { align-items: stretch; }
+    .hero .wrap.pilotaz__grid { align-items: start; padding-block: 2rem; }
+  }
+</style>

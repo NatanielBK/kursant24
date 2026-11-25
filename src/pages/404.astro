@@ -4,15 +4,56 @@ import Btn from '../components/Btn.astro';
 import { notFound as p } from '../data/content';
 ---
 <Base title={p.title} description={p.text}>
-  <section class="notfound" aria-labelledby="nf-h">
+  <section class="hero notfound-hero" aria-labelledby="nf-h">
     <div class="wrap">
-      <p class="eyebrow">Błąd 404</p>
-      <h1 id="nf-h" class="h-xl">{p.h1}</h1>
-      <p class="lead" style="margin-inline:auto">{p.text}</p>
-      <div class="btn-row">
-        <Btn href="/">Strona główna</Btn>
-        <a class="link" href="/dla-szkol/">Dla szkół jazdy</a>
+      <div class="road" aria-hidden="true"><span class="road__dash"></span></div>
+      <div class="notfound__copy">
+        <p class="eyebrow enter">Błąd 404</p>
+        <h1 id="nf-h" class="h-xl enter enter--delay">{p.h1}</h1>
+        <p class="lead enter enter--delay" style="margin-inline:auto">{p.text}</p>
+        <div class="btn-row enter enter--delay">
+          <Btn href="/">Strona główna</Btn>
+          <a class="link" href="/dla-szkol/">Dla szkół jazdy</a>
+          <a class="link" href="/dla-kursantow/">Dla kursantów</a>
+        </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  .notfound-hero {
+    min-height: auto;
+    padding-block: clamp(3rem, 2.2rem + 4vw, 6rem);
+    text-align: center;
+  }
+  @media (min-width: 900px) {
+    .notfound-hero { min-height: auto; }
+  }
+  .notfound-hero .wrap { position: relative; }
+  .notfound__copy { position: relative; z-index: 1; max-width: 34rem; margin-inline: auto; }
+  .notfound-hero .btn-row { justify-content: center; margin-top: 1.5rem; }
+
+  /* Droga znikająca w perspektywie — motyw jazdy, bez ruchu zależnego od scrolla */
+  .road {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: -20%;
+    width: min(70%, 520px);
+    height: 70%;
+    transform: translateX(-50%);
+    clip-path: polygon(45% 0, 55% 0, 94% 100%, 6% 100%);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c-ink-deep-3) 55%, transparent), transparent 85%);
+    pointer-events: none;
+  }
+  .road__dash {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 6px;
+    transform: translateX(-50%);
+    background-image: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0 20px, transparent 20px 42px);
+  }
+</style>
