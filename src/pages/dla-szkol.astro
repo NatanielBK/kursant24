@@ -29,13 +29,18 @@ import { dlaSzkol as p, cennikCta } from '../data/content';
         <p class="eyebrow">Twój dzień z kursant24</p>
         <h2 id="dzien-h" class="h-l">Od pierwszej kawy do telefonu, który nie dzwoni</h2>
       </header>
-      <div class="day-list">
-        {p.day.map((d) => (
-          <div class="day-item">
-            <span class="day-item__t">{d.t}</span>
-            <div><h3>{d.title}</h3><p>{d.text}</p></div>
-          </div>
-        ))}
+      <div class="split">
+        <div class="day-list">
+          {p.day.map((d) => (
+            <div class="day-item">
+              <span class="day-item__t">{d.t}</span>
+              <div><h3>{d.title}</h3><p>{d.text}</p></div>
+            </div>
+          ))}
+        </div>
+        <div class="split__shot">
+          <Shot name="kursanci-pc" alt="Lista kursantów szkoły z postępem godzin i przypisanym instruktorem." frame="laptop" />
+        </div>
       </div>
     </div>
   </section>

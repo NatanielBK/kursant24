@@ -23,8 +23,11 @@ export const home = {
     eyebrow: 'Aplikacja dla szkół jazdy',
     h1: 'Koniec z zeszytem.',
     lead: 'Jeden grafik jazd i wykładów, który widzi właściciel, instruktor i kursant. Termin proponujesz w czacie, nie przez dziesięć SMS-ów.',
-    shot: 'grafik-tel',
-    alt: 'Grafik tygodnia w kursant24: lista jazd i wykładów z godzinami i instruktorem.',
+    shotLaptop: 'grafik-pc',
+    altLaptop: 'Grafik tygodnia w kursant24: lista proponowanych jazd z godzinami i instruktorem.',
+    shotPhone: 'potwierdz-tel',
+    altPhone: 'Potwierdzenie dostępu kursanta w aplikacji kursant24 na telefonie.',
+    chips: ['Jazda potwierdzona', 'Zwolnione okienko → przyjęte', 'Postęp 18/30 h'],
   },
   features: {
     eyebrow: 'Funkcje',

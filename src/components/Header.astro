@@ -7,7 +7,7 @@ const current = (href: string) => !href.includes('#') && path.startsWith(href);
 ---
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a href="/" aria-label="kursant24, strona główna"><Logo /></a>
+    <a href="/" aria-label="kursant24, strona główna"><Logo class="logo--light" /></a>
     <nav class="site-header__nav" aria-label="Główna nawigacja">
       <ul>
         {nav.map((n) => (
@@ -24,7 +24,7 @@ const current = (href: string) => !href.includes('#') && path.startsWith(href);
 </header>
 <div class="mobile-menu" id="menu" hidden data-menu>
   <div class="mobile-menu__top">
-    <a href="/" aria-label="kursant24, strona główna"><Logo /></a>
+    <a href="/" aria-label="kursant24, strona główna"><Logo class="logo--light" /></a>
     <button class="mobile-menu__close" type="button" data-menu-close>Zamknij</button>
   </div>
   <nav aria-label="Menu">

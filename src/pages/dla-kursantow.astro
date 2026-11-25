@@ -37,14 +37,19 @@ const heroShot = await getImage({ src: shots[p.shot.name], format: 'webp', quali
         <p class="eyebrow">Jak zacząć</p>
         <h2 id="kroki-h" class="h-l">Trzy kroki, zero zakładania konta</h2>
       </header>
-      <ol class="steps-list">
-        {p.steps.map((s) => (
-          <li class="step-item">
-            <span class="step-item__n" aria-hidden="true">{s.n}</span>
-            <div><h3>{s.title}</h3><p>{s.text}</p></div>
-          </li>
-        ))}
-      </ol>
+      <div class="split">
+        <ol class="steps-list">
+          {p.steps.map((s) => (
+            <li class="step-item">
+              <span class="step-item__n" aria-hidden="true">{s.n}</span>
+              <div><h3>{s.title}</h3><p>{s.text}</p></div>
+            </li>
+          ))}
+        </ol>
+        <div class="split__shot">
+          <Shot name="dostep-tel" alt="Kod aktywacyjny i hasło startowe, które kursant dostaje od szkoły." frame="phone" />
+        </div>
+      </div>
     </div>
   </section>
 

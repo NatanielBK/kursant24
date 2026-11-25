@@ -1,4 +1,4 @@
-/* DESIGN TOKENS: kursant24 v3. Niebiesko-biały, prosty SaaS. */
+/* DESIGN TOKENS: kursant24 v5. Niebiesko-biały premium SaaS, czerwień jako drobny detal (tablica L). */
 
 @font-face {
   font-family: 'Inter';
@@ -18,25 +18,39 @@
 }
 
 :root {
-  /* Kolor: role, nie odcienie. */
+  /* Kolor: role, nie odcienie. Marka: niebiesko-biała, czerwień tylko jako punktowy akcent (tablica L). */
   --c-bg: #ffffff;
-  --c-bg-2: #f6f8fd;
+  --c-bg-2: #f3f6fd;
   --c-fg: #0b1530;
-  --c-muted: #55648a;
-  --c-line: #dce5f5;
-  --c-line-strong: #b9c8e6;
+  --c-muted: #4f5e85;
+  --c-line: #dde6f6;
+  --c-line-strong: #b7c7e8;
+
   --c-accent: #0b4fd8;
   --c-accent-2: #0a2a6b;
+  --c-accent-bright: #3d7dff;
   --c-accent-soft: #e8f0fe;
-  --c-deep: #061a45;
-  --c-on-deep: #a9bdec;
+
+  /* Granat głęboki: hero, pas CTA, karty na ciemnym tle. */
+  --c-ink-deep: #050b1a;
+  --c-ink-deep-2: #0a1530;
+  --c-ink-deep-3: #101d42;
+  --c-on-deep: #aebfe8;
+  --c-on-deep-strong: #eef2ff;
+  --c-line-deep: rgba(176, 197, 245, 0.18);
+  --c-line-deep-strong: rgba(201, 217, 255, 0.32);
+
   --c-good: #0a7a4a;
+  /* Czerwień tablicy L: wyłącznie drobne detale (kropka, podkreślenie, obwódka stanu). */
+  --c-red: #e5342a;
+  --c-red-soft: rgba(229, 52, 42, 0.14);
 
   --f-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Skala płynna (375 → 1440), bez „mega” nagłówków. */
-  --t-xl: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem);
-  --t-l: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+  /* Skala płynna (375 → 1440). Mega dla hero, xl dla H1 podstron, l dla H2 sekcji. */
+  --t-mega: clamp(2.5rem, 1.65rem + 4.3vw, 4.6rem);
+  --t-xl: clamp(2.2rem, 1.6rem + 2.8vw, 3.4rem);
+  --t-l: clamp(1.45rem, 1.25rem + 1vw, 2.05rem);
   --t-m: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
   --t-body: 1rem;
   --t-s: 0.9rem;
@@ -44,11 +58,17 @@
 
   --gutter: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
   --max: 1200px;
-  --radius: 14px;
-  --radius-s: 10px;
+  --max-wide: 1360px;
+  --radius: 18px;
+  --radius-s: 12px;
+  --radius-l: 28px;
 
   --z-header: 50;
   --z-menu: 60;
 
   --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --shadow-card: 0 1px 0 rgba(11, 21, 48, 0.04), 0 24px 48px -28px rgba(11, 21, 48, 0.22);
+  --shadow-deep: 0 40px 90px -30px rgba(2, 6, 20, 0.6);
+  --shadow-btn: 0 14px 30px -12px rgba(11, 79, 216, 0.55);
 }

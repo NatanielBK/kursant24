@@ -1,5 +1,5 @@
 ---
-import { getImage } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
@@ -7,8 +7,25 @@ import Faq from '../components/Faq.astro';
 import { home, faqHome, cennikCta } from '../data/content';
 import { shots } from '../data/zrzuty';
 
-// Zrzut w hero jest LCP strony głównej: preload.
-const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', quality: 82, width: 390 });
+// Laptop w hero jest LCP strony głównej: preload.
+const heroShot = await getImage({ src: shots[home.hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
+
+// Fragmenty UI w kaflach bento — prawdziwe zrzuty, nie płaskie ilustracje.
+const bentoMedia = [
+  { name: 'grafik-pc', alt: 'Grafik tygodnia: lista proponowanych jazd z godzinami i instruktorem.', mode: 'cover', w: 960, h: 600, pos: 'top' },
+  { name: 'uloz-pc', alt: 'Automatyczna propozycja grafiku na tydzień z raportem nieprzydzielonych kursantów.', mode: 'cover', w: 960, h: 600, pos: 'top left' },
+  { name: 'czat-tel', alt: 'Czat z propozycją terminu jazdy: przyciski Odrzuć i Przyjmij.', mode: 'contain', w: 390, h: 844, pos: 'top' },
+  { name: 'powiadomienia-tel', alt: 'Powiadomienie o zwolnionym terminie jazdy do potwierdzenia.', mode: 'cover', w: 390, h: 844, pos: 'top' },
+  { name: 'dzis-tel', alt: 'Ekran postępu godzin jazdy kursanta.', mode: 'cover', w: 390, h: 844, pos: 'top' },
+  { name: 'karta', alt: 'Karta przeprowadzonych zajęć jako dokument PDF.', mode: 'contain', w: 910, h: 1287, pos: 'top' },
+];
+
+// Zrzut przy każdej roli.
+const roleMedia = [
+  { name: 'pulpit-pc', alt: 'Pulpit właściciela szkoły: kursanci, jazdy w tym tygodniu, płatności i dokumenty.', frame: 'laptop' as const },
+  { name: 'grafik-tel', alt: 'Grafik jazd instruktora w telefonie.', frame: 'phone' as const },
+  { name: 'kod-tel', alt: 'Logowanie kursanta kodem aktywacyjnym ze szkoły.', frame: 'phone' as const },
+];
 ---
 <Base title={home.title}>
   <Fragment slot="head">
@@ -17,8 +34,8 @@ const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', qu
 
   <section class="hero" aria-labelledby="hero-h">
     <div class="wrap hero__grid">
-      <div class="hero__copy">
-        <p class="eyebrow">{home.hero.eyebrow}</p>
+      <div class="hero__copy enter">
+        <p class="eyebrow eyebrow--light">{home.hero.eyebrow}</p>
         <h1 id="hero-h" class="h-xl">{home.hero.h1}</h1>
         <p class="lead">{home.hero.lead}</p>
         <div class="btn-row">
@@ -26,8 +43,16 @@ const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', qu
           <a class="link" href="#funkcje">Zobacz funkcje</a>
         </div>
       </div>
-      <div class="hero__shot">
-        <Shot name={home.hero.shot} alt={home.hero.alt} eager />
+      <div class="devices enter enter--delay">
+        <div class="devices__laptop">
+          <Shot name={home.hero.shotLaptop} alt={home.hero.altLaptop} frame="laptop" eager />
+        </div>
+        <div class="devices__phone">
+          <Shot name={home.hero.shotPhone} alt={home.hero.altPhone} frame="phone" eager />
+        </div>
+        <ul class="devices__chips">
+          {home.hero.chips.map((c, i) => <li class:list={['chip', `chip--${i + 1}`]}>{c}</li>)}
+        </ul>
       </div>
     </div>
   </section>
@@ -38,9 +63,23 @@ const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', qu
         <p class="eyebrow">{home.features.eyebrow}</p>
         <h2 id="funkcje-h" class="h-l">{home.features.h2}</h2>
       </header>
-      <div class="features-grid">
-        {home.features.items.map((f) => (
-          <article class="feature-card">
+      <div class="bento">
+        {home.features.items.map((f, i) => (
+          <article class="bento__item">
+            <div class:list={['bento__media', `bento__media--${bentoMedia[i].mode}`]}>
+              <Image
+                src={shots[bentoMedia[i].name]}
+                alt={bentoMedia[i].alt}
+                widths={[320, 480, 640, bentoMedia[i].w].filter((w) => w <= bentoMedia[i].w)}
+                height={bentoMedia[i].h}
+                sizes="(max-width: 639px) 45vw, (max-width: 1099px) 50vw, 33vw"
+                format="webp"
+                quality={78}
+                loading="lazy"
+                decoding="async"
+                style={`object-position: ${bentoMedia[i].pos}`}
+              />
+            </div>
             <h3>{f.title}</h3>
             <p>{f.text}</p>
           </article>
@@ -56,13 +95,18 @@ const heroShot = await getImage({ src: shots[home.hero.shot], format: 'webp', qu
         <h2 id="role-h" class="h-l">{home.roles.h2}</h2>
       </header>
       <div class="roles-grid">
-        {home.roles.items.map((r) => (
-          <article class="role-card">
-            <h3>{r.title}</h3>
-            <p>{r.text}</p>
-            <ul>
-              {r.points.map((pt) => <li>{pt}</li>)}
-            </ul>
+        {home.roles.items.map((r, i) => (
+          <article class="role-card role-card--media">
+            <div class="role-card__media">
+              <Shot name={roleMedia[i].name} alt={roleMedia[i].alt} frame={roleMedia[i].frame} />
+            </div>
+            <div class="role-card__body">
+              <h3>{r.title}</h3>
+              <p>{r.text}</p>
+              <ul>
+                {r.points.map((pt) => <li>{pt}</li>)}
+              </ul>
+            </div>
           </article>
         ))}
       </div>
