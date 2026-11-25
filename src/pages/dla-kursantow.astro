@@ -123,11 +123,29 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
     .k-chip--3 { top: -6%; right: -14%; }
   }
 
-  /* Krok obok telefonu: wyrównanie do góry, nie do środka — telefon (kod-tel) jest
-     znacznie wyższy niż lista kroków i wyśrodkowanie zostawiało pustkę nad/pod krokami.
-     Telefon dodatkowo zmniejszony (vs. domyślne 360px), żeby ograniczyć pustą plamę pod krokami. */
+  /* Krok obok telefonu, mobile: wyrównanie do góry (kroki poziome, telefon dużo wyższy). */
   .split--top { align-items: start; }
   .split--top .split__shot { width: min(230px, 55%); }
+
+  /* Desktop (≥900px, zgodnie z .split): kroki PIONOWO (numer w kółku + tekst w rzędzie,
+     łączone cienką linią), wyśrodkowane w pionie względem telefonu — kolumna kroków ma
+     wtedy wysokość zbliżoną do telefonu, bez pustej plamy pod krokami. Telefon bliżej
+     kroków niż domyślny `.split` (gap zamiast rozciągniętej siatki fr). */
+  @media (min-width: 900px) {
+    .split--top { align-items: center; display: flex; justify-content: center; gap: 3.5rem; }
+    .split--top .steps-list { flex-direction: column; gap: 1.75rem; flex: none; width: min(380px, 42%); }
+    .split--top .step-item { position: relative; flex-direction: row; align-items: flex-start; }
+    .split--top .step-item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 0.9375rem;
+      top: 2rem;
+      width: 2px;
+      height: 1.75rem;
+      background: var(--c-line);
+    }
+    .split--top .split__shot { justify-self: auto; width: 230px; }
+  }
 
   /* Galeria ekranów: szczelna siatka telefonów, bez przycinania ani pustych połówek. */
   .phone-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 0.9rem; }
