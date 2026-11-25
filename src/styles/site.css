@@ -220,6 +220,11 @@ html.menu-open { overflow: hidden; }
   .devices__laptop { width: min(420px, 100%); }
   .devices__phone { width: min(140px, 38%); align-self: flex-end; margin: -3.25rem 8% 0 0; }
 }
+/* Na wąskim telefonie telefon-w-hero nachodził na laptop i był ucinany przez brzeg sekcji —
+   przy tak małej szerokości oba urządzenia się nie mieszczą czytelnie, więc chowamy mniejsze. */
+@media (max-width: 599px) {
+  .devices__phone { display: none; }
+}
 @media (min-width: 900px) {
   .devices { width: 100%; max-width: 580px; justify-self: end; padding-block: 1.5rem 3rem; }
   .devices__laptop { position: relative; z-index: 1; }
