@@ -125,8 +125,8 @@ ul, ol { padding: 0; list-style: none; }
 .site-header__nav ul { display: flex; gap: 1.75rem; }
 .site-header__nav a:not(.btn) { font-weight: 600; font-size: var(--t-s); color: var(--c-on-deep); transition: color 0.15s; position: relative; }
 .site-header__nav a:not(.btn):hover { color: #fff; }
-.site-header__nav a[aria-current='page'] { color: #fff; }
-.site-header__nav a[aria-current='page']::after {
+.site-header__nav a:not(.btn)[aria-current='page'] { color: #fff; }
+.site-header__nav a:not(.btn)[aria-current='page']::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: -0.65rem; height: 2px; background: var(--c-red); border-radius: 2px;
 }
 .site-header__burger {
