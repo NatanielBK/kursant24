@@ -6,6 +6,7 @@ import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
 import { home, faqHome, cennikCta } from '../data/content';
 import { shots } from '../data/zrzuty';
+import heroMarkUrl from '../assets/logo/icon-l-smugi-biale.svg?url';
 
 // Laptop w hero jest LCP strony głównej: preload.
 const heroShot = await getImage({ src: shots[home.hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
@@ -33,6 +34,7 @@ const roleMedia = [
   </Fragment>
 
   <section class="hero" aria-labelledby="hero-h">
+    <img src={heroMarkUrl} alt="" aria-hidden="true" class="hero__mark" />
     <div class="wrap hero__grid">
       <div class="hero__copy enter">
         <p class="eyebrow eyebrow--light">{home.hero.eyebrow}</p>
@@ -65,7 +67,7 @@ const roleMedia = [
       </header>
       <div class="bento">
         {home.features.items.map((f, i) => (
-          <article class="bento__item">
+          <article class:list={['bento__item', i === 5 && 'bento__item--split']}>
             <div class:list={['bento__media', `bento__media--${bentoMedia[i].mode}`]}>
               <Image
                 src={shots[bentoMedia[i].name]}
@@ -80,8 +82,10 @@ const roleMedia = [
                 style={`object-position: ${bentoMedia[i].pos}`}
               />
             </div>
-            <h3>{f.title}</h3>
-            <p>{f.text}</p>
+            <div class="bento__body">
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </div>
           </article>
         ))}
       </div>
@@ -114,13 +118,15 @@ const roleMedia = [
   </section>
 
   <section class="section" id="cennik" aria-labelledby="cennik-h">
-    <div class="wrap" style="max-width:34rem; text-align:center; margin-inline:auto">
-      <p class="eyebrow" style="justify-content:center">{cennikCta.eyebrow}</p>
-      <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
-      <p class="lead" style="margin:0.6rem auto 1.6rem">{cennikCta.text}</p>
-      <div class="btn-row" style="justify-content:center">
-        <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
-        <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
+    <div class="wrap" style="max-width:36rem; margin-inline:auto">
+      <div class="cta-card" style="text-align:center">
+        <p class="eyebrow" style="justify-content:center">{cennikCta.eyebrow}</p>
+        <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
+        <p class="lead" style="margin:0.6rem auto 1.6rem">{cennikCta.text}</p>
+        <div class="btn-row" style="justify-content:center">
+          <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
+          <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
+        </div>
       </div>
     </div>
   </section>

@@ -9,13 +9,15 @@ const { id, eyebrow, h2, items } = Astro.props;
       <p class="eyebrow">{eyebrow}</p>
       <h2 id={id ? `${id}-h` : undefined} class="h-l">{h2}</h2>
     </header>
-    <div class="faq-list">
-      {items.map((it, i) => (
-        <details class="faq-item" name={`faq-${id ?? 'x'}`} open={i === 0}>
-          <summary>{it.q}</summary>
-          <p>{it.a}</p>
-        </details>
-      ))}
+    <div class="faq-card">
+      <div class="faq-list">
+        {items.map((it, i) => (
+          <details class="faq-item" name={`faq-${id ?? 'x'}`} open={i === 0}>
+            <summary>{it.q}</summary>
+            <p>{it.a}</p>
+          </details>
+        ))}
+      </div>
     </div>
   </div>
 </section>
