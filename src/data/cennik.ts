@@ -5,7 +5,7 @@ export const cennik = {
     'Cena kursant24 zależy od wielkości szkoły jazdy: liczby instruktorów, kursantów w miesiącu i oddziałów. Poproś o wycenę dopasowaną do Twojej szkoły.',
   eyebrow: 'Cennik',
   h1: 'Cena dopasowana do Twojej szkoły.',
-  lead: 'Jeden instruktor i sieć z oddziałami nie potrzebują tego samego serwera. Wycenę przygotowujemy pod konkretną szkołę, nie z cennika na sztywno.',
+  lead: 'Jeden instruktor i sieć z oddziałami nie potrzebują tego samego zakresu. Wycenę przygotowujemy pod konkretną szkołę, nie z cennika na sztywno.',
   factors: {
     eyebrow: 'Od czego zależy cena',
     h2: 'Liczymy to, co faktycznie zużywasz',
