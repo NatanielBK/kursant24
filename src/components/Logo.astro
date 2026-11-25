@@ -1,16 +1,25 @@
 ---
-// Logo poziome H2i (znak ze smugami ruchu, ikona ma stały gradient; kolory napisu
-// przez zmienne CSS, wariant jasny/ciemny tła z jednego pliku — świateł wersji SVG).
-import raw from '../assets/logo/kursant24-h2i-poziome.svg?raw';
+// Logo poziome: znak (L ze smugami ruchu, bez kafelka — czytelny nawet w małym rozmiarze
+// nagłówka) + wordmark "kursant24" jako osobne SVG, żeby móc skalować je niezależnie.
+// Kolory napisu przez zmienne CSS (jasny/ciemny wariant z jednego pliku).
+import iconRaw from '../assets/logo/icon-l-smugi-biale.svg?raw';
+import wordRaw from '../assets/logo/kursant24-wordmark.svg?raw';
 interface Props { class?: string }
 const { class: cls } = Astro.props;
-// Sufiks na ID gradientów, żeby kilka wystąpień logo na stronie (nagłówek, menu mobilne, stopka) się nie gryzło.
+// Sufiks na ID gradientu znaku, żeby kilka wystąpień logo na stronie (nagłówek, menu mobilne, stopka) się nie gryzło.
 const uid = Math.random().toString(36).slice(2, 8);
-const svg = raw
-  .replace(/smugij/g, `smugij${uid}`)
-  .replace('<svg ', '<svg aria-hidden="true" focusable="false" ')
-  .replace(/ width="[\d.]+" height="[\d.]+"/, '')
-  .replace('fill="#0A2A6B"', 'fill="var(--logo-word, #0A2A6B)"')
-  .replace('fill="#0B4FD8"', 'fill="var(--logo-24, #0B4FD8)"');
+const icon = iconRaw
+  .replace(/ id="g"/, ` id="g${uid}"`)
+  .replace(/ id="s"/, ` id="s${uid}"`)
+  .replace(/url\(#g\)/g, `url(#g${uid})`)
+  .replace(/url\(#s\)/g, `url(#s${uid})`)
+  .replace('<svg ', '<svg class="logo__icon" aria-hidden="true" focusable="false" ');
+const word = wordRaw
+  .replace('<svg ', '<svg class="logo__word" aria-hidden="true" focusable="false" ')
+  .replace(/fill="#0A2A6B"/g, 'fill="var(--logo-word, #0A2A6B)"')
+  .replace(/fill="#0B4FD8"/g, 'fill="var(--logo-24, #0B4FD8)"');
 ---
-<span class:list={['logo', cls]} set:html={svg} />
+<span class:list={['logo', cls]}>
+  <Fragment set:html={icon} />
+  <Fragment set:html={word} />
+</span>
