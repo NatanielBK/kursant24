@@ -4,15 +4,60 @@ import Btn from '../components/Btn.astro';
 import { notFound as p } from '../data/content';
 ---
 <Base title={p.title} description={p.text}>
-  <section class="notfound" aria-labelledby="nf-h">
+  <section class="hero notfound-hero" aria-labelledby="nf-h">
     <div class="wrap">
-      <p class="eyebrow">Błąd 404</p>
-      <h1 id="nf-h" class="h-xl">{p.h1}</h1>
-      <p class="lead" style="margin-inline:auto">{p.text}</p>
-      <div class="btn-row">
-        <Btn href="/">Strona główna</Btn>
-        <a class="link" href="/dla-szkol/">Dla szkół jazdy</a>
+      <div class="notfound__copy">
+        <p class="eyebrow enter">Błąd 404</p>
+        <h1 id="nf-h" class="h-xl enter enter--delay">{p.h1}</h1>
+        <p class="lead enter enter--delay" style="margin-inline:auto">{p.text}</p>
+        <div class="road-line enter enter--delay" aria-hidden="true">
+          <i></i><i></i><i></i>
+          <svg viewBox="0 0 12 12" width="12" height="12" fill="none"><path d="M2 2l6 4-6 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="btn-row enter enter--delay">
+          <Btn href="/">Strona główna</Btn>
+          <a class="link" href="/dla-szkol/">Dla szkół jazdy</a>
+          <a class="link" href="/dla-kursantow/">Dla kursantów</a>
+        </div>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  /* Strona jest krótsza niż okno — bez tego pod stopką widać jasne tło body.
+     Rozciągamy #main na całą dostępną wysokość, tylko na tej stronie. */
+  :global(body) { display: flex; flex-direction: column; min-height: 100dvh; }
+  :global(#main) { display: flex; flex-direction: column; flex: 1; }
+
+  .notfound-hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-height: auto;
+    padding-block: clamp(3rem, 2.2rem + 4vw, 6rem);
+    text-align: center;
+  }
+  .notfound-hero .wrap { width: 100%; }
+  .notfound__copy { max-width: 34rem; margin-inline: auto; }
+  .notfound-hero .btn-row { justify-content: center; margin-top: 1.5rem; }
+
+  /* Drobny akcent "drogi" — przerywana linia z grotem, w przepływie, bez nakładania na treść */
+  .road-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    width: fit-content;
+    margin: 1.6rem auto 0;
+    color: var(--c-accent-bright);
+  }
+  .road-line i {
+    width: 20px;
+    height: 3px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .road-line i:last-of-type { opacity: 0.9; }
+</style>
