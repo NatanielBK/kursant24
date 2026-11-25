@@ -25,11 +25,20 @@ import { notFound as p } from '../data/content';
 </Base>
 
 <style>
+  /* Strona jest krótsza niż okno — bez tego pod stopką widać jasne tło body.
+     Rozciągamy #main na całą dostępną wysokość, tylko na tej stronie. */
+  :global(body) { display: flex; flex-direction: column; min-height: 100dvh; }
+  :global(#main) { display: flex; flex-direction: column; flex: 1; }
+
   .notfound-hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
     min-height: auto;
     padding-block: clamp(3rem, 2.2rem + 4vw, 6rem);
     text-align: center;
   }
+  .notfound-hero .wrap { width: 100%; }
   .notfound__copy { max-width: 34rem; margin-inline: auto; }
   .notfound-hero .btn-row { justify-content: center; margin-top: 1.5rem; }
 

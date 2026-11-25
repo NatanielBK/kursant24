@@ -17,14 +17,29 @@ const icons: Record<string, string> = {
 };
 ---
 <Base title={p.title} description={p.description}>
-  <section class="podhero" aria-labelledby="cennik-h">
-    <div class="wrap" style="max-width:40rem">
-      <p class="eyebrow enter">{p.eyebrow}</p>
-      <h1 id="cennik-h" class="h-xl enter enter--delay">{p.h1}</h1>
-      <p class="lead enter enter--delay">{p.lead}</p>
-      <div class="btn-row enter enter--delay">
-        <Btn href="#wycena">Poproś o wycenę</Btn>
-        <a class="link" href="#pytania-h">Zobacz najczęstsze pytania</a>
+  <section class="hero" aria-labelledby="cennik-h">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow enter">{p.eyebrow}</p>
+        <h1 id="cennik-h" class="h-xl enter enter--delay">{p.h1}</h1>
+        <p class="lead enter enter--delay">{p.lead}</p>
+        <div class="btn-row enter enter--delay">
+          <Btn href="#wycena">Poproś o wycenę</Btn>
+          <a class="link" href="#pytania-h">Zobacz najczęstsze pytania</a>
+        </div>
+      </div>
+      <div class="price-card enter enter--delay">
+        <p class="price-card__title">Co dostajesz w cenie</p>
+        <ul class="price-card__list">
+          {p.included.items.map((it) => (
+            <li>
+              <span class="price-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10l4 4 8-8" /></svg>
+              </span>
+              {it.title}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
@@ -163,6 +178,37 @@ const icons: Record<string, string> = {
 </Base>
 
 <style>
+  /* Karta "co dostajesz w cenie" w ciemnym hero — bez kwot, tylko lista. */
+  .price-card {
+    padding: 1.5rem 1.6rem;
+    border-radius: var(--radius-l);
+    background: color-mix(in srgb, var(--c-ink-deep-3) 70%, transparent);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--c-line-deep-strong);
+  }
+  .price-card__title {
+    font-size: var(--t-xs); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--c-on-deep); margin-bottom: 1rem;
+  }
+  .price-card__list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .price-card__list li { display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: var(--t-s); color: #fff; }
+  .price-card__icon {
+    flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+    width: 1.6rem; height: 1.6rem; border-radius: 50%;
+    background: color-mix(in srgb, var(--c-accent-bright) 25%, transparent); color: var(--c-accent-bright);
+  }
+  .price-card__icon svg { width: 13px; height: 13px; }
+  @media (min-width: 900px) {
+    .hero .wrap.hero__grid { align-items: start; padding-block: 2rem; }
+  }
+
+  /* Odstęp nagłówek → opis tam, gdzie oba siedzą bezpośrednio w .section__head */
+  .section__head .lead { margin-top: 0.6rem; }
+
+  /* Fieldset kategorii — bez ramki przeglądarki, legenda jak etykieta pola */
+  fieldset.field { border: 0; padding: 0; min-width: 0; }
+  fieldset.field legend { padding: 0; font-size: var(--t-xs); font-weight: 600; color: var(--c-muted); }
+
   .incl-grid {
     display: grid;
     grid-template-columns: 1fr;
