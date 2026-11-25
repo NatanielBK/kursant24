@@ -78,8 +78,11 @@ ul, ol { padding: 0; list-style: none; }
 .h-m { font-size: var(--t-m); line-height: 1.25; letter-spacing: -0.01em; }
 .lead { font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem); color: var(--c-muted); max-width: 38rem; }
 
-.link { color: var(--c-accent); font-weight: 600; border-bottom: 1px solid transparent; transition: border-color 0.15s var(--e-out); }
-.link:hover { border-color: currentColor; }
+.link {
+  color: var(--c-accent); font-weight: 600; border-bottom: 1px solid transparent; display: inline-block;
+  transition: border-color 0.15s var(--e-out), transform 0.15s var(--e-out);
+}
+.link:hover { border-color: currentColor; transform: translateX(2px); }
 
 /* BUTTONS */
 .btn {
@@ -399,10 +402,10 @@ html.menu-open { overflow: hidden; }
     linear-gradient(135deg, var(--c-accent-bright), var(--c-line-strong) 55%, transparent 95%) border-box;
   border: 1px solid transparent;
   box-shadow: var(--shadow-card);
-  overflow: hidden;
 }
 .cta-card::before {
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  border-radius: inherit;
   background: radial-gradient(65% 85% at 50% -15%, var(--c-accent-soft), transparent 70%);
 }
 .cta-card > * { position: relative; z-index: 1; }
