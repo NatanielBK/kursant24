@@ -1,24 +1,42 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
 import { dlaSzkol as p, cennikCta } from '../data/content';
+import { hero, dayMedia, benefits, ctaBand } from '../data/dla-szkol';
+import { shots } from '../data/zrzuty';
+
+// Laptop w hero jest LCP tej podstrony: preload, tak jak na stronie głównej.
+const heroShot = await getImage({ src: shots[hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
 ---
 <Base title={p.title} description={p.description}>
-  <section class="podhero" aria-labelledby="podhero-h">
-    <div class="wrap podhero__grid">
-      <div class="podhero__copy">
-        <p class="eyebrow">{p.eyebrow}</p>
-        <h1 id="podhero-h" class="h-xl">{p.h1}</h1>
+  <Fragment slot="head">
+    <link rel="preload" as="image" href={heroShot.src} fetchpriority="high" />
+  </Fragment>
+
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero__grid">
+      <div class="hero__copy enter">
+        <p class="eyebrow eyebrow--light">{p.eyebrow}</p>
+        <h1 id="hero-h" class="h-xl">{p.h1}</h1>
         <p class="lead">{p.lead}</p>
         <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
           <a class="link" href="#cennik">Cennik</a>
         </div>
       </div>
-      <div class="podhero__shot">
-        <Shot name={p.shot.name} alt={p.shot.alt} eager />
+      <div class="devices enter enter--delay">
+        <div class="devices__laptop">
+          <Shot name={hero.shotLaptop} alt={hero.altLaptop} frame="laptop" eager />
+        </div>
+        <div class="devices__phone">
+          <Shot name={hero.shotPhone} alt={hero.altPhone} frame="phone" eager />
+        </div>
+        <ul class="devices__chips">
+          {hero.chips.map((c, i) => <li class:list={['chip', `chip--${i + 1}`]}>{c}</li>)}
+        </ul>
       </div>
     </div>
   </section>
@@ -29,23 +47,62 @@ import { dlaSzkol as p, cennikCta } from '../data/content';
         <p class="eyebrow">Twój dzień z kursant24</p>
         <h2 id="dzien-h" class="h-l">Od pierwszej kawy do telefonu, który nie dzwoni</h2>
       </header>
-      <div class="split">
-        <div class="day-list">
-          {p.day.map((d) => (
-            <div class="day-item">
-              <span class="day-item__t">{d.t}</span>
-              <div><h3>{d.title}</h3><p>{d.text}</p></div>
+      <ol class="timeline">
+        {p.day.map((d, i) => (
+          <li class="timeline-item">
+            <span class="timeline-item__time">{d.t}</span>
+            <div class="timeline-card">
+              <div class="timeline-card__media">
+                <Shot name={dayMedia[i].name} alt={dayMedia[i].alt} frame={dayMedia[i].name.endsWith('-tel') ? 'phone' : 'laptop'} class="timeline-card__shot" />
+              </div>
+              <div class="timeline-card__body">
+                <h3>{d.title}</h3>
+                <p>{d.text}</p>
+              </div>
             </div>
-          ))}
-        </div>
-        <div class="split__shot">
-          <Shot name="kursanci-pc" alt="Lista kursantów szkoły z postępem godzin i przypisanym instruktorem." frame="laptop" />
-        </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="deep-section" aria-labelledby="benefits-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow eyebrow--light">{benefits.eyebrow}</p>
+        <h2 id="benefits-h" class="h-l">{benefits.h2}</h2>
+      </header>
+      <div class="showcase">
+        {benefits.items.slice(0, 2).map((b) => (
+          <article class="showcase-card showcase-card--dark">
+            <div class="showcase-card__body">
+              <h3>{b.title}</h3>
+              <p>{b.text}</p>
+            </div>
+            <Shot name={b.shot.name} alt={b.shot.alt} frame={b.shot.frame} />
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="section" id="cennik" aria-labelledby="cennik-h">
+  <section class="section" aria-label="Więcej realnych ekranów aplikacji">
+    <div class="wrap">
+      <div class="showcase">
+        {benefits.items.slice(2, 4).map((b) => (
+          <article class="showcase-card showcase-card--light">
+            <div class="showcase-card__body">
+              <h3>{b.title}</h3>
+              <p>{b.text}</p>
+            </div>
+            <Shot name={b.shot.name} alt={b.shot.alt} frame={b.shot.frame} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bg" id="cennik" aria-labelledby="cennik-h">
     <div class="wrap" style="max-width:34rem; text-align:center; margin-inline:auto">
       <p class="eyebrow" style="justify-content:center">{cennikCta.eyebrow}</p>
       <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
@@ -57,7 +114,7 @@ import { dlaSzkol as p, cennikCta } from '../data/content';
     </div>
   </section>
 
-  <section class="section section--bg" aria-labelledby="migr-h">
+  <section class="section" aria-labelledby="migr-h">
     <div class="wrap">
       <h2 id="migr-h" class="h-l">{p.migration.h2}</h2>
       <p class="lead" style="margin-top:0.6rem">{p.migration.text}</p>
@@ -65,4 +122,95 @@ import { dlaSzkol as p, cennikCta } from '../data/content';
   </section>
 
   <Faq id="pytania" eyebrow="Pytania właścicieli" h2="Co jeszcze warto wiedzieć" items={p.faq} />
+
+  <section class="cta-band" aria-labelledby="ctaband-h">
+    <div class="wrap cta-band__inner">
+      <p class="eyebrow eyebrow--light">{ctaBand.eyebrow}</p>
+      <h2 id="ctaband-h" class="h-l">{ctaBand.h2}</h2>
+      <p>{ctaBand.text}</p>
+      <div class="btn-row">
+        <Btn href={ctaBand.primary.href} variant="light">{ctaBand.primary.label}</Btn>
+        <a class="link" style="color:#fff" href={ctaBand.secondary.href}>{ctaBand.secondary.label}</a>
+      </div>
+    </div>
+  </section>
 </Base>
+
+<style>
+  /* OŚ "Twój dzień": karty równej wysokości ze zrzutem przy każdym kroku, połączone linią/kropką — zamiast
+     jednego dużego laptopa wiszącego obok pustej przestrzeni. */
+  .timeline { position: relative; display: grid; gap: 1.75rem; grid-template-columns: 1fr; }
+  .timeline-item { position: relative; padding-left: 2.25rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: 0; top: 0.3rem; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--c-accent); box-shadow: 0 0 0 4px var(--c-accent-soft); z-index: 1;
+  }
+  .timeline-item::after {
+    content: ''; position: absolute; left: 5px; top: 1.1rem; bottom: -1.75rem; width: 2px; background: var(--c-line-strong);
+  }
+  .timeline-item:last-child::after { display: none; }
+  .timeline-item__time { display: block; font-weight: 700; color: var(--c-accent); font-size: var(--t-s); margin-bottom: 0.4rem; }
+  .timeline-card {
+    display: grid; grid-template-columns: 96px 1fr; gap: 1rem; align-items: center;
+    padding: 0.9rem; border-radius: var(--radius-s); border: 1px solid transparent;
+    background: linear-gradient(var(--c-bg), var(--c-bg)) padding-box,
+      linear-gradient(135deg, var(--c-line-strong), var(--c-line) 60%, transparent 95%) border-box;
+    box-shadow: var(--shadow-card);
+  }
+  .timeline-card__media { width: 96px; flex-shrink: 0; }
+  .timeline-card__media :global(.shot__frame) { padding: 0.25rem; }
+  .timeline-card h3 { font-size: var(--t-s); margin-bottom: 0.2rem; }
+  .timeline-card p { font-size: var(--t-xs); color: var(--c-muted); line-height: 1.42; }
+
+  @media (min-width: 900px) {
+    .timeline { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .timeline-item { padding-left: 0; padding-top: 2.1rem; }
+    .timeline-item::before { left: 50%; top: 0; transform: translateX(-50%); }
+    .timeline-item::after { left: 0; right: 0; top: 5px; bottom: auto; width: auto; height: 2px; }
+    .timeline-item:first-child::after { left: 50%; }
+    .timeline-item:last-child::after { right: 50%; left: 50%; }
+    .timeline-item__time { text-align: center; }
+    .timeline-card { grid-template-columns: 1fr; text-align: left; }
+    .timeline-card__media { width: 100%; }
+  }
+
+  /* Sekcja ciemna dla realnych ekranów korzyści — ta sama estetyka co hero (granat, poświata, szum),
+     ale bez pełnej wysokości heroes'a; klasa lokalna, nie dotyka globalnego site.css. */
+  .deep-section {
+    position: relative; overflow: hidden; isolation: isolate;
+    padding-block: clamp(2.5rem, 2rem + 2vw, 4.5rem);
+    color: var(--c-on-deep-strong);
+    background: radial-gradient(55% 55% at 15% 0%, rgba(61, 125, 255, 0.28), transparent 62%),
+      linear-gradient(180deg, var(--c-ink-deep-2), var(--c-ink-deep));
+  }
+  .deep-section::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0.5; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  }
+  .deep-section > * { position: relative; z-index: 1; }
+  .deep-section .eyebrow--light { color: var(--c-accent-bright); }
+  .deep-section .h-l { color: #fff; }
+
+  /* Korzyści dla właściciela: realne ekrany w ramkach urządzeń, karta z gradientową obwódką */
+  .showcase { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  @media (min-width: 700px) {
+    .showcase { grid-template-columns: repeat(2, 1fr); }
+  }
+  .showcase-card { display: flex; flex-direction: column; gap: 1.25rem; padding: 1.5rem; border-radius: var(--radius); }
+  .showcase-card__body h3 { font-size: var(--t-m); margin-bottom: 0.4rem; }
+  .showcase-card--dark {
+    background: color-mix(in srgb, var(--c-ink-deep-3) 55%, transparent);
+    border: 1px solid var(--c-line-deep-strong);
+    backdrop-filter: blur(10px);
+  }
+  .showcase-card--dark .showcase-card__body p { color: var(--c-on-deep); font-size: var(--t-s); }
+  .showcase-card--light {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--c-bg), var(--c-bg)) padding-box,
+      linear-gradient(135deg, var(--c-line-strong), var(--c-line) 60%, transparent 95%) border-box;
+    box-shadow: var(--shadow-card);
+  }
+  .showcase-card--light .showcase-card__body p { color: var(--c-muted); font-size: var(--t-s); }
+  .showcase-card :global(.shot) { margin-top: auto; }
+  .showcase-card :global(.shot--paper .shot__frame) { max-width: 260px; margin-inline: auto; }
+</style>
