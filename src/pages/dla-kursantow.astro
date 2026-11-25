@@ -4,29 +4,61 @@ import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
-import { dlaKursantow as p } from '../data/content';
+import { dlaKursantow as p } from '../data/dla-kursantow';
 import { shots } from '../data/zrzuty';
 
-const heroShot = await getImage({ src: shots[p.shot.name], format: 'webp', quality: 82, width: 390 });
+// Telefon "Dziś" jest LCP tej strony: preload.
+const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quality: 82, width: 390 });
 ---
 <Base title={p.title} description={p.description}>
   <Fragment slot="head">
     <link rel="preload" as="image" href={heroShot.src} fetchpriority="high" />
   </Fragment>
 
-  <section class="podhero" aria-labelledby="podhero-h">
-    <div class="wrap podhero__grid">
-      <div class="podhero__copy">
-        <p class="eyebrow">{p.eyebrow}</p>
-        <h1 id="podhero-h" class="h-xl">{p.h1}</h1>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero__grid">
+      <div class="hero__copy enter">
+        <p class="eyebrow eyebrow--light">{p.eyebrow}</p>
+        <h1 id="hero-h" class="h-xl">{p.h1}</h1>
         <p class="lead">{p.lead}</p>
         <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
           <a class="link" href="#kroki">Jak zacząć</a>
         </div>
       </div>
-      <div class="podhero__shot">
-        <Shot name={p.shot.name} alt={p.shot.alt} eager />
+      <div class="k-phones enter enter--delay">
+        <div class="k-phones__main">
+          <Shot name="start-tel" alt="Ekran startowy kursanta w kursant24: najbliższa jazda i postęp godzin." frame="phone" eager />
+        </div>
+        <div class="k-phones__second">
+          <Shot name="potwierdz-tel" alt="Potwierdzenie jazdy jednym przyciskiem." frame="phone" eager />
+        </div>
+        <ul class="k-phones__chips">
+          {p.chips.map((c, i) => <li class:list={['chip', `k-chip--${i + 1}`]}>{c}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="galeria" aria-labelledby="galeria-h">
+    <div class="wrap">
+      <header class="section__head">
+        <p class="eyebrow">{p.gallery.eyebrow}</p>
+        <h2 id="galeria-h" class="h-l">{p.gallery.h2}</h2>
+      </header>
+      <div class="phone-grid">
+        {p.gallery.items.map((it) => (
+          <article class="phone-card">
+            <Shot
+              name={it.name}
+              alt={`${it.title}: ${it.text}`}
+              frame="phone"
+              sizes="(max-width: 639px) 42vw, (max-width: 1099px) 22vw, 220px"
+            />
+            <h3>{it.title}</h3>
+            <p>{it.text}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -37,7 +69,7 @@ const heroShot = await getImage({ src: shots[p.shot.name], format: 'webp', quali
         <p class="eyebrow">Jak zacząć</p>
         <h2 id="kroki-h" class="h-l">Trzy kroki, zero zakładania konta</h2>
       </header>
-      <div class="split">
+      <div class="split split--top">
         <ol class="steps-list">
           {p.steps.map((s) => (
             <li class="step-item">
@@ -53,33 +85,55 @@ const heroShot = await getImage({ src: shots[p.shot.name], format: 'webp', quali
     </div>
   </section>
 
-  <section class="section" aria-labelledby="widzisz-h">
-    <div class="wrap">
-      <header class="section__head">
-        <p class="eyebrow">Co widzisz w aplikacji</p>
-        <h2 id="widzisz-h" class="h-l">Wszystko o Twoim kursie, w jednym miejscu</h2>
-      </header>
-      <div class="see-grid">
-        {p.see.map((s) => (
-          <article class="see-card">
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <Faq id="pytania" eyebrow="Pytania kursantów" h2="Gdy coś nie działa" items={p.faq} />
 
   <section class="cta-band" aria-labelledby="ctaband-h">
     <div class="wrap cta-band__inner">
       <p class="eyebrow eyebrow--light">Twojej szkoły tu nie ma?</p>
       <h2 id="ctaband-h" class="h-l">Pokaż ją swojej szkole.</h2>
-      <p>kursant24 włącza szkoła jazdy. Wyślij właścicielowi link do strony dla szkół.</p>
+      <p>kursant24 włącza szkoła jazdy. Zapytaj swoją szkołę, czy już go zna, albo niech umówi prezentację.</p>
       <div class="btn-row">
-        <Btn href="/dla-szkol/" variant="light">Strona dla szkół jazdy</Btn>
+        <Btn href="/pilotaz/" variant="light">Umów prezentację</Btn>
+        <a class="link" style="color:#fff" href="/dla-szkol/">Zapytaj swoją szkołę o kursant24</a>
       </div>
     </div>
   </section>
 </Base>
+
+<style>
+  /* Hero: dwa telefony pod kątem zamiast laptop+telefon ze strony głównej — własna
+     kompozycja, bo .devices z site.css zakłada proporcje laptopa. */
+  .k-phones { position: relative; }
+  .k-phones :global(.shot__frame) { box-shadow: 0 30px 60px -20px rgba(2, 6, 20, 0.65); }
+  .k-phones__chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; justify-content: center; }
+
+  @media (max-width: 899px) {
+    .k-phones { display: flex; flex-direction: column; align-items: center; padding-block: 0.5rem 2.5rem; }
+    .k-phones__main { width: min(230px, 62%); }
+    .k-phones__second { width: min(150px, 42%); align-self: flex-end; margin: -2.75rem 6% 0 0; transform: rotate(6deg); }
+  }
+  @media (min-width: 900px) {
+    .k-phones { width: 100%; max-width: 440px; justify-self: end; padding-block: 1.5rem 2.5rem; }
+    .k-phones__main { position: relative; z-index: 1; width: 66%; margin-inline: auto; transform: rotate(-3deg); }
+    .k-phones__second { position: absolute; z-index: 2; right: -2%; bottom: -5%; width: 44%; transform: rotate(6deg); }
+    .k-phones__chips { position: absolute; inset: 0; z-index: 3; margin: 0; pointer-events: none; }
+    .k-chip--1, .k-chip--2, .k-chip--3 { position: absolute; pointer-events: auto; }
+    .k-chip--1 { top: -4%; left: -6%; }
+    .k-chip--2 { top: 40%; left: -14%; }
+    .k-chip--3 { top: 16%; right: -10%; }
+  }
+
+  /* Krok obok telefonu: wyrównanie do góry, nie do środka — telefon (dostep-tel) jest
+     znacznie wyższy niż lista kroków i wyśrodkowanie zostawiało pustkę nad/pod krokami. */
+  .split--top { align-items: start; }
+
+  /* Galeria ekranów: szczelna siatka telefonów, bez przycinania ani pustych połówek. */
+  .phone-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 0.9rem; }
+  .phone-card { text-align: center; }
+  .phone-card :global(.shot__frame) { margin-inline: auto; }
+  .phone-card h3 { font-size: var(--t-s); margin-top: 0.8rem; }
+  .phone-card p { font-size: var(--t-xs); color: var(--c-muted); margin-top: 0.2rem; }
+  @media (min-width: 640px) {
+    .phone-grid { grid-template-columns: repeat(4, 1fr); gap: 1.75rem 1.1rem; }
+  }
+</style>
