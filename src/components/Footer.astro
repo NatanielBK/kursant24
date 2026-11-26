@@ -13,6 +13,7 @@ import Logo from './Logo.astro';
         {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
         <li><a href={cta.href}>Pilotaż</a></li>
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href="https://zdawalnosc.pl">Zdawalność szkół jazdy</a></li>
       </ul>
     </nav>
     <div class="site-footer__meta">
@@ -21,15 +22,14 @@ import Logo from './Logo.astro';
     </div>
   </div>
   <div class="wrap site-footer__credits">
-    <p>
-      {credits.label}: <strong>{credits.org}</strong>
+    <p class="site-footer__credits-label">{credits.label}: <strong>{credits.org}</strong></p>
+    <ul class="site-footer__credits-list">
       {credits.items.map((c) => (
-        <>
-          {' · '}
+        <li>
           {c.name}, tel. <a href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>,{' '}
           <a href={`mailto:${c.email}`}>{c.email}</a>
-        </>
+        </li>
       ))}
-    </p>
+    </ul>
   </div>
 </footer>

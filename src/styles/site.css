@@ -45,6 +45,11 @@ ul, ol { padding: 0; list-style: none; }
 .wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
 .section { padding-block: clamp(2.5rem, 2rem + 2vw, 4.5rem); }
 .section--tight { padding-block: clamp(2rem, 1.6rem + 1.6vw, 3.5rem); }
+/* Telefon: krótsze odstępy między sekcjami, żeby strona mieściła się w ok. 6 ekranach. */
+@media (max-width: 639px) {
+  .section { padding-block: clamp(1.75rem, 1.4rem + 2vw, 2.5rem); }
+  .section--tight { padding-block: clamp(1.5rem, 1.2rem + 1.6vw, 2rem); }
+}
 /* Jasne sekcje z tłem (role, FAQ): delikatna siatka kropek + poświata w kolorach marki,
    żeby nie wyglądały jak płaski, szablonowy blok koloru (statyczne, bez ruchu/scrolla). */
 .section--bg { position: relative; background: var(--c-bg-2); overflow: hidden; }
@@ -65,6 +70,34 @@ ul, ol { padding: 0; list-style: none; }
 .section--bg > * { position: relative; z-index: 1; }
 .section__head { max-width: 46rem; margin-bottom: clamp(1.5rem, 1.2rem + 1.2vw, 2.5rem); }
 .section__head--center { margin-inline: auto; text-align: center; }
+
+/* RAIL — pozioma karuzela scroll-snap, bez JS (karty funkcji/ról na telefonie zamiast
+   siatki 2 kolumn z wąskim tekstem albo stosu wysokich kart). Następna karta wystaje,
+   żeby było widać, że da się przewinąć. `.rail--grid` zamienia ją w zwykłą siatkę od danej
+   szerokości — ustaw liczbę kolumn przez --rail-cols (domyślnie 3) na kontenerze. */
+.rail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 0.25rem var(--gutter) 0.5rem;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail__item { flex: 0 0 84%; max-width: 360px; scroll-snap-align: start; min-width: 0; }
+@media (min-width: 640px) {
+  .rail--grid {
+    display: grid;
+    grid-template-columns: repeat(var(--rail-cols, 3), 1fr);
+    overflow: visible;
+    margin-inline: 0;
+    padding: 0;
+  }
+  .rail--grid .rail__item { flex: initial; max-width: none; scroll-snap-align: none; }
+}
 
 .eyebrow {
   display: inline-flex; align-items: center; gap: 0.6em;
@@ -88,6 +121,7 @@ ul, ol { padding: 0; list-style: none; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
   font-weight: 700; font-size: var(--t-s);
+  min-height: 44px;
   padding: 0.85em 1.5em; border-radius: 999px;
   transition: background-color 0.18s var(--e-out), color 0.18s var(--e-out), border-color 0.18s var(--e-out), transform 0.18s var(--e-out), box-shadow 0.18s var(--e-out);
   white-space: nowrap;
@@ -95,12 +129,19 @@ ul, ol { padding: 0; list-style: none; }
 .btn:active { transform: scale(0.97); }
 .btn--primary { background: linear-gradient(180deg, var(--c-accent-bright), var(--c-accent)); color: #fff; box-shadow: var(--shadow-btn); }
 .btn--primary:hover { box-shadow: 0 18px 36px -12px rgba(11, 79, 216, 0.65); transform: translateY(-1px); }
-.btn--ghost { background: transparent; color: var(--c-fg); border: 1.5px solid var(--c-line-strong); }
-.btn--ghost:hover { border-color: var(--c-accent); color: var(--c-accent); }
+/* Drugi (obrysowany) CTA obok głównego przycisku — zero/jasne tło, kolor i obwódka przez
+   currentColor, więc jeden wariant działa i na ciemnym (hero, cta-band), i na jasnym tle. */
+.btn--ghost { background: transparent; color: inherit; border: 1.5px solid currentColor; }
+.btn--ghost:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
 .btn--light { background: #fff; color: var(--c-accent-2); }
 .btn--light:hover { background: var(--c-accent-soft); transform: translateY(-1px); }
 .btn--s { padding: 0.65em 1.2em; font-size: var(--t-xs); }
+.btn--block { display: flex; width: 100%; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+/* Telefon: dwa CTA obok siebie, jeśli się mieszczą, inaczej każdy na pełną szerokość. */
+@media (max-width: 479px) {
+  .btn-row .btn { flex: 1 1 210px; }
+}
 
 /* LOGO (zmienne CSS czytane przez Logo.astro); znak i napis skalują się niezależnie,
    żeby smugi ruchu w znaku L zostały czytelne nawet w małym nagłówku. */
@@ -291,6 +332,15 @@ html.menu-open { overflow: hidden; }
   box-shadow: 0 18px 26px -14px rgba(2, 6, 20, 0.65);
 }
 
+/* Shot z osobnym kadrem na telefon (prop `mobile` w Shot.astro): poniżej 640px znika chrom
+   laptopa (pasek, podstawa, padding), zostaje czysty zaokrąglony kadr zamiast miniatury laptopa. */
+@media (max-width: 639px) {
+  .shot--has-mobile.shot--laptop .shot__bar { display: none; }
+  .shot--has-mobile.shot--laptop::after { display: none; }
+  .shot--has-mobile.shot--laptop .shot__frame { padding: 0; border-radius: var(--radius-s); }
+  .shot--has-mobile.shot--laptop .shot__screen { border-radius: var(--radius-s); }
+}
+
 /* BENTO — siatka funkcji z prawdziwymi fragmentami UI (strona główna) */
 .bento { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
 .bento__item {
@@ -448,18 +498,23 @@ html.menu-open { overflow: hidden; }
 .cta-band .btn-row { justify-content: center; }
 
 .site-footer { background: var(--c-ink-deep); color: var(--c-on-deep); padding-block: 2.5rem; border-top: 1px solid var(--c-line-deep); }
-.site-footer__grid { display: flex; flex-direction: column; gap: 1.5rem; }
+.site-footer__grid { display: flex; flex-direction: column; gap: 1.75rem; }
 .site-footer__brand p { margin-top: 0.6rem; font-size: var(--t-s); max-width: 26rem; }
-.site-footer__nav ul { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+/* Telefon: linki w 2 kolumnach, nie jeden zbity rząd zawijany jak popadnie. */
+.site-footer__nav ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem 1.25rem; }
 .site-footer__nav a { font-size: var(--t-s); font-weight: 600; color: var(--c-on-deep-strong); }
 .site-footer__nav a:hover { color: #fff; }
 .site-footer__meta p { font-size: var(--t-xs); margin-top: 0.3rem; }
 @media (min-width: 700px) {
   .site-footer__grid { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .site-footer__nav ul { display: flex; flex-wrap: wrap; gap: 1.25rem; }
 }
 .site-footer__credits { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--c-line-deep); }
-.site-footer__credits p { font-size: var(--t-xs); color: var(--c-on-deep); }
-.site-footer__credits a { color: var(--c-on-deep-strong); text-decoration: underline; text-decoration-color: var(--c-line-deep-strong); }
+.site-footer__credits-label { font-size: var(--t-xs); color: var(--c-on-deep); }
+/* Twórcy każdy w osobnym wierszu, nie jednym zbitym akapitem. */
+.site-footer__credits-list { margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.site-footer__credits-list li { font-size: var(--t-xs); color: var(--c-on-deep); }
+.site-footer__credits-list a { color: var(--c-on-deep-strong); text-decoration: underline; text-decoration-color: var(--c-line-deep-strong); }
 
 /* PODSTRONY: hero prostszy, jasne tło */
 .podhero { padding-block: clamp(2.5rem, 2rem + 2vw, 4rem) clamp(2.5rem, 2rem + 2vw, 4rem); }

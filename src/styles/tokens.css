@@ -72,3 +72,12 @@
   --shadow-deep: 0 40px 90px -30px rgba(2, 6, 20, 0.6);
   --shadow-btn: 0 14px 30px -12px rgba(11, 79, 216, 0.55);
 }
+
+/* Telefon (<640px): --t-xs (13px) i --t-s (14.4px) są za małe na opisy kart i nawigację —
+   podbite do min. 15/16px, zgodnie z briefem. Nagłówki (--t-l, --t-xl...) już są płynne (clamp). */
+@media (max-width: 639px) {
+  :root {
+    --t-xs: 0.9375rem;
+    --t-s: 1rem;
+  }
+}
