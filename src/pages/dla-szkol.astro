@@ -66,7 +66,7 @@ const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 }
         <h2 id="dzien-h" class="h-l">Od kawy do telefonu, który nie dzwoni</h2>
       </header>
     </div>
-    <ol class="day-scroll">
+    <ol class="day-scroll" tabindex="0" aria-label="Oś dnia właściciela, przewijana w poziomie">
       {p.day.map((d) => (
         <li class="day-card">
           <span class="day-card__time">{d.t}</span>
@@ -84,7 +84,7 @@ const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 }
         <h2 id="benefits-h" class="h-l">{benefits.h2}</h2>
       </header>
     </div>
-    <ul class="carousel">
+    <ul class="carousel" tabindex="0" aria-label="Zrzuty ekranów aplikacji, przewijane w poziomie">
       {benefits.items.map((b) => (
         <li class="carousel__item">
           <article class="bcard">
