@@ -33,7 +33,20 @@ const kadry: Record<string, ImageMetadata> = {
         </div>
       </div>
       <div class="hero-visual enter enter--delay">
-        <Shot name={hero.shotLaptop} alt={hero.altVisual} frame="laptop" mobile="b-hero-stats" eager />
+        <div class="hero-shot-pc">
+          <Shot name={hero.shotLaptop} alt={hero.altVisual} frame="laptop" eager />
+        </div>
+        <!-- Na telefonie: kafelki z pulpitu w HTML (ostre na każdym ekranie), zamiast kadru 1x. -->
+        <div class="hero-stats" role="img" aria-label={hero.altVisual}>
+          <div class="hero-stats__tile">
+            <strong>80%</strong>
+            <span><i class="hero-stats__dot hero-stats__dot--ok" aria-hidden="true"></i>zdawalność (4/5)</span>
+          </div>
+          <div class="hero-stats__tile">
+            <strong>12 800 zł</strong>
+            <span><i class="hero-stats__dot hero-stats__dot--warn" aria-hidden="true"></i>zaległe wpłaty (9)</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -113,6 +126,21 @@ const kadry: Record<string, ImageMetadata> = {
 </Base>
 
 <style>
+  /* HERO: kafelki pulpitu w HTML na telefonie, zrzut w ramce laptopa od 640px. */
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; padding: 0.6rem;
+    background: #fff; border-radius: var(--radius); box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.55); }
+  .hero-stats__tile { background: var(--c-bg-2); border-radius: var(--radius-s); padding: 0.9rem 0.85rem;
+    display: flex; flex-direction: column; gap: 0.3rem; color: var(--c-fg); }
+  .hero-stats__tile strong { font-size: 1.6rem; line-height: 1; letter-spacing: -0.02em; }
+  .hero-stats__tile span { font-size: 0.8rem; color: var(--c-muted); display: flex; align-items: center; gap: 0.35rem; }
+  .hero-stats__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .hero-stats__dot--ok { background: #16a34a; }
+  .hero-stats__dot--warn { background: #dc2626; }
+  .hero-shot-pc { display: none; }
+  @media (min-width: 640px) {
+    .hero-stats { display: none; }
+    .hero-shot-pc { display: block; }
+  }
   /* HERO VISUAL — teraz przez wspólny <Shot frame="laptop" mobile="...">: ramka laptopa na
      desktopie (ujednolicone ze stroną główną), czytelny kadr (dwa kafelki z liczbami) na
      telefonie bez ramki. */
