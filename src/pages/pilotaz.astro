@@ -130,11 +130,6 @@ import { pilotaz as p } from '../data/pilotaz';
   .credits-card__links { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; font-size: var(--t-xs); }
   .credits-card__links .link { color: var(--c-on-deep-strong); }
 
-  /* Pola formularza wygodne w dotyku nawet przy mniejszym tekście pól. */
-  .form-card .field input,
-  .form-card .field select,
-  .form-card .field textarea { min-height: 44px; }
-
   /* Kolejność w DOM (lead -> formularz -> kontakt) daje telefonowi formularz od razu
      pod opisem, bez przewijania przez kartę kontaktową. Na desktopie wracamy do układu
      dwukolumnowego: opis i kontakt po lewej, formularz po prawej na pełną wysokość. */

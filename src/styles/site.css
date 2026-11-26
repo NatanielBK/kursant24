@@ -592,6 +592,9 @@ html.menu-open { overflow: hidden; }
 .pilotaz__contacts { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--c-line); }
 .pilotaz__contacts ul { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.5rem; font-size: var(--t-s); }
 .form-card { background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--radius-l); padding: 1.75rem; box-shadow: var(--shadow-card); }
+.form-card .field input,
+.form-card .field select,
+.form-card .field textarea { min-height: 44px; }
 .form-demo-note { font-size: var(--t-xs); color: var(--c-muted); margin-bottom: 1rem; }
 .field { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
 .field label { font-size: var(--t-xs); font-weight: 600; color: var(--c-muted); }
