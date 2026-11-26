@@ -39,7 +39,7 @@ const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 }
         <p class="lead">{p.lead}</p>
         <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
-          <a class="btn btn--outline-light" href="#cennik">Cennik</a>
+          <Btn href="#cennik" variant="ghost">Cennik</Btn>
         </div>
       </div>
       <div class="hero-visual enter enter--delay">
@@ -134,15 +134,6 @@ const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 }
 </Base>
 
 <style>
-  /* Drugi CTA w hero jako przycisk obrysowany (na ciemnym tle). Wariant tylko lokalny —
-     A doda odpowiednik w Btn.astro, wtedy to zastąpimy. */
-  .btn--outline-light {
-    background: transparent;
-    color: #fff;
-    border: 1.5px solid rgba(255, 255, 255, 0.45);
-  }
-  .btn--outline-light:hover { border-color: #fff; background: rgba(255, 255, 255, 0.08); }
-
   /* HERO VISUAL — jeden <picture>, jedno żądanie sieciowe: telefon dostaje czytelny kadr
      (dwa kafelki z liczbami), komputer pełny zrzut pulpitu. Bez ramki laptopa na telefonie —
      to ona robiła z pełnego zrzutu nieczytelną miniaturę. */
