@@ -6,6 +6,7 @@ import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
 import { dlaKursantow as p } from '../data/dla-kursantow';
 import { shots } from '../data/zrzuty';
+import '../styles/dla-kursantow.css';
 
 // Telefon "Dziś" jest LCP tej strony: preload.
 const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quality: 82, width: 390 });
@@ -23,17 +24,17 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
         <p class="lead">{p.lead}</p>
         <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
-          <a class="link" href="#kroki">Jak zacząć</a>
+          <Btn href="#kroki" variant="ghost">Jak zacząć</Btn>
         </div>
       </div>
-      <div class="k-phones enter enter--delay">
-        <div class="k-phones__main">
+      <div class="k-phone enter enter--delay">
+        <div class="k-phone__main">
           <Shot name="start-tel" alt="Ekran startowy kursanta w kursant24: najbliższa jazda i postęp godzin." frame="phone" eager />
         </div>
-        <div class="k-phones__second">
-          <Shot name="potwierdz-tel" alt="Potwierdzenie jazdy jednym przyciskiem." frame="phone" eager />
+        <div class="k-phone__second">
+          <Shot name="potwierdz-tel" alt="Potwierdzenie jazdy jednym przyciskiem." frame="phone" />
         </div>
-        <ul class="k-phones__chips">
+        <ul class="k-phone__chips">
           {p.chips.map((c, i) => <li class:list={['chip', `k-chip--${i + 1}`]}>{c}</li>)}
         </ul>
       </div>
@@ -46,14 +47,14 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
         <p class="eyebrow">{p.gallery.eyebrow}</p>
         <h2 id="galeria-h" class="h-l">{p.gallery.h2}</h2>
       </header>
-      <div class="phone-grid">
+      <div class="phone-scroll">
         {p.gallery.items.map((it) => (
           <article class="phone-card">
             <Shot
               name={it.name}
               alt={`${it.title}: ${it.text}`}
               frame="phone"
-              sizes="(max-width: 639px) 42vw, (max-width: 1099px) 22vw, 220px"
+              sizes="(max-width: 767px) 60vw, 220px"
             />
             <h3>{it.title}</h3>
             <p>{it.text}</p>
@@ -69,7 +70,7 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
         <p class="eyebrow">Jak zacząć</p>
         <h2 id="kroki-h" class="h-l">Trzy kroki, zero zakładania konta</h2>
       </header>
-      <div class="split split--top">
+      <div class="kroki-layout">
         <ol class="steps-list">
           {p.steps.map((s) => (
             <li class="step-item">
@@ -78,9 +79,22 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
             </li>
           ))}
         </ol>
-        <div class="split__shot">
+        <div class="kroki-shot">
           <Shot name="kod-tel" alt="Ekran logowania kodem aktywacyjnym ze szkoły, bez zakładania konta." frame="phone" />
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="zdawalnosc-h">
+    <div class="wrap">
+      <div class="cta-card zdawalnosc-card">
+        <div>
+          <p class="eyebrow">{p.zdawalnosc.eyebrow}</p>
+          <h2 id="zdawalnosc-h" class="h-m">{p.zdawalnosc.h2}</h2>
+          <p>{p.zdawalnosc.text}</p>
+        </div>
+        <a class="btn btn--ghost" href={p.zdawalnosc.href} target="_blank" rel="noopener">{p.zdawalnosc.cta}</a>
       </div>
     </div>
   </section>
@@ -94,66 +108,8 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
       <p>kursant24 włącza szkoła jazdy. Zapytaj swoją szkołę, czy już go zna, albo niech umówi prezentację.</p>
       <div class="btn-row">
         <Btn href="/pilotaz/" variant="light">Umów prezentację</Btn>
-        <a class="link" style="color:#fff" href="/dla-szkol/">Zapytaj swoją szkołę o kursant24</a>
+        <Btn href="/dla-szkol/" variant="ghost">Zapytaj swoją szkołę o kursant24</Btn>
       </div>
     </div>
   </section>
 </Base>
-
-<style>
-  /* Hero: dwa telefony pod kątem zamiast laptop+telefon ze strony głównej — własna
-     kompozycja, bo .devices z site.css zakłada proporcje laptopa. */
-  .k-phones { position: relative; }
-  .k-phones :global(.shot__frame) { box-shadow: 0 30px 60px -20px rgba(2, 6, 20, 0.65); }
-  .k-phones__chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; justify-content: center; }
-
-  @media (max-width: 899px) {
-    .k-phones { display: flex; flex-direction: column; align-items: center; padding-block: 0.5rem 2.5rem; }
-    .k-phones__main { width: min(230px, 62%); }
-    .k-phones__second { width: min(150px, 42%); align-self: flex-end; margin: -2.75rem 6% 0 0; transform: rotate(6deg); }
-  }
-  @media (min-width: 900px) {
-    .k-phones { width: 100%; max-width: 440px; justify-self: end; padding-block: 1.5rem 2.5rem; }
-    .k-phones__main { position: relative; z-index: 1; width: 66%; margin-inline: auto; transform: rotate(-3deg); }
-    .k-phones__second { position: absolute; z-index: 2; right: -2%; bottom: -5%; width: 44%; transform: rotate(6deg); }
-    .k-phones__chips { position: absolute; inset: 0; z-index: 3; margin: 0; pointer-events: none; }
-    .k-chip--1, .k-chip--2, .k-chip--3 { position: absolute; pointer-events: auto; }
-    .k-chip--1 { top: -4%; left: -6%; }
-    .k-chip--2 { top: 40%; left: -14%; }
-    .k-chip--3 { top: -6%; right: -14%; }
-  }
-
-  /* Krok obok telefonu, mobile: wyrównanie do góry (kroki poziome, telefon dużo wyższy). */
-  .split--top { align-items: start; }
-  .split--top .split__shot { width: min(230px, 55%); }
-
-  /* Desktop (≥900px, zgodnie z .split): kroki PIONOWO (numer w kółku + tekst w rzędzie,
-     łączone cienką linią), wyśrodkowane w pionie względem telefonu — kolumna kroków ma
-     wtedy wysokość zbliżoną do telefonu, bez pustej plamy pod krokami. Telefon bliżej
-     kroków niż domyślny `.split` (gap zamiast rozciągniętej siatki fr). */
-  @media (min-width: 900px) {
-    .split--top { align-items: center; display: flex; justify-content: center; gap: 3.5rem; }
-    .split--top .steps-list { flex-direction: column; gap: 1.75rem; flex: none; width: min(380px, 42%); }
-    .split--top .step-item { position: relative; flex-direction: row; align-items: flex-start; }
-    .split--top .step-item:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      left: 0.9375rem;
-      top: 2rem;
-      width: 2px;
-      height: 1.75rem;
-      background: var(--c-line);
-    }
-    .split--top .split__shot { justify-self: auto; width: 230px; }
-  }
-
-  /* Galeria ekranów: szczelna siatka telefonów, bez przycinania ani pustych połówek. */
-  .phone-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 0.9rem; }
-  .phone-card { text-align: center; }
-  .phone-card :global(.shot__frame) { margin-inline: auto; }
-  .phone-card h3 { font-size: var(--t-s); margin-top: 0.8rem; }
-  .phone-card p { font-size: var(--t-xs); color: var(--c-muted); margin-top: 0.2rem; }
-  @media (min-width: 640px) {
-    .phone-grid { grid-template-columns: repeat(4, 1fr); gap: 1.75rem 1.1rem; }
-  }
-</style>
