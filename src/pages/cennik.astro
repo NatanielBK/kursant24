@@ -39,7 +39,7 @@ import { cennik as p } from '../data/cennik';
         <p class="eyebrow">{p.factors.eyebrow}</p>
         <h2 id="czynniki-h" class="h-l">{p.factors.h2}</h2>
       </header>
-      <ul class="factors-scroll">
+      <ul class="factors-scroll" tabindex="0" aria-label="Czynniki wpływające na cenę, lista przewijana poziomo">
         {p.factors.items.map((f) => (
           <li class="factors-card">
             <h3>{f.title}</h3>
@@ -212,7 +212,7 @@ import { cennik as p } from '../data/cennik';
     padding: 1.25rem 1.4rem;
   }
   .factors-card h3 { font-size: var(--t-s); margin-bottom: 0.4rem; }
-  .factors-card p { font-size: var(--t-xs); color: var(--c-muted); line-height: 1.45; }
+  .factors-card p { font-size: 0.9375rem; color: var(--c-muted); line-height: 1.45; }
   .factors-note { margin-top: 1.5rem; font-size: var(--t-s); color: var(--c-muted); max-width: 40rem; }
 
   @media (min-width: 640px) {
@@ -227,6 +227,5 @@ import { cennik as p } from '../data/cennik';
   @media (min-width: 900px) {
     .factors-card { flex-basis: calc(33.333% - 0.84rem); padding: 1.5rem; }
     .factors-card h3 { font-size: var(--t-body); }
-    .factors-card p { font-size: var(--t-s); }
   }
 </style>
