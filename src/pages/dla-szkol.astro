@@ -1,13 +1,12 @@
 ---
-import { getImage, Image } from 'astro:assets';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
 import Faq from '../components/Faq.astro';
+import Shot from '../components/Shot.astro';
 import { dlaSzkol as p, cennikCta } from '../data/content';
 import { hero, benefits, ctaBand } from '../data/dla-szkol';
-import { shots } from '../data/zrzuty';
 
-import heroKadr from '../assets/zrzuty/kadry/b-hero-stats.png';
 import grafikKadr from '../assets/zrzuty/kadry/b-grafik-kadr.png';
 import ulozKadr from '../assets/zrzuty/kadry/b-uloz-kadr.png';
 import kursanciKadr from '../assets/zrzuty/kadry/b-kursanci-kadr.png';
@@ -19,17 +18,8 @@ const kadry: Record<string, ImageMetadata> = {
   kursanci: kursanciKadr,
   karta: kartaKadr,
 };
-
-// Hero jest LCP tej podstrony. Na telefonie pokazujemy czytelny kadr (dwa kafelki z liczbami),
-// na komputerze pełny zrzut pulpitu — <picture> ładuje tylko jeden z nich, nie oba naraz.
-const heroDesktop = await getImage({ src: shots[hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
-const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 });
 ---
 <Base title={p.title} description={p.description}>
-  <Fragment slot="head">
-    <link rel="preload" as="image" href={heroMobile.src} media="(max-width: 899px)" fetchpriority="high" />
-    <link rel="preload" as="image" href={heroDesktop.src} media="(min-width: 900px)" fetchpriority="high" />
-  </Fragment>
 
   <section class="hero" aria-labelledby="hero-h">
     <div class="wrap hero__grid">
@@ -43,18 +33,7 @@ const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 }
         </div>
       </div>
       <div class="hero-visual enter enter--delay">
-        <picture class="hero-visual__pic">
-          <source media="(min-width: 900px)" srcset={heroDesktop.src} />
-          <img
-            src={heroMobile.src}
-            width={heroKadr.width}
-            height={heroKadr.height}
-            alt={hero.altVisual}
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </picture>
+        <Shot name={hero.shotLaptop} alt={hero.altVisual} frame="laptop" mobile="b-hero-stats" eager />
       </div>
     </div>
   </section>
@@ -134,20 +113,9 @@ const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 }
 </Base>
 
 <style>
-  /* HERO VISUAL — jeden <picture>, jedno żądanie sieciowe: telefon dostaje czytelny kadr
-     (dwa kafelki z liczbami), komputer pełny zrzut pulpitu. Bez ramki laptopa na telefonie —
-     to ona robiła z pełnego zrzutu nieczytelną miniaturę. */
-  .hero-visual__pic {
-    display: block;
-    overflow: hidden;
-    border-radius: var(--radius);
-    box-shadow: 0 24px 54px -24px rgba(2, 6, 20, 0.55);
-    aspect-ratio: 325 / 93;
-  }
-  .hero-visual__pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  @media (min-width: 900px) {
-    .hero-visual__pic { aspect-ratio: 640 / 400; box-shadow: var(--shadow-deep); }
-  }
+  /* HERO VISUAL — teraz przez wspólny <Shot frame="laptop" mobile="...">: ramka laptopa na
+     desktopie (ujednolicone ze stroną główną), czytelny kadr (dwa kafelki z liczbami) na
+     telefonie bez ramki. */
 
   /* OŚ "Twój dzień": zwarte karty w poziomej karuzeli (scroll-snap, bez JS), z wystającą
      kolejną kartą. Bez miniatur zrzutów — te były nieczytelne przy tak małej szerokości. */
