@@ -74,7 +74,9 @@ ul, ol { padding: 0; list-style: none; }
 /* RAIL — pozioma karuzela scroll-snap, bez JS (karty funkcji/ról na telefonie zamiast
    siatki 2 kolumn z wąskim tekstem albo stosu wysokich kart). Następna karta wystaje,
    żeby było widać, że da się przewinąć. `.rail--grid` zamienia ją w zwykłą siatkę od danej
-   szerokości — ustaw liczbę kolumn przez --rail-cols (domyślnie 3) na kontenerze. */
+   szerokości — ustaw liczbę kolumn przez --rail-cols (domyślnie 3) na kontenerze.
+   A11y: axe oznacza overflow-x:auto jako "scrollable-region-focusable" — dodaj na
+   kontenerze tabindex="0" i role="group" aria-label="..." (patrz .bento/.roles-grid). */
 .rail {
   display: flex;
   gap: 1rem;
@@ -261,10 +263,11 @@ html.menu-open { overflow: hidden; }
   .devices__laptop { width: min(420px, 100%); }
   .devices__phone { width: min(140px, 38%); align-self: flex-end; margin: -3.25rem 8% 0 0; }
 }
-/* Na wąskim telefonie telefon-w-hero nachodził na laptop i był ucinany przez brzeg sekcji —
-   przy tak małej szerokości oba urządzenia się nie mieszczą czytelnie, więc chowamy mniejsze. */
-@media (max-width: 599px) {
+/* <640px: devices__laptop pokazuje kadr telefonu (Shot mobile), więc drugi, mały telefon
+   i chipy są zbędne/nachodzą na siebie — zostaje jeden czytelny zrzut. */
+@media (max-width: 639px) {
   .devices__phone { display: none; }
+  .devices__chips { display: none; }
 }
 @media (min-width: 900px) {
   .devices { width: 100%; max-width: 580px; justify-self: end; padding-block: 1.5rem 3rem; }
@@ -341,8 +344,14 @@ html.menu-open { overflow: hidden; }
   .shot--has-mobile.shot--laptop .shot__screen { border-radius: var(--radius-s); }
 }
 
-/* BENTO — siatka funkcji z prawdziwymi fragmentami UI (strona główna) */
-.bento { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+/* BENTO — siatka funkcji z prawdziwymi fragmentami UI (strona główna). Na telefonie karuzela
+   .rail (1 kolumna, bez łamiącego się tekstu), od 640px ta sama siatka co wcześniej. */
+.bento {
+  display: flex; gap: 1rem; overflow-x: auto;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  margin-inline: calc(var(--gutter) * -1); padding: 0.25rem var(--gutter) 0.5rem;
+}
+.bento::-webkit-scrollbar { display: none; }
 .bento__item {
   position: relative;
   border-radius: var(--radius);
@@ -354,6 +363,7 @@ html.menu-open { overflow: hidden; }
   border: 1px solid transparent;
   box-shadow: var(--shadow-card);
   transition: transform 0.2s var(--e-out), box-shadow 0.2s var(--e-out);
+  flex: 0 0 84%; max-width: 360px; scroll-snap-align: start; min-width: 0;
 }
 .bento__item:hover { transform: translateY(-4px); box-shadow: 0 30px 55px -28px rgba(11, 21, 48, 0.3); }
 .bento__item h3 { font-size: var(--t-s); }
@@ -373,7 +383,11 @@ html.menu-open { overflow: hidden; }
 .bento__item:nth-child(1) { grid-column: span 2; }
 .bento__item:nth-child(1) .bento__media { aspect-ratio: 16 / 11; }
 @media (min-width: 640px) {
-  .bento { grid-template-columns: repeat(4, 1fr); }
+  .bento {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    overflow: visible; margin-inline: 0; padding: 0;
+  }
+  .bento__item { flex: initial; max-width: none; scroll-snap-align: none; }
   .bento__item:nth-child(1) { grid-column: span 4; }
   .bento__item:nth-child(3) { grid-column: span 2; grid-row: span 2; }
   .bento__item:nth-child(3) .bento__media { flex: 1; }
@@ -416,12 +430,18 @@ html.menu-open { overflow: hidden; }
   .feature-card p { font-size: var(--t-s); }
 }
 
-/* ROLES */
-.roles-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+/* ROLES — karuzela na telefonie (zamiast trzech wysokich kart pod sobą), siatka 3 kolumn od 700px. */
+.roles-grid {
+  display: flex; gap: 1rem; overflow-x: auto;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  margin-inline: calc(var(--gutter) * -1); padding: 0.25rem var(--gutter) 0.5rem;
+}
+.roles-grid::-webkit-scrollbar { display: none; }
 .role-card {
   border: 1px solid var(--c-line); border-radius: var(--radius); padding: 1.5rem; background: var(--c-bg);
   box-shadow: var(--shadow-card);
   transition: transform 0.2s var(--e-out), box-shadow 0.2s var(--e-out);
+  flex: 0 0 86%; max-width: 360px; scroll-snap-align: start; min-width: 0;
 }
 .role-card:hover { transform: translateY(-3px); box-shadow: 0 1px 0 rgba(11, 21, 48, 0.04), 0 30px 56px -26px rgba(11, 21, 48, 0.3); }
 .role-card h3 { font-size: var(--t-m); margin-bottom: 0.4rem; }
@@ -430,7 +450,11 @@ html.menu-open { overflow: hidden; }
 .role-card li { font-size: var(--t-xs); padding-left: 1.3em; position: relative; }
 .role-card li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 7px; height: 7px; border-radius: 50%; background: var(--c-accent); }
 @media (min-width: 700px) {
-  .roles-grid { grid-template-columns: repeat(3, 1fr); }
+  .roles-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    overflow: visible; margin-inline: 0; padding: 0;
+  }
+  .role-card { flex: initial; max-width: none; scroll-snap-align: none; }
   .role-card li { font-size: var(--t-s); }
 }
 .role-card--media { padding: 0; overflow: hidden; display: flex; flex-direction: column; }

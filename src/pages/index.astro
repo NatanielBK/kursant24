@@ -12,18 +12,33 @@ import heroMarkUrl from '../assets/logo/icon-l-smugi-biale.svg?url';
 const heroShot = await getImage({ src: shots[home.hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
 
 // Fragmenty UI w kaflach bento — prawdziwe zrzuty, nie płaskie ilustracje.
+// `mobile`: dla zrzutów z komputera (grafik-pc, uloz-pc) osobny, powiększony kadr na telefon —
+// pełny zrzut 1440px wciśnięty w kartę ~350px był nie do odczytania (patrz BRIEF).
 const bentoMedia = [
-  { name: 'grafik-pc', alt: 'Grafik tygodnia: lista proponowanych jazd z godzinami i instruktorem.', mode: 'cover', w: 960, h: 600, pos: 'top' },
-  { name: 'uloz-pc', alt: 'Automatyczna propozycja grafiku na tydzień z raportem nieprzydzielonych kursantów.', mode: 'cover', w: 960, h: 600, pos: 'top left' },
+  { name: 'grafik-pc', mobile: 'a-grafik-mobile', alt: 'Grafik tygodnia: lista proponowanych jazd z godzinami i instruktorem.', mode: 'cover', w: 960, h: 600, pos: 'top' },
+  { name: 'uloz-pc', mobile: 'a-uloz-mobile', alt: 'Automatyczna propozycja grafiku na tydzień z raportem nieprzydzielonych kursantów.', mode: 'cover', w: 960, h: 600, pos: 'top left' },
   { name: 'czat-tel', alt: 'Czat z propozycją terminu jazdy: przyciski Odrzuć i Przyjmij.', mode: 'contain', w: 390, h: 844, pos: 'top' },
   { name: 'powiadomienia-tel', alt: 'Powiadomienie o zwolnionym terminie jazdy do potwierdzenia.', mode: 'cover', w: 390, h: 844, pos: 'top' },
   { name: 'dzis-tel', alt: 'Ekran postępu godzin jazdy kursanta.', mode: 'cover', w: 390, h: 844, pos: 'top' },
   { name: 'karta', alt: 'Karta przeprowadzonych zajęć jako dokument PDF.', mode: 'contain', w: 910, h: 1287, pos: 'top' },
 ];
 
-// Zrzut przy każdej roli.
+// Osobne kadry (<640px) dla kafli bento, które mają zrzut z komputera: pełny zrzut 1440px
+// wciśnięty w szerokość karty telefonu jest nieczytelny, więc telefon dostaje bliższy kadr.
+const bentoMobileSrcset = await Promise.all(
+  bentoMedia.map(async (m) => {
+    if (!m.mobile) return undefined;
+    const mobileSrc = shots[m.mobile];
+    const widths = [320, 480].filter((w) => w <= mobileSrc.width);
+    const built = await Promise.all(widths.map((w) => getImage({ src: mobileSrc, width: w, format: 'webp', quality: 82 })));
+    return built.map((img, i) => `${img.src} ${widths[i]}w`).join(', ');
+  }),
+);
+
+// Zrzut przy każdej roli. Właściciel ma dodatkowo kadr na telefon (pulpit-pc jako pełny
+// zrzut 1440px był za mały na czytelny pasek KPI w karcie roli).
 const roleMedia = [
-  { name: 'pulpit-pc', alt: 'Pulpit właściciela szkoły: kursanci, jazdy w tym tygodniu, płatności i dokumenty.', frame: 'laptop' as const },
+  { name: 'pulpit-pc', mobile: 'a-pulpit-mobile', alt: 'Pulpit właściciela szkoły: kursanci, jazdy w tym tygodniu, płatności i dokumenty.', frame: 'laptop' as const },
   { name: 'grafik-tel', alt: 'Grafik jazd instruktora w telefonie.', frame: 'phone' as const },
   { name: 'kod-tel', alt: 'Logowanie kursanta kodem aktywacyjnym ze szkoły.', frame: 'phone' as const },
 ];
@@ -42,12 +57,12 @@ const roleMedia = [
         <p class="lead">{home.hero.lead}</p>
         <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
-          <a class="link" href="#funkcje">Zobacz funkcje</a>
+          <Btn href="#funkcje" variant="ghost">Zobacz funkcje</Btn>
         </div>
       </div>
       <div class="devices enter enter--delay">
         <div class="devices__laptop">
-          <Shot name={home.hero.shotLaptop} alt={home.hero.altLaptop} frame="laptop" eager />
+          <Shot name={home.hero.shotLaptop} alt={home.hero.altLaptop} frame="laptop" mobile={home.hero.shotMobile} eager />
         </div>
         <div class="devices__phone">
           <Shot name={home.hero.shotPhone} alt={home.hero.altPhone} frame="phone" eager />
@@ -65,22 +80,27 @@ const roleMedia = [
         <p class="eyebrow">{home.features.eyebrow}</p>
         <h2 id="funkcje-h" class="h-l">{home.features.h2}</h2>
       </header>
-      <div class="bento">
+      <div class="bento" tabindex="0" role="group" aria-label="Funkcje — przewijalna lista kart">
         {home.features.items.map((f, i) => (
           <article class:list={['bento__item', i === 5 && 'bento__item--split']}>
             <div class:list={['bento__media', `bento__media--${bentoMedia[i].mode}`]}>
-              <Image
-                src={shots[bentoMedia[i].name]}
-                alt={bentoMedia[i].alt}
-                widths={[320, 480, 640, bentoMedia[i].w].filter((w) => w <= bentoMedia[i].w)}
-                height={bentoMedia[i].h}
-                sizes="(max-width: 639px) 45vw, (max-width: 1099px) 50vw, 33vw"
-                format="webp"
-                quality={78}
-                loading="lazy"
-                decoding="async"
-                style={`object-position: ${bentoMedia[i].pos}`}
-              />
+              <picture>
+                {bentoMobileSrcset[i] && (
+                  <source media="(max-width: 639px)" srcset={bentoMobileSrcset[i]} sizes="84vw" />
+                )}
+                <Image
+                  src={shots[bentoMedia[i].name]}
+                  alt={bentoMedia[i].alt}
+                  widths={[320, 480, 640, bentoMedia[i].w].filter((w) => w <= bentoMedia[i].w)}
+                  height={bentoMedia[i].h}
+                  sizes="(max-width: 639px) 84vw, (max-width: 1099px) 50vw, 33vw"
+                  format="webp"
+                  quality={78}
+                  loading="lazy"
+                  decoding="async"
+                  style={`object-position: ${bentoMedia[i].pos}`}
+                />
+              </picture>
             </div>
             <div class="bento__body">
               <h3>{f.title}</h3>
@@ -98,11 +118,11 @@ const roleMedia = [
         <p class="eyebrow">{home.roles.eyebrow}</p>
         <h2 id="role-h" class="h-l">{home.roles.h2}</h2>
       </header>
-      <div class="roles-grid">
+      <div class="roles-grid" tabindex="0" role="group" aria-label="Role w aplikacji — przewijalna lista kart">
         {home.roles.items.map((r, i) => (
           <article class="role-card role-card--media">
             <div class="role-card__media">
-              <Shot name={roleMedia[i].name} alt={roleMedia[i].alt} frame={roleMedia[i].frame} />
+              <Shot name={roleMedia[i].name} alt={roleMedia[i].alt} frame={roleMedia[i].frame} mobile={roleMedia[i].mobile} />
             </div>
             <div class="role-card__body">
               <h3>{r.title}</h3>
@@ -125,7 +145,7 @@ const roleMedia = [
         <p class="lead" style="margin:0.6rem auto 1.6rem">{cennikCta.text}</p>
         <div class="btn-row" style="justify-content:center">
           <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
-          <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
+          <Btn href={cennikCta.secondary.href} variant="ghost">{cennikCta.secondary.label}</Btn>
         </div>
       </div>
     </div>
@@ -140,7 +160,7 @@ const roleMedia = [
       <p>{home.cta.text}</p>
       <div class="btn-row">
         <Btn href={home.cta.primary.href} variant="light">{home.cta.primary.label}</Btn>
-        <a class="link" style="color:#fff" href={home.cta.secondary.href}>{home.cta.secondary.label}</a>
+        <Btn href={home.cta.secondary.href} variant="ghost">{home.cta.secondary.label}</Btn>
       </div>
     </div>
   </section>
