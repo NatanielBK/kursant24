@@ -1,0 +1,97 @@
+/* Style tylko strony /dla-kursantow/. Klasy z prefiksem k- (albo opisowe nazwy sekcji),
+   żeby nie kolidowały z klasami współdzielonymi w site.css. Reużywam .chip, .btn, .steps-list,
+   .split, .cta-card, .section--bg z site.css zamiast je duplikować. */
+
+/* Przycisk obrysowany na ciemnym tle (hero, cta-band): .btn--ghost z site.css liczy z jasnym
+   tłem (ciemny tekst, jasna obwódka), więc na granacie nadpisuję kolory tylko lokalnie. */
+.hero .btn--ghost,
+.cta-band .btn--ghost {
+  color: #fff;
+  border-color: var(--c-line-deep-strong);
+}
+.hero .btn--ghost:hover,
+.cta-band .btn--ghost:hover {
+  border-color: var(--c-accent-bright);
+  color: var(--c-accent-bright);
+}
+
+/* HERO: jeden mocny telefon na telefonie, dwa skomponowane na szerszych ekranach. */
+.k-phone { position: relative; }
+.k-phone .shot__frame { box-shadow: 0 30px 60px -20px rgba(2, 6, 20, 0.65); }
+.k-phone__second { display: none; }
+.k-phone__chips { margin: 0; }
+.k-chip--2 { display: none; }
+
+@media (max-width: 899px) {
+  .k-phone { width: min(240px, 66%); margin-inline: auto; padding-block: 0.5rem 1rem; }
+  .k-phone__chips { position: absolute; inset: 0; pointer-events: none; }
+  .k-chip--1 { position: absolute; pointer-events: auto; left: -14%; bottom: 10%; }
+}
+@media (min-width: 900px) {
+  .k-phone { width: 100%; max-width: 440px; justify-self: end; padding-block: 1.5rem 2.5rem; }
+  .k-phone__main { position: relative; z-index: 1; width: 66%; margin-inline: auto; transform: rotate(-3deg); }
+  .k-phone__second { display: block; position: absolute; z-index: 2; right: -2%; bottom: -5%; width: 44%; transform: rotate(6deg); }
+  .k-phone__chips { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+  .k-chip--1, .k-chip--2 { position: absolute; pointer-events: auto; display: block; }
+  .k-chip--1 { top: -2%; left: 0%; }
+  .k-chip--2 { bottom: 8%; right: 34%; }
+}
+
+/* GALERIA: na telefonie pozioma karuzela scroll-snap z wystającą kolejną kartą,
+   na desktopie siatka 3 kolumny (6 pozycji = 2 pełne rzędy, bez samotnej karty). */
+.phone-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  padding-inline: var(--gutter);
+  margin-inline: calc(var(--gutter) * -1);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.phone-scroll::-webkit-scrollbar { display: none; }
+.phone-card { flex: 0 0 auto; width: 70%; max-width: 260px; scroll-snap-align: start; text-align: center; }
+.phone-card .shot__frame { margin-inline: auto; }
+.phone-card h3 { font-size: var(--t-s); margin-top: 0.9rem; }
+.phone-card p { font-size: var(--t-xs); color: var(--c-muted); margin-top: 0.25rem; }
+@media (min-width: 768px) {
+  .phone-scroll {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: visible;
+    padding-inline: 0;
+    margin-inline: 0;
+    gap: 2rem 1.25rem;
+  }
+  .phone-card { width: auto; max-width: none; }
+}
+
+/* JAK ZACZĄĆ: kroki + telefon logowania, zwarte (bez pustej ramki wiszącej nad FAQ). */
+.kroki-layout { display: flex; flex-direction: column; align-items: center; gap: 1.75rem; }
+.kroki-layout .steps-list { width: 100%; max-width: 30rem; }
+.kroki-shot { width: min(150px, 42%); }
+@media (min-width: 900px) {
+  .kroki-layout { flex-direction: row; justify-content: center; align-items: center; gap: 3.5rem; }
+  .kroki-layout .steps-list { flex-direction: column; gap: 1.75rem; width: min(380px, 42%); }
+  .kroki-layout .step-item { position: relative; flex-direction: row; align-items: flex-start; }
+  .kroki-layout .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 0.9375rem;
+    top: 2rem;
+    width: 2px;
+    height: 1.75rem;
+    background: var(--c-line);
+  }
+  .kroki-shot { width: 200px; }
+}
+
+/* ZDAWALNOSC.PL: mała karta wsparcia, nie baner. */
+.zdawalnosc-card { display: flex; flex-direction: column; gap: 1.25rem; align-items: start; }
+.zdawalnosc-card p { color: var(--c-muted); margin-top: 0.5rem; max-width: 34rem; }
+@media (min-width: 700px) {
+  .zdawalnosc-card { flex-direction: row; align-items: center; justify-content: space-between; gap: 2rem; }
+  .zdawalnosc-card > div { flex: 1; }
+}
