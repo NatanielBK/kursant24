@@ -7,7 +7,7 @@ import { pilotaz as p } from '../data/pilotaz';
 <Base title={p.title} description={p.description}>
   <section class="hero" aria-labelledby="pilotaz-h">
     <div class="wrap pilotaz__grid">
-      <div class="pilotaz__copy">
+      <div class="pilotaz__lead">
         <p class="eyebrow enter">{p.eyebrow}</p>
         <h1 id="pilotaz-h" class="h-xl enter enter--delay">{p.h1}</h1>
         <p class="lead enter enter--delay">{p.lead}</p>
@@ -15,21 +15,6 @@ import { pilotaz as p } from '../data/pilotaz';
           {p.promises.map((o) => <li>{o}</li>)}
         </ul>
         <p class="enter enter--delay">Wolisz e-mail? <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
-
-        <div class="credits-card enter enter--delay">
-          <p class="credits-card__org">Kontakt bezpośredni — {credits.org}</p>
-          <ul class="credits-card__list">
-            {credits.items.map((c) => (
-              <li>
-                <span class="credits-card__name">{c.name}</span>
-                <span class="credits-card__links">
-                  <a class="link" href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>
-                  <a class="link" href={`mailto:${c.email}`}>{c.email}</a>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
 
       <div class="form-card enter enter--delay">
@@ -81,6 +66,23 @@ import { pilotaz as p } from '../data/pilotaz';
           <p>Wolisz, żebyśmy napisali pierwsi? <a class="link" href={`mailto:${site.email}`}>{site.email}</a></p>
         </div>
       </div>
+
+      <div class="pilotaz__info enter enter--delay">
+        <div class="credits-card">
+          <p class="credits-card__org">Kontakt bezpośredni, {credits.org}</p>
+          <ul class="credits-card__list">
+            {credits.items.map((c) => (
+              <li>
+                <span class="credits-card__name">{c.name}</span>
+                <span class="credits-card__links">
+                  <a class="link" href={`tel:+48${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>
+                  <a class="link" href={`mailto:${c.email}`}>{c.email}</a>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -108,7 +110,6 @@ import { pilotaz as p } from '../data/pilotaz';
 
 <style>
   .credits-card {
-    margin-top: 1.5rem;
     padding: 1.1rem 1.25rem;
     border-radius: var(--radius);
     background: color-mix(in srgb, var(--c-ink-deep-3) 70%, transparent);
@@ -128,8 +129,25 @@ import { pilotaz as p } from '../data/pilotaz';
   .credits-card__name { display: block; font-weight: 700; font-size: var(--t-s); color: #fff; margin-bottom: 0.15rem; }
   .credits-card__links { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; font-size: var(--t-xs); }
   .credits-card__links .link { color: var(--c-on-deep-strong); }
+
+  /* Pola formularza wygodne w dotyku nawet przy mniejszym tekście pól. */
+  .form-card .field input,
+  .form-card .field select,
+  .form-card .field textarea { min-height: 44px; }
+
+  /* Kolejność w DOM (lead -> formularz -> kontakt) daje telefonowi formularz od razu
+     pod opisem, bez przewijania przez kartę kontaktową. Na desktopie wracamy do układu
+     dwukolumnowego: opis i kontakt po lewej, formularz po prawej na pełną wysokość. */
   @media (min-width: 900px) {
     .hero { align-items: stretch; }
-    .hero .wrap.pilotaz__grid { align-items: start; padding-block: 2rem; }
+    .hero .wrap.pilotaz__grid {
+      align-items: start;
+      padding-block: 2rem;
+      grid-template-areas: 'lead form' 'info form';
+      grid-template-rows: auto 1fr;
+    }
+    .pilotaz__lead { grid-area: lead; }
+    .form-card { grid-area: form; }
+    .pilotaz__info { grid-area: info; }
   }
 </style>
