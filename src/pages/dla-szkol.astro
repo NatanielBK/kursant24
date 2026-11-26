@@ -1,19 +1,34 @@
 ---
-import { getImage } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Btn from '../components/Btn.astro';
-import Shot from '../components/Shot.astro';
 import Faq from '../components/Faq.astro';
 import { dlaSzkol as p, cennikCta } from '../data/content';
-import { hero, dayMedia, benefits, ctaBand } from '../data/dla-szkol';
+import { hero, benefits, ctaBand } from '../data/dla-szkol';
 import { shots } from '../data/zrzuty';
 
-// Laptop w hero jest LCP tej podstrony: preload, tak jak na stronie głównej.
-const heroShot = await getImage({ src: shots[hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
+import heroKadr from '../assets/zrzuty/kadry/b-hero-stats.png';
+import grafikKadr from '../assets/zrzuty/kadry/b-grafik-kadr.png';
+import ulozKadr from '../assets/zrzuty/kadry/b-uloz-kadr.png';
+import kursanciKadr from '../assets/zrzuty/kadry/b-kursanci-kadr.png';
+import kartaKadr from '../assets/zrzuty/kadry/b-karta-kadr.png';
+
+const kadry: Record<string, ImageMetadata> = {
+  grafik: grafikKadr,
+  uloz: ulozKadr,
+  kursanci: kursanciKadr,
+  karta: kartaKadr,
+};
+
+// Hero jest LCP tej podstrony. Na telefonie pokazujemy czytelny kadr (dwa kafelki z liczbami),
+// na komputerze pełny zrzut pulpitu — <picture> ładuje tylko jeden z nich, nie oba naraz.
+const heroDesktop = await getImage({ src: shots[hero.shotLaptop], format: 'webp', quality: 82, width: 640 });
+const heroMobile = await getImage({ src: heroKadr, format: 'webp', quality: 85 });
 ---
 <Base title={p.title} description={p.description}>
   <Fragment slot="head">
-    <link rel="preload" as="image" href={heroShot.src} fetchpriority="high" />
+    <link rel="preload" as="image" href={heroMobile.src} media="(max-width: 899px)" fetchpriority="high" />
+    <link rel="preload" as="image" href={heroDesktop.src} media="(min-width: 900px)" fetchpriority="high" />
   </Fragment>
 
   <section class="hero" aria-labelledby="hero-h">
@@ -24,19 +39,22 @@ const heroShot = await getImage({ src: shots[hero.shotLaptop], format: 'webp', q
         <p class="lead">{p.lead}</p>
         <div class="btn-row">
           <Btn href="/pilotaz/">Umów prezentację</Btn>
-          <a class="link" href="#cennik">Cennik</a>
+          <a class="btn btn--outline-light" href="#cennik">Cennik</a>
         </div>
       </div>
-      <div class="devices enter enter--delay">
-        <div class="devices__laptop">
-          <Shot name={hero.shotLaptop} alt={hero.altLaptop} frame="laptop" eager />
-        </div>
-        <div class="devices__phone">
-          <Shot name={hero.shotPhone} alt={hero.altPhone} frame="phone" eager />
-        </div>
-        <ul class="devices__chips">
-          {hero.chips.map((c, i) => <li class:list={['chip', `chip--${i + 1}`]}>{c}</li>)}
-        </ul>
+      <div class="hero-visual enter enter--delay">
+        <picture class="hero-visual__pic">
+          <source media="(min-width: 900px)" srcset={heroDesktop.src} />
+          <img
+            src={heroMobile.src}
+            width={heroKadr.width}
+            height={heroKadr.height}
+            alt={hero.altVisual}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
       </div>
     </div>
   </section>
@@ -45,79 +63,58 @@ const heroShot = await getImage({ src: shots[hero.shotLaptop], format: 'webp', q
     <div class="wrap">
       <header class="section__head">
         <p class="eyebrow">Twój dzień z kursant24</p>
-        <h2 id="dzien-h" class="h-l">Od pierwszej kawy do telefonu, który nie dzwoni</h2>
+        <h2 id="dzien-h" class="h-l">Od kawy do telefonu, który nie dzwoni</h2>
       </header>
-      <ol class="timeline">
-        {p.day.map((d, i) => (
-          <li class="timeline-item">
-            <span class="timeline-item__time">{d.t}</span>
-            <div class="timeline-card">
-              <div class="timeline-card__media">
-                <Shot name={dayMedia[i].name} alt={dayMedia[i].alt} frame={dayMedia[i].name.endsWith('-tel') ? 'phone' : 'laptop'} class="timeline-card__shot" />
-              </div>
-              <div class="timeline-card__body">
-                <h3>{d.title}</h3>
-                <p>{d.text}</p>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ol>
     </div>
+    <ol class="day-scroll" tabindex="0" aria-label="Oś dnia właściciela, przewijana w poziomie">
+      {p.day.map((d) => (
+        <li class="day-card">
+          <span class="day-card__time">{d.t}</span>
+          <h3>{d.title}</h3>
+          <p>{d.text}</p>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <section class="deep-section" aria-labelledby="benefits-h">
+  <section class="section" aria-labelledby="benefits-h">
     <div class="wrap">
       <header class="section__head">
-        <p class="eyebrow eyebrow--light">{benefits.eyebrow}</p>
+        <p class="eyebrow">{benefits.eyebrow}</p>
         <h2 id="benefits-h" class="h-l">{benefits.h2}</h2>
       </header>
-      <div class="showcase">
-        {benefits.items.slice(0, 2).map((b) => (
-          <article class="showcase-card showcase-card--dark">
-            <div class="showcase-card__body">
-              <h3>{b.title}</h3>
-              <p>{b.text}</p>
-            </div>
-            <Shot name={b.shot.name} alt={b.shot.alt} frame={b.shot.frame} />
-          </article>
-        ))}
-      </div>
     </div>
-  </section>
-
-  <section class="section" aria-label="Więcej realnych ekranów aplikacji">
-    <div class="wrap">
-      <div class="showcase">
-        {benefits.items.slice(2, 4).map((b) => (
-          <article class="showcase-card showcase-card--light">
-            <div class="showcase-card__body">
-              <h3>{b.title}</h3>
-              <p>{b.text}</p>
+    <ul class="carousel" tabindex="0" aria-label="Zrzuty ekranów aplikacji, przewijane w poziomie">
+      {benefits.items.map((b) => (
+        <li class="carousel__item">
+          <article class="bcard">
+            <div class="bcard__media">
+              <Image src={kadry[b.kadr]} alt={b.alt} widths={[320, 480, 560]} sizes="(max-width: 699px) 78vw, (max-width: 1099px) 40vw, 260px" />
             </div>
-            <Shot name={b.shot.name} alt={b.shot.alt} frame={b.shot.frame} />
+            <h3>{b.title}</h3>
+            <p>{b.text}</p>
           </article>
-        ))}
-      </div>
-    </div>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <section class="section section--bg" id="cennik" aria-labelledby="cennik-h">
-    <div class="wrap" style="max-width:34rem; text-align:center; margin-inline:auto">
-      <p class="eyebrow" style="justify-content:center">{cennikCta.eyebrow}</p>
-      <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
-      <p class="lead" style="margin:0.6rem auto 1.6rem">{cennikCta.text}</p>
-      <div class="btn-row" style="justify-content:center">
-        <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
-        <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
+    <div class="wrap cennik-merge">
+      <div class="cennik-merge__pricing">
+        <p class="eyebrow">{cennikCta.eyebrow}</p>
+        <h2 id="cennik-h" class="h-l">{cennikCta.h2}</h2>
+        <p class="lead">{cennikCta.text}</p>
+        <div class="btn-row">
+          <Btn href={cennikCta.primary.href}>{cennikCta.primary.label}</Btn>
+          <a class="link" href={cennikCta.secondary.href}>{cennikCta.secondary.label}</a>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="migr-h">
-    <div class="wrap">
-      <h2 id="migr-h" class="h-l">{p.migration.h2}</h2>
-      <p class="lead" style="margin-top:0.6rem">{p.migration.text}</p>
+      <div class="cennik-merge__divider" aria-hidden="true"></div>
+      <div class="cennik-merge__migration">
+        <h2 class="h-m">{p.migration.h2}</h2>
+        <p>{p.migration.text}</p>
+      </div>
     </div>
   </section>
 
@@ -137,83 +134,104 @@ const heroShot = await getImage({ src: shots[hero.shotLaptop], format: 'webp', q
 </Base>
 
 <style>
-  /* OŚ "Twój dzień": karty równej wysokości ze zrzutem przy każdym kroku, połączone linią/kropką — zamiast
-     jednego dużego laptopa wiszącego obok pustej przestrzeni. */
-  .timeline { position: relative; display: grid; gap: 1.75rem; grid-template-columns: 1fr; }
-  .timeline-item { position: relative; padding-left: 2.25rem; }
-  .timeline-item::before {
-    content: ''; position: absolute; left: 0; top: 0.3rem; width: 12px; height: 12px; border-radius: 50%;
-    background: var(--c-accent); box-shadow: 0 0 0 4px var(--c-accent-soft); z-index: 1;
+  /* Drugi CTA w hero jako przycisk obrysowany (na ciemnym tle). Wariant tylko lokalny —
+     A doda odpowiednik w Btn.astro, wtedy to zastąpimy. */
+  .btn--outline-light {
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
   }
-  .timeline-item::after {
-    content: ''; position: absolute; left: 5px; top: 1.1rem; bottom: -1.75rem; width: 2px; background: var(--c-line-strong);
-  }
-  .timeline-item:last-child::after { display: none; }
-  .timeline-item__time { display: block; font-weight: 700; color: var(--c-accent); font-size: var(--t-s); margin-bottom: 0.4rem; }
-  .timeline-card {
-    display: grid; grid-template-columns: 96px 1fr; gap: 1rem; align-items: center;
-    padding: 0.9rem; border-radius: var(--radius-s); border: 1px solid transparent;
-    background: linear-gradient(var(--c-bg), var(--c-bg)) padding-box,
-      linear-gradient(135deg, var(--c-line-strong), var(--c-line) 60%, transparent 95%) border-box;
-    box-shadow: var(--shadow-card);
-  }
-  .timeline-card__media { width: 96px; flex-shrink: 0; }
-  .timeline-card__media :global(.shot__frame) { padding: 0.25rem; }
-  .timeline-card h3 { font-size: var(--t-s); margin-bottom: 0.2rem; }
-  .timeline-card p { font-size: var(--t-xs); color: var(--c-muted); line-height: 1.42; }
+  .btn--outline-light:hover { border-color: #fff; background: rgba(255, 255, 255, 0.08); }
 
+  /* HERO VISUAL — jeden <picture>, jedno żądanie sieciowe: telefon dostaje czytelny kadr
+     (dwa kafelki z liczbami), komputer pełny zrzut pulpitu. Bez ramki laptopa na telefonie —
+     to ona robiła z pełnego zrzutu nieczytelną miniaturę. */
+  .hero-visual__pic {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: 0 24px 54px -24px rgba(2, 6, 20, 0.55);
+    aspect-ratio: 325 / 93;
+  }
+  .hero-visual__pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
   @media (min-width: 900px) {
-    .timeline { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-    .timeline-item { padding-left: 0; padding-top: 2.1rem; }
-    .timeline-item::before { left: 50%; top: 0; transform: translateX(-50%); }
-    .timeline-item::after { left: 0; right: 0; top: 5px; bottom: auto; width: auto; height: 2px; }
-    .timeline-item:first-child::after { left: 50%; }
-    .timeline-item:last-child::after { right: 50%; left: 50%; }
-    .timeline-item__time { text-align: center; }
-    .timeline-card { grid-template-columns: 1fr; text-align: left; }
-    .timeline-card__media { width: 100%; }
+    .hero-visual__pic { aspect-ratio: 640 / 400; box-shadow: var(--shadow-deep); }
   }
 
-  /* Sekcja ciemna dla realnych ekranów korzyści — ta sama estetyka co hero (granat, poświata, szum),
-     ale bez pełnej wysokości heroes'a; klasa lokalna, nie dotyka globalnego site.css. */
-  .deep-section {
-    position: relative; overflow: hidden; isolation: isolate;
-    padding-block: clamp(2.5rem, 2rem + 2vw, 4.5rem);
-    color: var(--c-on-deep-strong);
-    background: radial-gradient(55% 55% at 15% 0%, rgba(61, 125, 255, 0.28), transparent 62%),
-      linear-gradient(180deg, var(--c-ink-deep-2), var(--c-ink-deep));
+  /* OŚ "Twój dzień": zwarte karty w poziomej karuzeli (scroll-snap, bez JS), z wystającą
+     kolejną kartą. Bez miniatur zrzutów — te były nieczytelne przy tak małej szerokości. */
+  .day-scroll {
+    display: flex; gap: 0.9rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-inline: var(--gutter); scroll-padding-inline: var(--gutter);
   }
-  .deep-section::before {
-    content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0.5; mix-blend-mode: overlay; pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  .day-scroll::-webkit-scrollbar { display: none; }
+  .day-scroll { scrollbar-width: none; }
+  .day-card {
+    scroll-snap-align: start; flex: 0 0 72%; max-width: 260px;
+    padding: 1.1rem 1.2rem; border-radius: var(--radius-s);
+    border: 1px solid var(--c-line-strong); background: var(--c-bg); box-shadow: var(--shadow-card);
   }
-  .deep-section > * { position: relative; z-index: 1; }
-  .deep-section .eyebrow--light { color: var(--c-accent-bright); }
-  .deep-section .h-l { color: #fff; }
+  .day-card__time {
+    display: inline-block; font-weight: 800; color: var(--c-accent); font-size: var(--t-s);
+    padding: 0.2em 0.65em; border-radius: 999px; background: var(--c-accent-soft);
+  }
+  .day-card h3 { font-size: var(--t-s); margin: 0.6rem 0 0.3rem; }
+  .day-card p { font-size: 0.95rem; color: var(--c-muted); line-height: 1.42; }
+  @media (min-width: 860px) {
+    .day-scroll {
+      overflow-x: visible; display: grid; grid-template-columns: repeat(4, 1fr);
+      max-width: var(--max); margin-inline: auto; gap: 1.25rem; position: relative;
+    }
+    .day-scroll::before {
+      content: ''; position: absolute; top: 1.3rem; left: 5%; right: 5%; height: 2px;
+      background: var(--c-line-strong); z-index: 0;
+    }
+    .day-card { flex: initial; max-width: none; position: relative; z-index: 1; }
+  }
 
-  /* Korzyści dla właściciela: realne ekrany w ramkach urządzeń, karta z gradientową obwódką */
-  .showcase { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  /* KORZYŚCI — karuzela zamiast dwóch osobnych sekcji (ciemnej + jasnej) z 4 jednakowymi
+     kartami. Jeden, spójny styl karty, każda z innym kadrem — bez powtórzeń zrzutów. */
+  .carousel {
+    display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); list-style: none;
+  }
+  .carousel::-webkit-scrollbar { display: none; }
+  .carousel { scrollbar-width: none; }
+  .carousel__item { scroll-snap-align: start; flex: 0 0 78%; max-width: 320px; }
+  .bcard {
+    display: flex; flex-direction: column; gap: 0.9rem; height: 100%;
+    padding: 1.1rem; border-radius: var(--radius); border: 1px solid var(--c-line);
+    background: var(--c-bg); box-shadow: var(--shadow-card);
+  }
+  .bcard__media {
+    aspect-ratio: 4 / 3; border-radius: var(--radius-s); overflow: hidden;
+    background: var(--c-bg-2); display: flex; align-items: center; justify-content: center;
+  }
+  .bcard__media :global(img) { width: 100%; height: 100%; object-fit: contain; }
+  .bcard h3 { font-size: var(--t-m); }
+  .bcard p { font-size: 0.95rem; color: var(--c-muted); line-height: 1.45; }
   @media (min-width: 700px) {
-    .showcase { grid-template-columns: repeat(2, 1fr); }
+    .carousel {
+      overflow-x: visible; display: grid; grid-template-columns: repeat(2, 1fr);
+      max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter);
+    }
+    .carousel__item { flex: initial; max-width: none; }
   }
-  .showcase-card { display: flex; flex-direction: column; gap: 1.25rem; padding: 1.5rem; border-radius: var(--radius); }
-  .showcase-card__body h3 { font-size: var(--t-m); margin-bottom: 0.4rem; }
-  .showcase-card--dark {
-    background: color-mix(in srgb, var(--c-ink-deep-3) 55%, transparent);
-    border: 1px solid var(--c-line-deep-strong);
-    backdrop-filter: blur(10px);
+  @media (min-width: 1100px) {
+    .carousel { grid-template-columns: repeat(4, 1fr); }
   }
-  .showcase-card--dark .showcase-card__body p { color: var(--c-on-deep); font-size: var(--t-s); }
-  .showcase-card--light {
-    border: 1px solid transparent;
-    background: linear-gradient(var(--c-bg), var(--c-bg)) padding-box,
-      linear-gradient(135deg, var(--c-line-strong), var(--c-line) 60%, transparent 95%) border-box;
-    box-shadow: var(--shadow-card);
+
+  /* CENNIK + MIGRACJA — dwie dawne sekcje w jednej, zwarcie, bez pustki między nimi. */
+  .cennik-merge { display: flex; flex-direction: column; gap: 1.75rem; max-width: 40rem; margin-inline: auto; text-align: center; }
+  .cennik-merge__pricing .lead { margin: 0.6rem auto 1.4rem; }
+  .cennik-merge__pricing .btn-row, .cennik-merge__pricing .eyebrow { justify-content: center; }
+  .cennik-merge__divider { height: 1px; background: var(--c-line-strong); }
+  .cennik-merge__migration h2 { margin-bottom: 0.5rem; }
+  .cennik-merge__migration p { color: var(--c-muted); font-size: 0.95rem; }
+  @media (min-width: 860px) {
+    .cennik-merge { flex-direction: row; align-items: center; text-align: left; max-width: var(--max); gap: 3rem; }
+    .cennik-merge__pricing, .cennik-merge__migration { flex: 1; }
+    .cennik-merge__pricing .btn-row, .cennik-merge__pricing .eyebrow { justify-content: flex-start; }
+    .cennik-merge__divider { width: 1px; height: auto; align-self: stretch; }
   }
-  .showcase-card--light .showcase-card__body p { color: var(--c-muted); font-size: var(--t-s); }
-  .showcase-card :global(.shot) { margin-top: auto; }
-  .showcase-card :global(.shot--paper .shot__frame) { max-width: 260px; margin-inline: auto; }
-  /* Podstawa laptopa (::after) ma domyślnie margin: 0 -6%, czyli jest szersza niż ekran —
-     w karcie "Kursanci" to wystawało poza krawędź karty. Tu podstawa nie poszerza się poza ramkę. */
-  .showcase-card :global(.shot--laptop::after) { margin: 0; }
 </style>
