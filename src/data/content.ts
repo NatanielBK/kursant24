@@ -102,7 +102,6 @@ export const dlaSzkol = {
     { t: '12:15', title: 'Odwołana jazda', text: 'Termin trafia do kolejki. Pierwszy, kto przyjmie, jedzie. Nie dzwonisz do nikogo.' },
     { t: '21:40', title: 'Telefon milczy', text: 'Pytania o termin czekają w czacie do rana.' },
   ],
-  shot: { name: 'pulpit-pc', alt: 'Pulpit właściciela: aktywni kursanci, jazdy w tym tygodniu, zaległe płatności i grafik tygodnia.' },
   migration: {
     h2: 'Zeszyt przepiszemy za Ciebie.',
     text: 'Na czas pilotażu przenosimy listę kursantów z zeszytu, Excela albo innej aplikacji, bez dodatkowych kosztów. Ty sprawdzasz i rozdajesz kody.',
