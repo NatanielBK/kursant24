@@ -98,9 +98,9 @@ export const dlaSzkol = {
   lead: 'Nie zmieniasz sposobu pracy. Przenosisz go z zeszytu do aplikacji, którą widzą też instruktorzy i kursanci.',
   day: [
     { t: '7:30', title: 'Kawa i pulpit', text: 'Jazdy w tym tygodniu, zaległe raty i brakujące dokumenty na jednym ekranie.' },
-    { t: '9:00', title: 'Nowy kursant', text: 'Wpisujesz imię i telefon. kursant24 tworzy login i kod aktywacyjny do wydruku albo wysłania.' },
-    { t: '12:15', title: 'Instruktor odwołuje jazdę', text: 'Zwolnione okienko trafia do listy oczekujących. Pierwszy, kto przyjmie, dostaje termin. Nie dzwonisz do nikogo.' },
-    { t: '21:40', title: 'Telefon milczy', text: 'Pytania o termin czekają w czacie do rana. Odpowiadasz, kiedy masz chwilę.' },
+    { t: '9:00', title: 'Nowy kursant', text: 'Imię i telefon. Login i kod aktywacyjny kursant24 tworzy sam.' },
+    { t: '12:15', title: 'Odwołana jazda', text: 'Termin trafia do kolejki. Pierwszy, kto przyjmie, jedzie. Nie dzwonisz do nikogo.' },
+    { t: '21:40', title: 'Telefon milczy', text: 'Pytania o termin czekają w czacie do rana.' },
   ],
   shot: { name: 'pulpit-pc', alt: 'Pulpit właściciela: aktywni kursanci, jazdy w tym tygodniu, zaległe płatności i grafik tygodnia.' },
   migration: {

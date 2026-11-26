@@ -3,43 +3,38 @@
 
 export const hero = {
   shotLaptop: 'pulpit-pc',
-  altLaptop: 'Pulpit właściciela szkoły: aktywni kursanci, jazdy w tym tygodniu, zaległe płatności i zdawalność.',
-  shotPhone: 'powiadomienia-tel',
-  altPhone: 'Powiadomienie o propozycji terminu jazdy od instruktora.',
-  chips: ['Zaległe płatności: 12 800 zł', 'Zwolnione okienko → przyjęte', 'Zdawalność 80%'],
+  altVisual: 'Pulpit właściciela szkoły: zdawalność 80% i zaległe płatności 12 800 zł.',
 };
 
-// Zrzuty przy krokach dnia właściciela (inny kadr niż w hero/benefits — zbliżenie, nie ten sam obraz).
-export const dayMedia = [
-  { name: 'pulpit-pc', alt: 'Zbliżenie na pulpit: liczba kursantów, jazd i zaległych płatności.' },
-  { name: 'kursanci-pc', alt: 'Lista kursantów z nowo dodaną osobą.' },
-  { name: 'grafik-pc', alt: 'Grafik tygodnia ze zwolnionym terminem jazdy.' },
-  { name: 'czat-tel', alt: 'Czat z pytaniem kursanta o termin, czekającym na odpowiedź.' },
-];
-
+// Korzyści właściciela: każda karta ma własny, osobny kadr (b-*.png), żeby nie powtarzać
+// tego samego zrzutu, który jest już w hero. `kadr` to klucz do mapy obrazów w dla-szkol.astro.
 export const benefits = {
   eyebrow: 'Co zyskuje właściciel',
   h2: 'Każdy ekran robi robotę, którą dziś robisz Ty',
   items: [
     {
-      title: 'Grafik, który widzi cała szkoła',
-      text: 'Jazdy, wykłady i wolne terminy wszystkich instruktorów w jednym widoku. Ty widzisz całość, instruktor tylko swoje auto.',
-      shot: { name: 'grafik-pc', alt: 'Grafik tygodnia wszystkich instruktorów szkoły.', frame: 'laptop' as const },
+      kadr: 'grafik',
+      title: 'Grafik widzi cała szkoła',
+      text: 'Jazdy i wolne terminy wszystkich instruktorów w jednym widoku.',
+      alt: 'Grafik tygodnia z jazdami kilku instruktorów.',
     },
     {
+      kadr: 'uloz',
       title: 'Grafik układa się sam',
-      text: 'Jedno kliknięcie i aplikacja proponuje terminy na cały tydzień, z raportem, których kursantów nie udało się zmieścić.',
-      shot: { name: 'uloz-pc', alt: 'Automatyczna propozycja grafiku na tydzień z raportem nieprzydzielonych kursantów.', frame: 'laptop' as const },
+      text: 'Jedno kliknięcie i propozycja na cały tydzień, z raportem nieprzydzielonych.',
+      alt: 'Automatyczna propozycja grafiku z raportem nieprzydzielonych kursantów.',
     },
     {
+      kadr: 'kursanci',
       title: 'Kursanci i postęp godzin',
-      text: 'Aktywni i archiwalni kursanci, pasek postępu godzin i przypisany instruktor, bez przeklikiwania się przez karty papierowe.',
-      shot: { name: 'kursanci-pc', alt: 'Lista kursantów szkoły z postępem godzin i przypisanym instruktorem.', frame: 'laptop' as const },
+      text: 'Aktywni i archiwalni kursanci z paskiem postępu godzin, bez papierowych kart.',
+      alt: 'Lista kursantów z paskiem postępu godzin.',
     },
     {
+      kadr: 'karta',
       title: 'E-karta zamiast segregatora',
-      text: 'Instruktor odznacza obecność, kursant potwierdza swoim loginem. Karta przeprowadzonych zajęć powstaje sama, jako PDF.',
-      shot: { name: 'karta', alt: 'Karta przeprowadzonych zajęć jako dokument PDF.', frame: 'paper' as const },
+      text: 'Instruktor odznacza obecność, kursant potwierdza. Karta powstaje sama, jako PDF.',
+      alt: 'Karta przeprowadzonych zajęć jako dokument PDF.',
     },
   ],
 };
