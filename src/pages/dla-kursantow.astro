@@ -47,7 +47,7 @@ const heroShot = await getImage({ src: shots['start-tel'], format: 'webp', quali
         <p class="eyebrow">{p.gallery.eyebrow}</p>
         <h2 id="galeria-h" class="h-l">{p.gallery.h2}</h2>
       </header>
-      <div class="phone-scroll">
+      <div class="phone-scroll" tabindex="0" role="region" aria-label="Zrzuty ekranów aplikacji, przewijane poziomo">
         {p.gallery.items.map((it) => (
           <article class="phone-card">
             <Shot
